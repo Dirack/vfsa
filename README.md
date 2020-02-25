@@ -1,6 +1,8 @@
 # vfsa
 > Very Fast Simulated Anneeling global optimization of zero offset CRS parameters.
 
+![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
+
 [This program is part of the Madagascar package! version 3.0.](https://github.com/ahay/src/tree/master/user/dirack)
 
 This is a package with several C programs adapted to the Madagascar seismic processing package. The mains objective of
@@ -18,12 +20,15 @@ associated with the normal ray (RN, RNIP and BETA).
 
 ## Convergence result
 
-The result expected before VFSA global optimization algorithm is the convergence of the approximated surface, generated with
+In the first image above we show the expected result after VFSA global optimization algorithm application.
+It shows the convergence of the approximated surface, generated with
 the non-hyperbolic CRS traveltime approximation (midle), and the reflection surface extracted from the data (left).
-The difference in the time between two surfaces is the approximation error (right). The CRS paramters (RN, RNIP and BETA)
-that produced the minimum error will be the optimized ones.
+The difference in the time between two surfaces is the approximation error (right, not in the same scale).
+The CRS paramters (RN, RNIP and BETA)
+that produced the minimum error will be the optimized ones. We show the semblance between the two surfaces in function of
+the CRS parameters in the image above (maximum values in red).
 
-![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
+![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/parametersCube.png)
 
 ## Development setup
 
