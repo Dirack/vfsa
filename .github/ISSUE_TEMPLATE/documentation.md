@@ -1,17 +1,19 @@
 ---
 name: Documentation
 about: Documentation of readme, wikis, etc
-title: ":octocat:"
+title: "[DOC]"
 labels: documentation
 assignees: Dirack
 
 ---
 
-#### Describe your documentation request clearly bellow:
+:octocat: **Documentation request**
 
-#### Program version
+**Describe your documentation request clearly bellow**
 
-#### What kind of documentation you are requesting?
+**Program version**
+
+**What kind of documentation you are requesting?**
 
 - [ ] README files.
 - [ ] Wiki pages.

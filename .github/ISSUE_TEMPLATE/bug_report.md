@@ -1,11 +1,13 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ":bug: "
+title: "[BUG]"
 labels: bug
 assignees: Dirack
 
 ---
+
+:bug:  Bug report
 
 **Describe the bug**
 A clear and concise description of what the bug is.
