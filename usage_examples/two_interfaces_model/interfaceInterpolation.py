@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# interpolate.py  (Python)
+# interfaceInterpolation.py  (Python)
 #
 # Purpose: Interpolate the points of the interfaces in the model.
 #
