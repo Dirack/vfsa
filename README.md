@@ -81,7 +81,7 @@ _For more examples and usage, please refer to the [Wiki](https://github.com/Dira
 
 ## Release History
 
-* 1.0 - Stable release
+* [v1.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable release
     * The first proper release
     * Complete global optimization of the CRS parameters
     * Available in the [Madasgacar package](https://github.com/ahay/src/tree/master/user/dirack)
