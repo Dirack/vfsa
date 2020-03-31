@@ -68,24 +68,41 @@ Result('mod1',
        label2="Distance (km)"
        ''' % (zmax/xmax))
 
-shots = (2.0,2.6,3.3,3.95)
-plots = []
-for s in range(4):
-    shot = 'shot%d' % s
-    Flow(shot,'refs dips',
-         '''
-         kirmod_newton nt=751 dt=0.004 freq=15
-         ns=1 s0=%g ds=0.01 nh=60 dh=0.04 h0=-1.2 verb=y
-         vstatus=0 velocity=%s debug=n fwdxini=y
-         xref=0 zref=0 dip=${SOURCES[1]}
-         ''' % (shots[s],vstr))
-    Plot(shot,
-         '''
-         wiggle transp=y yreverse=y poly=y
-         title="Shot at %g km"
-         ''' % shots[s])
-    plots.append(shot)
+# Kirchoff modeling for multi layer model
+Flow('dataCube','refs dips',
+	'''
+	kirmod_newton nt=1001 dt=0.004 freq=10
+	ns=401 ds=0.025 nh=161 dh=0.025 h0=0 s0=0 verb=y cmp=y
+	vstatus=0 velocity=%s debug=n fwdxini=y
+	xref=0 zref=0 dip=${SOURCES[1]} |
+	put d2=0.0125 label3="CMP" unit3="Km" label2="Offset" unit2="Km" label1=Time unit1=s
+	''' % (vstr))
 
-Result('shots',plots,'SideBySideAniso')
+Flow('templateSurface','spike n1=161 d1=0.0125 o1=0 n2=401 d2=0.025 o2=0 unit1=Offset unit2=CMP')
+
+# Very Fast Simulated Aneelling Global Optimization (VFSA)
+m0=3
+v0=1.508
+t0=[0.5,0.8,0.9]
+for i in range(3):
+
+	crsParamters = 'crsParameters-%d' % i
+	crsAppSurface = 'crsAppSurface-%d' % i
+
+	Flow(crsParameters,'dataCube',
+		'''
+		vfsacrsnh m0=%g v0=%g t0=%g verb=y repeat=2
+		''' % (m0,v0,t0[i]))
+
+	# Aproximation surface for each reflector
+	Flow(crsAppSurface,['templateSurface',crsParameters],
+		'''
+		nhcrssurf param=${SOURCES[1]} m0=%g v0=%g t0=%g verb=y
+		''' % (m0,v0,t0[i]))
+	Plot(crsAppSurface,
+		'''
+		grey color=j bias=2 scalebar=y barlabel=Time barunit=s barreverse=y 
+		title="Non-hyperbolic CRS m0=5Km" label1=Half-Offset unit1=km label2=Midpoint unit2=km
+		''')
 
 End()
