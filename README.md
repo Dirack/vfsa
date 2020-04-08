@@ -1,5 +1,4 @@
-# vfsa
-> Very Fast Simulated Anneeling global optimization of zero offset CRS parameters.
+# Very Fast Simulated Anneeling global optimization of zero offset CRS parameters (VFSA).
 
 [This program is part of the Madagascar package! version 3.0.](https://github.com/ahay/src/tree/master/user/dirack)
 
