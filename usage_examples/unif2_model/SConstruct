@@ -21,14 +21,11 @@ xmax = 6.0
 zmax = 2.0
 
 layers = ((0.30,0.50,0.20,0.30),
-          (0.55,0.75,0.45,0.55),
-          (0.65,0.85,0.55,0.65),
-          (1.30,1.30,1.60,1.20))
+          (1.65,1.85,1.55,1.65))
+      
 
 velocities = (1.508,
-              1.581,
               1.690,
-              1.826,
               2.000)
 
 def arr2str(array,sep=' '):
@@ -78,31 +75,63 @@ Flow('dataCube','refs dips',
 	put d2=0.0125 label3="CMP" unit3="Km" label2="Offset" unit2="Km" label1=Time unit1=s
 	''' % (vstr))
 
-Flow('templateSurface','spike n1=161 d1=0.0125 o1=0 n2=401 d2=0.025 o2=0 unit1=Offset unit2=CMP')
+Flow('templateSurface',None,'spike n1=161 d1=0.0125 o1=0 n2=401 d2=0.025 o2=0 unit1=Offset unit2=CMP')
 
 # Very Fast Simulated Aneelling Global Optimization (VFSA)
 m0=3
 v0=1.508
-t0=[0.5,0.8,0.9]
-for i in range(3):
+dt0=0.004
+ot0=0.1
+nt0=725
+crsParametersFiles=[]
+for i in range(nt0):
 
-	crsParamters = 'crsParameters-%d' % i
+	t0 = ot0 + (dt0*i) 
+	crsParameters = 'crsParameters-%d' % i
 	crsAppSurface = 'crsAppSurface-%d' % i
+	crsParametersFiles.append(crsParameters)
 
 	Flow(crsParameters,'dataCube',
 		'''
 		vfsacrsnh m0=%g v0=%g t0=%g verb=y repeat=2
-		''' % (m0,v0,t0[i]))
+		''' % (m0,v0,t0))
 
 	# Aproximation surface for each reflector
 	Flow(crsAppSurface,['templateSurface',crsParameters],
 		'''
 		nhcrssurf param=${SOURCES[1]} m0=%g v0=%g t0=%g verb=y
-		''' % (m0,v0,t0[i]))
+		''' % (m0,v0,t0))
 	Plot(crsAppSurface,
 		'''
 		grey color=j bias=2 scalebar=y barlabel=Time barunit=s barreverse=y 
 		title="Non-hyperbolic CRS m0=5Km" label1=Half-Offset unit1=km label2=Midpoint unit2=km
 		''')
 
+Flow('parameters',crsParametersFiles,
+	'''
+	rcat axis=2 ${SOURCES[1:%d]}
+	''' % (nt0-1))
+
+Flow('cmp-m03km','dataCube',
+	'''
+	window n3=1 f3=%g
+	''' %(m0))
+
+Flow('semblance','parameters',
+	'''
+	window n1=1 f1=3 |
+	put d1=%g o1=%g
+	''' %(dt0,ot0))
+
+Plot('semblance',
+	'''
+	graph yreverse=y transp=y wanttitle=n wantaxis1=n wantaxis2=n
+	min1=0 max1=4 revertx=y
+	''')
+Plot('cmp-m03km',
+	'''
+	grey title="Semblance x Time"
+	''')
+
+Result('semblanceVariationInTime',['cmp-m03km','semblance'],'Overlay')
 End()
