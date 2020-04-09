@@ -117,21 +117,25 @@ Flow('cmp-m03km','dataCube',
 	window n3=1 f3=%g
 	''' %(m0))
 
-Flow('semblance','parameters',
-	'''
-	window n1=1 f1=3 |
-	put d1=%g o1=%g
-	''' %(dt0,ot0))
-
-Plot('semblance',
-	'''
-	graph yreverse=y transp=y wanttitle=n wantaxis1=n wantaxis2=n
-	min1=0 max1=4 revertx=y
-	''')
 Plot('cmp-m03km',
 	'''
-	grey title="Semblance x Time"
+	grey wanttitle=n
 	''')
 
-Result('semblanceVariationInTime',['cmp-m03km','semblance'],'Overlay')
+param=['rn','rnip','beta','semblance']
+for par in param:
+
+	Flow(par,'parameters',
+		'''
+		window n1=1 f1=%i |
+		put d1=%g o1=%g label2=%s
+		''' %(param.index(par),dt0,ot0,par))
+
+	Plot(par,
+		'''
+		graph yreverse=y transp=y wherexlabel=bottom
+		min1=0 max1=4 revertx=y symbol=* wanttitle=n
+		''')
+	
+	Result(par+'VariationInTime',['cmp-m03km',par],'Overlay')
 End()
