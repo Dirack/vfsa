@@ -1,9 +1,7 @@
 dist: bionic
 
 env: 
- - RSFROOT=/root/madagascar
- - RSFSRC=/roor/madagascar-3.0
- - VFSAROOT=/root/madagascar-3.0/user/vfsa
+ - RSFROOT=/root/madagascar RSFSRC=/root/madagascar-3.0 VFSAROOT=/root/madagascar-3.0/user/vfsa
 
 services:
   - docker
