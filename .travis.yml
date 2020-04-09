@@ -1,41 +1,13 @@
-language: c
-dist: xenial
+dist: bionic
 
-sudo: false
+env: 
+ - RSFROOT=/root/madagascar
+ - RSFSRC=/roor/madagascar-3.0
+ - VFSAROOT=/root/madagascar-3.0/user/vfsa
 
-addons:
-  apt:
-    packages:
-      - libblas-dev
-      - liblapack-dev
-      - swig
-      - python-numpy
+services:
+  - docker
 
-python:
-  - 3.6
-  - 2.7
+script:
+  - docker run -t -v $PWD:/root/madagascar-3.0/user/vfsa dirack/ambientemadagascar:1.0 bash -c 'scons && cd $RSFSRC && scons install && cd $VFSAROOT/usage_examples && scons'
 
-matrix:
-  include:
-    - python: 3.6
-      env: RSFROOT=$HOME/RSFROOT RSFFIGS=$HOME/RSFROOT/figs
-    - python: 2.7 
-      env: RSFROOT=$HOME/RSFROOT RSFFIGS=$HOME/RSFROOT/figs
-
-# Install madagascar
-install:
-  - ./configure
-  - make install
-
-before_script:
-  - git clone --depth 1 https://github.com/Dirack/vfsa.git $RSFSRC/user/vfsa
-  - cd $RSFSRC/user/vfsa
-  - scons
-  - cd $RSFSRC
-  - scons install
-
-# Test
-script: 
-  - source env.sh 
-  - cd $RSFSRC/user/vfsa/usage_examples
-  - scons
