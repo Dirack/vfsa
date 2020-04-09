@@ -1,9 +1,10 @@
-# vfsa
-> Very Fast Simulated Anneeling global optimization of zero offset CRS parameters.
-
-![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
+# Very Fast Simulated Anneeling global optimization of zero offset CRS parameters (VFSA).
 
 [This program is part of the Madagascar package! version 3.0.](https://github.com/ahay/src/tree/master/user/dirack)
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/Dirack/vfsa.svg?branch=master)](https://travis-ci.com/Dirack/vfsa)
+
+![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
 
 This is a package with several C programs adapted to the Madagascar seismic processing package. The mains objective of
 those programs is to extract the zero offset CRS parameters (RN, RNIP, BETA) 
@@ -81,7 +82,7 @@ _For more examples and usage, please refer to the [Wiki](https://github.com/Dira
 
 ## Release History
 
-* 1.0 - Stable release
+* [v1.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable release
     * The first proper release
     * Complete global optimization of the CRS parameters
     * Available in the [Madasgacar package](https://github.com/ahay/src/tree/master/user/dirack)
