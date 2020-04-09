@@ -1,11 +1,8 @@
 dist: bionic
 
-env: 
- - RSFROOT=/root/madagascar RSFSRC=/root/madagascar-3.0 VFSAROOT=/root/madagascar-3.0/user/vfsa
-
 services:
   - docker
 
 script:
-  - docker run -t -v $PWD:/root/madagascar-3.0/user/vfsa dirack/ambientemadagascar:1.0 bash -c 'scons && cd $RSFSRC && scons install && cd $VFSAROOT/usage_examples && scons'
+  - docker run -t -v $PWD:/root/madagascar-3.0/user/vfsa dirack/ambientemadagascar:1.0 bash -c 'RSFROOT=/root/madagascar RSFSRC=/root/madagascar-3.0 VFSAROOT=/root/madagascar-3.0/user/vfsa && cd $VFSAROOT && scons && cd $RSFSRC && scons install && cd $VFSAROOT/usage_examples && scons'
 
