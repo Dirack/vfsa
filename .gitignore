@@ -3,3 +3,7 @@
 *.pyc
 *.jpeg
 *.asc
+*.o
+.sconsign
+sfnhcrssurf
+sfvfsacrsnh
