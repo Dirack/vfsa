@@ -6,13 +6,16 @@
 
 #define Beta_MAX 1
 #define Beta_MIN -1
-#define Rnip_MAX 5
+#define BETA_APERTURE Beta_MAX-Beta_MIN
+#define Rnip_MAX 4
 #define Rnip_MIN 0
+#define RNIP_APERTURE Rnip_MAX-Rnip_MIN
 #define Rn_MAX 5
 #define Rn_MIN 0
+#define RN_APERTURE Rn_MAX-Rn_MIN
 #define hMAX 50
 #define mMAX 50
-#define ITMAX 5000
+#define ITMAX 3000
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,7 +23,7 @@
 #include <rsf.h>
 
 
-float signal(float s);
+#define signal(s) ((s<0)?(-1.):(1.))
 /*< Signal function >*/
 
 

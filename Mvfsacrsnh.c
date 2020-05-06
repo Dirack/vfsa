@@ -108,6 +108,8 @@ int main(int argc, char* argv[])
 	srand(time(NULL));
 
 	/* Read seismic data cube */
+	//nh = hMAX+1;
+	//sf_warning("%d",nh);
 	t=sf_floatalloc3(nt,nh,nm);
 	sf_floatread(t[0][0],nm*nh*nt,in);
 
@@ -115,6 +117,10 @@ int main(int argc, char* argv[])
 
 	semb0=0;
 
+	#pragma omp parallel for \
+	private(q,temp,c,RN,RNIP,BETA,cnew,semb) \
+	shared(semb0,otsemb,otrn,otrnip,otbeta) \
+	schedule(dynamic)
 	for(i=0;i<repeat;i++){
 
 		for (q=0; q <ITMAX; q++){
@@ -128,44 +134,51 @@ int main(int argc, char* argv[])
 			RN = cnew[0];
 			RNIP = cnew[1];
 			BETA = cnew[2];
-		
-			semb=0;
-			
-			/* Calculate semblance: Non-hyperbolic CRS approximation with data */		
-			semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
-			
-			
-			/* VFSA parameters convergence condition */		
-			if(fabs(semb) > fabs(semb0) ){
-				otsemb = semb;
-				otrn = RN;
-				otrnip = RNIP;
-				otbeta = BETA;
-				semb0 = semb;			
-			}
 
-			/* VFSA parameters update condition */
-			deltaE = -semb - Em0;
-			
-			/* Metrópolis criteria */
-			PM = expf(-deltaE/temp);
-			
-			if (deltaE<=0){
-				c[0] = cnew[0];
-				c[1] = cnew[1];
-				c[2] = cnew[2];
-				Em0 = -semb;
-			} else {
-				u=getRandomNumberBetween0and1();
-				if (PM > u){
+			semb=0;
+		
+			/* Semblance: Non-hyperbolic CRS approximation with data */		
+			semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
+
+			#pragma omp critical(evaluate_best_semblance)
+			{
+
+	
+				/* VFSA parameters convergence condition */		
+				if(fabs(semb) > fabs(semb0) ){
+					otsemb = semb;
+					otrn = RN;
+					otrnip = RNIP;
+					otbeta = BETA;
+					semb0 = semb;			
+				}
+
+				/* VFSA parameters update condition */
+				deltaE = -semb - Em0;
+				
+				/* Metrópolis criteria */
+				PM = expf(-deltaE/temp);
+				
+				if (deltaE<=0){
 					c[0] = cnew[0];
 					c[1] = cnew[1];
 					c[2] = cnew[2];
 					Em0 = -semb;
+				} else {
+					u=getRandomNumberBetween0and1();
+					if (PM > u){
+						c[0] = cnew[0];
+						c[1] = cnew[1];
+						c[2] = cnew[2];
+						Em0 = -semb;
+					}	
 				}	
-			}	
+			} /* Critical section parallelization */
 			
 		} /* loop over iterations */
+		sf_warning("(%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f;",i,otrn,otrnip,otbeta,otsemb);
+		c[0]=0;c[1]=0;c[2]=0;
+		//if(otsemb >= 0.85) break;
 
 	} /* repeat VFSA global optimization */
 
@@ -183,7 +196,7 @@ int main(int argc, char* argv[])
 	otm[7] = m0;
 
 	/* Show optimized parameters on screen before save them */
-	sf_warning("Optimized parameters:\n RN=%f, RNIP=%f, BETA=%f, SEMB=%f",otrn,otrnip,otbeta,otsemb);
+	sf_warning("\nOptimized parameters:\n RN=%f, RNIP=%f, BETA=%f, SEMB=%f",otrn,otrnip,otbeta,otsemb);
 
 	/* axis = sf_maxa(n,o,d)*/
 	ax = sf_maxa(8, 0, 1);

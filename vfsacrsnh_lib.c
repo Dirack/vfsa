@@ -17,13 +17,16 @@
 
 #define Beta_MAX 1
 #define Beta_MIN -1
-#define Rnip_MAX 5
+#define BETA_APERTURE Beta_MAX-Beta_MIN
+#define Rnip_MAX 4
 #define Rnip_MIN 0
+#define RNIP_APERTURE Rnip_MAX-Rnip_MIN
 #define Rn_MAX 5
 #define Rn_MIN 0
+#define RN_APERTURE Rn_MAX-Rn_MIN
 #define hMAX 50
 #define mMAX 50
-#define ITMAX 5000
+#define ITMAX 3000
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,17 +34,9 @@
 #include <rsf.h>
 /*^*/
 
-float signal(float s) { 
+#define signal(s) ((s<0)?(-1.):(1.))
 /*< Signal function >*/
-
-	if(s >= 0){
-		
-		return s = 1;		
-	}
-	
-	return s=-1;
-		
-}
+/*^*/
 
 float getRandomNumberBetween0and1(){
 /*< Function to get a random number between 0 and 1 >*/
@@ -62,7 +57,7 @@ float getVfsaIterationTemperature(int iteration,float dampingFactor,float inicia
 
 	float temperature;
 
-	temperature=inicialTemperature*expf(-dampingFactor*pow(iteration,0.25));
+	temperature=inicialTemperature*expf(-dampingFactor*pow(iteration,0.2));
 
 	return temperature;
 }
@@ -72,42 +67,38 @@ void disturbParameters(float temperature, float* disturbedParameter, float* para
 
 	float u;
 	float disturbance;
-	float aperture;
 
 	u=getRandomNumberBetween0and1();
 			
 	disturbance = signal(u - 0.5) * temperature * (pow( (1+temperature),fabs(2*u-1) )-1);
 
 	/* RN */
-	aperture = Rn_MAX - Rn_MIN;
 
-	disturbedParameter[0] = parameter[0] + disturbance * (aperture);
+	disturbedParameter[0] = parameter[0] + disturbance * (RN_APERTURE);
 				
 	if (disturbedParameter[0] >= Rn_MAX || disturbedParameter[0] <= Rn_MIN) {
 
-		disturbedParameter[0] = (aperture) * getRandomNumberBetween0and1() + Rn_MIN;
+		disturbedParameter[0] = (RN_APERTURE) * getRandomNumberBetween0and1() + Rn_MIN;
 		
 	}
 
 	/* RNIP */
-	aperture = Rnip_MAX - Rnip_MIN;
 
-	disturbedParameter[1] = parameter[1] + disturbance * (aperture);
+	disturbedParameter[1] = parameter[1] + disturbance * (RNIP_APERTURE);
 				
 	if (disturbedParameter[1] >= Rnip_MAX || disturbedParameter[1] <= Rnip_MIN) {
 
-		disturbedParameter[1] = (aperture) * getRandomNumberBetween0and1() + Rnip_MIN;
+		disturbedParameter[1] = (RNIP_APERTURE) * getRandomNumberBetween0and1() + Rnip_MIN;
 		
 	}
 
 	/* BETA */
-	aperture = Beta_MAX - Beta_MIN;
 
-	disturbedParameter[2] = parameter[2] + disturbance * (aperture);
+	disturbedParameter[2] = parameter[2] + (disturbance/10.) * (BETA_APERTURE);
 
 	if (disturbedParameter[2] >= Beta_MAX || disturbedParameter[2] <= Beta_MIN) {
 
-		disturbedParameter[2] = (aperture) * getRandomNumberBetween0and1() + Beta_MIN;
+		disturbedParameter[2] = (BETA_APERTURE) * getRandomNumberBetween0and1() + Beta_MIN;
 
 	}		
 
