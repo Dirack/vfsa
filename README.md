@@ -2,7 +2,7 @@
 
 [This program is part of the Madagascar package! version 3.0.](https://github.com/ahay/src/tree/master/user/dirack)
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/Dirack/vfsa.svg?branch=master)](https://travis-ci.com/Dirack/vfsa)
+![Github release](https://img.shields.io/github/v/release/Dirack/vfsa) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Build Status](https://travis-ci.com/Dirack/vfsa.svg?branch=master)](https://travis-ci.com/Dirack/vfsa)
 
 ![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
 
