@@ -98,10 +98,13 @@ Distributed under the GPL3 license. See ``LICENSE`` for more information.
 
 ## Contributing
 
-1. Fork it (<https://github.com/Dirack/vfsa/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+In order to contribute with this project you should follow the list of steps bellow, please check out ["How to contribute with this project?"](https://github.com/Dirack/vfsa/wiki/Contribute) in our Wiki for more details. 
 
-#### Important: The commit history should be clear, with commit mesages around one or two paraghraps describing your modifications. Pull Requests with unsatisfactory commit history will be rejected.
+1. Create an issue to your request or choose an issue already defined
+2. Fork this project in https://github.com/Dirack/vfsa/fork 
+3. Create a branch for your contribution (name it using gitflow)
+4. Do clear _commit_ messages (a title with 50 characters and two paragraphs of text)
+5. Do Push of your contribution to this repository
+6. Create a new Pull Request with a clear description of your contribution
+
+###### Important: The commit history should be clear, with commit mesages around one or two paraghraps describing your modifications. Pull Requests with unsatisfactory commit history will be rejected.
