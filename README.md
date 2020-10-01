@@ -31,70 +31,55 @@ the CRS parameters in the image above (maximum values in red).
 
 ## Development setup
 
-You need to have the actual Madagascar package stable release installed on your computer. Please follow the
-[Installing Madagascar page](http://www.ahay.org/wiki/Installation) in the official documentation.
+You need to have the actual Madagascar package stable release installed on your computer. Please follow the [Installing Madagascar page](http://www.ahay.org/wiki/Installation) in the official documentation.
 
-## Installation
+## Package installation
 
-After Madagascar installing process, you need to install the programs of this repository in your local Madagascar user's
-directory. You can compile and install it as any other Madagascar program. 
-Usually, Madagascar keeps the path of your local copy source files in the $RSFSRC environment variable. You can
-show that on a bash terminal using 'echo' command:
+After Madagascar installing process, you need to install the programs of this repository in your local Madagascar user's directory. You can compile and install it as any other Madagascar program. Usually, Madagascar keeps the path of the source files of your Madagascar local version in the $RSFSRC environment variable. You can show that on a bash terminal using 'echo' command:
 
 ```sh
 ~$ echo "$RSFSRC"
 ```
 
-And Madagascar will install executable files on your $RSFROOT directory. You can show that environment variable
-with 'echo' too:
+And Madagascar will install executable files on your $RSFROOT directory. You can show that environment variable with 'echo' too:
 
 ```sh
 ~$ echo "$RSFROOT"
 ```
 
-Madagascar stores user programs in $RSFSRC/user directory. So, you can create a new directory or put this
-repository inside that directory. In this repository, such as every user's repository in Madagascar, we have a compilation 
-[SConstruct](https://github.com/Dirack/vfsa/blob/master/SConstruct) that compile the C programs.
-Run 'scons' on your $RSFSRC/user/vfsa repository to compile it:
+Madagascar stores user programs in $RSFSRC/user directory. So, you can create a new directory or put this repository inside that directory. In this repository, such as every user's repository in Madagascar, we have a compilation [SConstruct](https://github.com/Dirack/vfsa/blob/master/SConstruct) that compile the C programs of this package. Run 'scons' on your $RSFSRC/user/vfsa repository to compile it:
 
 ```shell
 ~$ scons
 ```
 
-And run 'scons install' in the top directory of your local Madagascar installation 
-(the directory path in your $RSFSRC variable):
+And run 'scons install' in the top directory of your local Madagascar installation (the directory path in your $RSFSRC variable):
 
 ```shell
 ~$ sudo scons install
 ```
 
-If you have any doubt about this process, please reffer to the oficial documentation in 
-[Adding_new_programs_to_Madagascar](http://www.ahay.org/wiki/Adding_new_programs_to_Madagascar)
+If you have any doubt about this process, please reffer to the oficial documentation in [Adding_new_programs_to_Madagascar](http://www.ahay.org/wiki/Adding_new_programs_to_Madagascar), or follow [this tutorial on Youtube (Portuguese, English subtitles)](https://youtu.be/3Kkh0KF_4G8)
 
 ## Usage example
 
-A few motivating and useful examples of how that product can be used can be found in the 
-[usage_examples directory](https://github.com/Dirack/vfsa/tree/master/usage_examples).
-
-_For more examples and usage, please refer to the [Wiki](https://github.com/Dirack/vfsa/wiki)._
+A few motivating and useful examples of how that product can be used can be found in the [usage_examples directory](https://github.com/Dirack/vfsa/tree/master/usage_examples). For more details, please refer to the [Wiki](https://github.com/Dirack/vfsa/wiki).
 
 ## Release History
 
-* [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable release
-   * New usage example os a multi layer model
+* [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable
 
-* [v1.0.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable release
-    * The first proper release
-    * Complete global optimization of the CRS parameters
-    * Available in the [Madasgacar package](https://github.com/ahay/src/tree/master/user/dirack)
+* [v1.0.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable
+
+[Please check out the full release history in our Wiki](https://github.com/Dirack/vfsa/wiki/Release-history).
 
 ## Meta
+
+[vfsa main page](https://github.com/Dirack/vfsa)
 
 Rodolfo Dirack – [@dirack](https://github.com/Dirack) – rodolfo_profissional@hotmail.com
 
 Distributed under the GPL3 license. See ``LICENSE`` for more information.
-
-[vfsa main page](https://github.com/Dirack/vfsa)
 
 ## Contributing
 
