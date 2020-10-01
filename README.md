@@ -4,12 +4,9 @@
 
 ![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
 
-This is a package with several C programs adapted to the Madagascar seismic processing package. The mains objective of
-those programs is to extract the zero offset CRS parameters (RN, RNIP, BETA) 
-a reflection data cube (seismic data organized in CMP x Offset X Time coordinates). 
-These parameters can be used to fit the data with the non-hyperbolic CRS traveltime approximation.
+This package uses Very Fast Simulated Aneeling (VFSA) global optimization to extract the zero offset Common Reflection Surface (CRS) parameters, RN, RNIP, and BETA, from a reflection data cube (seismic data organized in CMP x Offset X Time coordinates). These parameters are obtained by fiting the non-hyperbolic CRS traveltime approximation in the data, the semblance between these surface and the data is the optimization criterion.
 
-[More information about the non-hyperbolic CRS](http://www.reproducibility.org/RSF/book/tccs/crs/paper_html/)
+* For more details please check out ["What is VFSA?"](https://github.com/Dirack/vfsa/wiki/Very-Fast-Simulated-Anneling-(VFSA)) and ["What is non-hyperbolic CRS?"](https://github.com/Dirack/vfsa/wiki/Non-hyperbolic-CRS) in our Wiki.
 
 ## CRS stacking method
 
