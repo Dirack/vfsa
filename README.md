@@ -104,7 +104,7 @@ In order to contribute with this project you should follow the list of steps bel
 2. Fork this project in https://github.com/Dirack/vfsa/fork 
 3. Create a branch for your contribution (name it using gitflow)
 4. Do clear _commit_ messages (a title with 50 characters and two paragraphs of text)
-5. Do Push of your contribution to this repository
+5. _Push_ your contribution to this repository
 6. Create a new Pull Request with a clear description of your contribution
 
 ###### Important: The commit history should be clear, with commit mesages around one or two paraghraps describing your modifications. Pull Requests with unsatisfactory commit history will be rejected.
