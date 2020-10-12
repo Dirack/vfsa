@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
-## [1.1.2](https://github.com/Dirack/creGatherStack/compare/v1.1.1...develop/1.1.2) - 2020-04-27
+## [1.1.2](https://github.com/Dirack/creGatherStack/compare/master...develop/1.1.2) - 2020-04-27
 
 ### Added
 
