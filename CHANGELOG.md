@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [RELEASED]
 
-## [1.1.1] - 2020-04-09
+## [1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - 2020-04-09
 
 ### Added
 
@@ -27,16 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Travis CI automatic test Resolve #8 (43a58c3)
 - Configure Dockerfile to build new version package (64f2bac)
 
-## [1.0.0] - 2020-02-25
+## [1.0.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - 2020-02-25
 
 ### Added
 
 - Usage example of sfvfsacrsnh and sfnhcrssurf (d56f81b)
 - Add programs sfvfsacrsnh and sfnhcrssurf (4143d34)
-
-## Release history
-
-- [unreleased]: https://github.com/Dirack/vfsa/compare/v1.1.1...develop/1.1.2
-- [1.1.1]: https://github.com/Dirack/vfsa/releases/tag/v1.1.1
-- [1.0.0]: https://github.com/Dirack/vfsa/releases/tag/v1.1.1
-
