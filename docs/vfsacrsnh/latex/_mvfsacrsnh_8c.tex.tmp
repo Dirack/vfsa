@@ -1,0 +1,98 @@
+\hypertarget{_mvfsacrsnh_8c}{}\doxysection{/home/dirack/madagascar-\/3.0/user/vfsa/\+Mvfsacrsnh.c File Reference}
+\label{_mvfsacrsnh_8c}\index{/home/dirack/madagascar-\/3.0/user/vfsa/Mvfsacrsnh.c@{/home/dirack/madagascar-\/3.0/user/vfsa/Mvfsacrsnh.c}}
+
+
+Zero offset CRS parameter inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization.  
+
+
+{\ttfamily \#include \char`\"{}vfsacrsnh\+\_\+lib.\+h\char`\"{}}\newline
+Include dependency graph for Mvfsacrsnh.\+c\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_mvfsacrsnh_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em main function \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Zero offset CRS parameter inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization. 
+
+This program uses the Non-\/\+Hyperbolic CRS approximation to fit data cube and get the parameters (Fomel, 2013).
+
+Programer\+: Rodolfo A. C. Neves (Dirack) 19/09/2019
+
+Site\+: \href{https://dirack.github.io}{\texttt{ https\+://dirack.\+github.\+io}}
+
+Email\+: \href{mailto:rodolfo_profissional@hotmail.com}{\texttt{ rodolfo\+\_\+profissional@hotmail.\+com}}
+
+License\+: GPL-\/3.\+0 \href{https://www.gnu.org/licenses/gpl-3.0.txt}{\texttt{ https\+://www.\+gnu.\+org/licenses/gpl-\/3.\+0.\+txt}}. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_mvfsacrsnh_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{_mvfsacrsnh_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{Mvfsacrsnh.c@{Mvfsacrsnh.c}!main@{main}}
+\index{main@{main}!Mvfsacrsnh.c@{Mvfsacrsnh.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+main function 
+
+float m0 -\/ central CMP
+
+float om -\/ CMP axis origin
+
+float dm -\/ CMP sampling
+
+int nm -\/ Number of CMP\textquotesingle{}s
+
+float oh -\/ Offset axis origin
+
+float dh -\/ Offset sampling
+
+int nh -\/ Number of Offsets
+
+int nt -\/ Number of time samples
+
+float ot -\/ Time axis origin
+
+float dt -\/ Time sampling
+
+bool verb -\/ Key to turn On/\+Off active mode
+
+float v0 -\/ Near surface velocity
+
+float t0 -\/ Normal ray time travel
+
+float cnew\mbox{[}3\mbox{]} -\/ Temporary parameters vector -\/ actual iteration
+
+float c\mbox{[}3\mbox{]} -\/ Temporary parameters vector -\/ last iteration
+
+float $\ast$otm -\/ Optimazed parameters
+
+float otrn, otrnip, otbeta, otsemb -\/ Optimazed parameters -\/ actual iteration
+
+float deltaE, PM -\/ Metrópolis criteria
+
+float Em0=0 -\/ Major semblance
+
+float u -\/ Random number
+
+float $\ast$$\ast$$\ast$t -\/ Data cube A(m,h,t)
+
+int q, i -\/ loop counter
+
+float semb -\/ Semblance -\/ actual iteration
+
+float RN, RNIP, BETA -\/ CRS parameters
+
+float semb0 -\/ Inicial semblance value
+
+float c0 -\/ VFSA damping factor
+
+float temp0 -\/ inicial VFSA temperature
+
+float temp -\/ VFSA temperature
+
+int repeat -\/ perform VFSA optimization more than once 

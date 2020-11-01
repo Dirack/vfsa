@@ -1,0 +1,50 @@
+/*! \file vfsacrsnh_lib.c
+  \brief library of functions of the program Mvfsacrsnh.c
+
+	 Site: https://dirack.github.io
+	 
+	 Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
+
+	 Email:  rodolfo_profissional@hotmail.com
+
+	 License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
+
+
+*/
+
+/*! \fn float signal(float s)
+    \brief Signal function - Calculate signal of s
+    \param float s
+    \return 1 if s is positive or zero, and -1 if s is negative
+*/
+
+/*! \fn getRandomNumberBetween0and1()
+    \brief Return a random number betwen 0 and 1
+*/
+
+/*! \fn getVfsaIterationTemperature(int iteration,float dampingFactor,float inicialTemperature)
+    \brief temperature
+    \param int iteration - 
+    \param float dampingFactor -
+    \param float inicialTemperature -
+*/
+
+/*! \fn disturbParameters (float temperature, float *disturbedParameter, float *parameter)
+    \brief
+    \param float temperature
+*/
+
+/*! \fn nonHyperbolicCRSapp(float m, float h, float t0, float v0, float RN, float RNIP, float BETA)
+    \brief
+    \param float m
+*/
+
+/*! \fn semblance(float m0, float dm, float om, float oh, float dh, float dt, int nt,float t0, float v0,float RN, float RNIP, float BETA, float*** t)
+     \brief
+     \param float m0
+*/
+
+/*! \mainpage
+    \par Test
+    more details
+*/

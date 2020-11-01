@@ -1,0 +1,144 @@
+\hypertarget{vfsacrsnh__lib_8c}{}\doxysection{/home/dirack/madagascar-\/3.0/user/vfsa/vfsacrsnh\+\_\+lib.c File Reference}
+\label{vfsacrsnh__lib_8c}\index{/home/dirack/madagascar-\/3.0/user/vfsa/vfsacrsnh\_lib.c@{/home/dirack/madagascar-\/3.0/user/vfsa/vfsacrsnh\_lib.c}}
+
+
+library of functions of the program \mbox{\hyperlink{_mvfsacrsnh_8c}{Mvfsacrsnh.\+c}}  
+
+
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$rsf.\+h$>$}\newline
+Include dependency graph for vfsacrsnh\+\_\+lib.\+c\+:
+% FIG 0
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a398b243fa3171e7b9badc04e27d0e691}\label{vfsacrsnh__lib_8c_a398b243fa3171e7b9badc04e27d0e691}} 
+\#define {\bfseries Beta\+\_\+\+MAX}~1
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_ab7b2cf39a9176f31462024da987248b7}\label{vfsacrsnh__lib_8c_ab7b2cf39a9176f31462024da987248b7}} 
+\#define {\bfseries Beta\+\_\+\+MIN}~-\/1
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_ad0d82c67468bb49a866a247ac5cd5297}\label{vfsacrsnh__lib_8c_ad0d82c67468bb49a866a247ac5cd5297}} 
+\#define {\bfseries Rnip\+\_\+\+MAX}~5
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a50bef1c757cda139c73687b038005ffb}\label{vfsacrsnh__lib_8c_a50bef1c757cda139c73687b038005ffb}} 
+\#define {\bfseries Rnip\+\_\+\+MIN}~0
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_ad9c8a480739dd2236f1751cc238cf6c4}\label{vfsacrsnh__lib_8c_ad9c8a480739dd2236f1751cc238cf6c4}} 
+\#define {\bfseries Rn\+\_\+\+MAX}~5
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_aa427bfded2ef23fffb8b275d7e623d84}\label{vfsacrsnh__lib_8c_aa427bfded2ef23fffb8b275d7e623d84}} 
+\#define {\bfseries Rn\+\_\+\+MIN}~0
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a48e0288cd1f41b95f0c9560075bea1a9}\label{vfsacrsnh__lib_8c_a48e0288cd1f41b95f0c9560075bea1a9}} 
+\#define {\bfseries h\+MAX}~50
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_af8964b760d92d0d67ac570c9fb498e53}\label{vfsacrsnh__lib_8c_af8964b760d92d0d67ac570c9fb498e53}} 
+\#define {\bfseries m\+MAX}~50
+\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a3641b6d4c21b7a852dbb32c2b693302e}\label{vfsacrsnh__lib_8c_a3641b6d4c21b7a852dbb32c2b693302e}} 
+\#define {\bfseries ITMAX}~5000
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{vfsacrsnh__lib_8c_a5084d9fe123f50bcb11e18b27afd83e6}{signal}} (float s)
+\begin{DoxyCompactList}\small\item\em Signal function -\/ Calculate signal of s. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a77206e50a0d8bcb6ffe9b86fb552127b}\label{vfsacrsnh__lib_8c_a77206e50a0d8bcb6ffe9b86fb552127b}} 
+float \mbox{\hyperlink{vfsacrsnh__lib_8c_a77206e50a0d8bcb6ffe9b86fb552127b}{get\+Random\+Number\+Between0and1}} ()
+\begin{DoxyCompactList}\small\item\em Return a random number betwen 0 and 1. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{vfsacrsnh__lib_8c_af5d9d479367f940b2bd2ae9437cb083d}{get\+Vfsa\+Iteration\+Temperature}} (int iteration, float damping\+Factor, float inicial\+Temperature)
+\begin{DoxyCompactList}\small\item\em temperature \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{vfsacrsnh__lib_8c_a7844c69e14f477c437adadee83ee0daa}{disturb\+Parameters}} (float temperature, float $\ast$disturbed\+Parameter, float $\ast$parameter)
+\item 
+float \mbox{\hyperlink{vfsacrsnh__lib_8c_af49d86823d4c0aadbfc2e08a0fddf0d5}{non\+Hyperbolic\+CRSapp}} (float m, float h, float t0, float v0, float RN, float RNIP, float BETA)
+\item 
+float \mbox{\hyperlink{vfsacrsnh__lib_8c_ae921ccb017493af4d4e1bc189d421538}{semblance}} (float m0, float dm, float om, float oh, float dh, float dt, int nt, float t0, float v0, float RN, float RNIP, float BETA, float $\ast$$\ast$$\ast$t)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+library of functions of the program \mbox{\hyperlink{_mvfsacrsnh_8c}{Mvfsacrsnh.\+c}} 
+
+Site\+: \href{https://dirack.github.io}{\texttt{ https\+://dirack.\+github.\+io}}
+
+Programer\+: Rodolfo A. C. Neves (Dirack) 19/09/2019
+
+Email\+: \href{mailto:rodolfo_profissional@hotmail.com}{\texttt{ rodolfo\+\_\+profissional@hotmail.\+com}}
+
+License\+: GPL-\/3.\+0 \href{https://www.gnu.org/licenses/gpl-3.0.txt}{\texttt{ https\+://www.\+gnu.\+org/licenses/gpl-\/3.\+0.\+txt}}. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a7844c69e14f477c437adadee83ee0daa}\label{vfsacrsnh__lib_8c_a7844c69e14f477c437adadee83ee0daa}} 
+\index{vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}!disturbParameters@{disturbParameters}}
+\index{disturbParameters@{disturbParameters}!vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}}
+\doxysubsubsection{\texorpdfstring{disturbParameters()}{disturbParameters()}}
+{\footnotesize\ttfamily disturb\+Parameters (\begin{DoxyParamCaption}\item[{float}]{temperature,  }\item[{float $\ast$}]{disturbed\+Parameter,  }\item[{float $\ast$}]{parameter }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em float} & temperature \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_af5d9d479367f940b2bd2ae9437cb083d}\label{vfsacrsnh__lib_8c_af5d9d479367f940b2bd2ae9437cb083d}} 
+\index{vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}!getVfsaIterationTemperature@{getVfsaIterationTemperature}}
+\index{getVfsaIterationTemperature@{getVfsaIterationTemperature}!vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}}
+\doxysubsubsection{\texorpdfstring{getVfsaIterationTemperature()}{getVfsaIterationTemperature()}}
+{\footnotesize\ttfamily get\+Vfsa\+Iteration\+Temperature (\begin{DoxyParamCaption}\item[{int}]{iteration,  }\item[{float}]{damping\+Factor,  }\item[{float}]{inicial\+Temperature }\end{DoxyParamCaption})}
+
+
+
+temperature 
+
+
+\begin{DoxyParams}{Parameters}
+{\em int} & iteration -\/ \\
+\hline
+{\em float} & damping\+Factor -\/ \\
+\hline
+{\em float} & inicial\+Temperature -\/ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_af49d86823d4c0aadbfc2e08a0fddf0d5}\label{vfsacrsnh__lib_8c_af49d86823d4c0aadbfc2e08a0fddf0d5}} 
+\index{vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}!nonHyperbolicCRSapp@{nonHyperbolicCRSapp}}
+\index{nonHyperbolicCRSapp@{nonHyperbolicCRSapp}!vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}}
+\doxysubsubsection{\texorpdfstring{nonHyperbolicCRSapp()}{nonHyperbolicCRSapp()}}
+{\footnotesize\ttfamily non\+Hyperbolic\+CRSapp (\begin{DoxyParamCaption}\item[{float}]{m,  }\item[{float}]{h,  }\item[{float}]{t0,  }\item[{float}]{v0,  }\item[{float}]{RN,  }\item[{float}]{RNIP,  }\item[{float}]{BETA }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em float} & m \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_ae921ccb017493af4d4e1bc189d421538}\label{vfsacrsnh__lib_8c_ae921ccb017493af4d4e1bc189d421538}} 
+\index{vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}!semblance@{semblance}}
+\index{semblance@{semblance}!vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}}
+\doxysubsubsection{\texorpdfstring{semblance()}{semblance()}}
+{\footnotesize\ttfamily semblance (\begin{DoxyParamCaption}\item[{float}]{m0,  }\item[{float}]{dm,  }\item[{float}]{om,  }\item[{float}]{oh,  }\item[{float}]{dh,  }\item[{float}]{dt,  }\item[{int}]{nt,  }\item[{float}]{t0,  }\item[{float}]{v0,  }\item[{float}]{RN,  }\item[{float}]{RNIP,  }\item[{float}]{BETA,  }\item[{float $\ast$$\ast$$\ast$}]{t }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em float} & m0 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{vfsacrsnh__lib_8c_a5084d9fe123f50bcb11e18b27afd83e6}\label{vfsacrsnh__lib_8c_a5084d9fe123f50bcb11e18b27afd83e6}} 
+\index{vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}!signal@{signal}}
+\index{signal@{signal}!vfsacrsnh\_lib.c@{vfsacrsnh\_lib.c}}
+\doxysubsubsection{\texorpdfstring{signal()}{signal()}}
+{\footnotesize\ttfamily float signal (\begin{DoxyParamCaption}\item[{float}]{s }\end{DoxyParamCaption})}
+
+
+
+Signal function -\/ Calculate signal of s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em float} & s \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if s is positive or zero, and -\/1 if s is negative 
+\end{DoxyReturn}

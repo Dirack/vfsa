@@ -1,0 +1,77 @@
+/*! \file Mvfsacrsnh.c
+    \brief Zero offset CRS parameter inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization
+
+This program uses the Non-Hyperbolic CRS approximation to fit data cube and get the parameters (Fomel, 2013).
+
+Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
+
+Site: https://dirack.github.io
+
+Email:  rodolfo_profissional@hotmail.com
+
+License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
+
+
+*/
+
+/*! \fn int main(int argc, char* argv[])
+ *  \brief main function
+
+ float m0 - central CMP
+
+ float om - CMP axis origin
+
+ float dm - CMP sampling
+
+ int nm -  Number of CMP's
+
+ float oh - Offset axis origin
+
+ float dh - Offset sampling
+
+ int nh - Number of Offsets
+
+ int nt - Number of time samples
+
+ float ot - Time axis origin
+
+ float dt - Time sampling
+
+ bool verb - Key to turn On/Off active mode
+
+ float v0 - Near surface velocity
+ 
+ float t0 - Normal ray time travel
+
+ float cnew[3] - Temporary parameters vector - actual iteration
+
+ float c[3] - Temporary parameters vector - last iteration
+
+ float *otm - Optimazed parameters
+
+ float otrn, otrnip, otbeta, otsemb - Optimazed parameters - actual iteration
+
+ float deltaE, PM - Metrópolis criteria
+ 
+ float Em0=0 - Major semblance
+
+ float u - Random number
+
+ float ***t - Data cube A(m,h,t)
+
+ int q, i - loop counter
+
+ float semb - Semblance - actual iteration
+
+ float RN, RNIP, BETA - CRS parameters
+
+ float semb0 - Inicial semblance value
+ 
+ float c0 - VFSA damping factor
+
+ float temp0 - inicial VFSA temperature
+ 
+ float temp - VFSA temperature
+
+ int repeat - perform VFSA optimization more than once
+*/
