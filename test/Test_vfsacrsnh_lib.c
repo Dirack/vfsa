@@ -26,6 +26,9 @@ void test_signal_function(){
 
 	TEST_ASSERT_FLOAT_WITHIN(0.01,1.0,signal(1.0));
 	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-1.0));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,1.0,signal(0.0));
+	TEST_ASSERT_FLOAT_WITHIN(0.01,1.0,signal(5.0));
+	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-5.0));
 }
 
 int main(void){
