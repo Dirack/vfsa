@@ -31,8 +31,24 @@ void test_signal_function(){
 	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-5.0));
 }
 
+void test_getRandomNumberBetween0and1(){
+
+	int i;
+	for(i=0;i<100;i++)
+		TEST_ASSERT_FLOAT_WITHIN(1.0,0.0,getRandomNumberBetween0and1());
+}
+
+void test_getRandomNumberBetween0and1_positive(){
+
+	int i;
+	for(i=0;i<100;i++)	
+		TEST_ASSERT_TRUE(getRandomNumberBetween0and1()>=0.0);
+}
+
 int main(void){
 	UNITY_BEGIN();
 	RUN_TEST(test_signal_function);
+	RUN_TEST(test_getRandomNumberBetween0and1);
+	RUN_TEST(test_getRandomNumberBetween0and1_positive);
 	return UNITY_END();
 }
