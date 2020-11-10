@@ -35,18 +35,13 @@ void test_signal_function_return_minus_1_for_negative_values(){
 	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-5.0));
 }
 
-void test_getRandomNumberBetween0and1(){
-
+void test_getRandomNumberBetween0and1_returns_float_between_0_and_1(){
+/*< Function getRandomNumberBetween0and1 should return value inside interval [0,1]>*/
 	int i;
-	for(i=0;i<100;i++)
-		TEST_ASSERT_FLOAT_WITHIN(1.0,0.0,getRandomNumberBetween0and1());
-}
-
-void test_getRandomNumberBetween0and1_positive(){
-
-	int i;
-	for(i=0;i<100;i++)	
+	for(i=0;i<100;i++){
 		TEST_ASSERT_TRUE(getRandomNumberBetween0and1()>=0.0);
+		TEST_ASSERT(getRandomNumberBetween0and1()<=1.0);
+	}
 }
 
 void  test_curent_temperature_is_minor_equal_previous_temperature(){
@@ -97,8 +92,7 @@ int main(void){
 	UNITY_BEGIN();
 	RUN_TEST(test_signal_function_return_1_for_positive_values_and_zero);
 	RUN_TEST(test_signal_function_return_minus_1_for_negative_values);
-	RUN_TEST(test_getRandomNumberBetween0and1);
-	RUN_TEST(test_getRandomNumberBetween0and1_positive);
+	RUN_TEST(test_getRandomNumberBetween0and1_returns_float_between_0_and_1);
 	RUN_TEST(test_curent_temperature_is_minor_equal_previous_temperature);
 	RUN_TEST(test_if_parameters_remains_in_its_limits_after_disturbance);
 	RUN_TEST(test_nonHyperbolicCRSapp);
