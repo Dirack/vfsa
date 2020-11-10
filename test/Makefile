@@ -28,3 +28,6 @@ else
 	./$@
 	rm $@
 endif
+
+time:	optimization_test/SConstruct
+	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
