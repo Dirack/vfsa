@@ -45,10 +45,30 @@ void test_getRandomNumberBetween0and1_positive(){
 		TEST_ASSERT_TRUE(getRandomNumberBetween0and1()>=0.0);
 }
 
+void  test_getVfsaIterationTemperature(){
+	TEST_IGNORE_MESSAGE("TODO");
+}
+
+void test_disturbParameters(){
+	TEST_IGNORE_MESSAGE("TODO");
+}
+
+void test_nonHyperbolicCRSapp(){
+	TEST_IGNORE_MESSAGE("TODO");
+}
+
+void test_semblance(){
+	TEST_IGNORE_MESSAGE("TODO");
+}
+
 int main(void){
 	UNITY_BEGIN();
 	RUN_TEST(test_signal_function);
 	RUN_TEST(test_getRandomNumberBetween0and1);
 	RUN_TEST(test_getRandomNumberBetween0and1_positive);
+	RUN_TEST(test_getVfsaIterationTemperature);
+	RUN_TEST(test_disturbParameters);
+	RUN_TEST(test_nonHyperbolicCRSapp);
+	RUN_TEST(test_semblance);
 	return UNITY_END();
 }
