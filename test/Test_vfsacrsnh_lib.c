@@ -22,12 +22,16 @@ void setUp(){
 
 void tearDown(){};
 
-void test_signal_function(){
-
+void test_signal_function_return_1_for_positive_values_and_zero(){
+/*< Signal function returns 1 for positive and zero input >*/
 	TEST_ASSERT_FLOAT_WITHIN(0.01,1.0,signal(1.0));
-	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-1.0));
 	TEST_ASSERT_FLOAT_WITHIN(0.001,1.0,signal(0.0));
 	TEST_ASSERT_FLOAT_WITHIN(0.01,1.0,signal(5.0));
+}
+
+void test_signal_function_return_minus_1_for_negative_values(){
+/*< Signal function returns -1 for negative values >*/
+	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-1.0));
 	TEST_ASSERT_FLOAT_WITHIN(0.01,-1.0,signal(-5.0));
 }
 
@@ -91,7 +95,8 @@ void test_semblance(){
 
 int main(void){
 	UNITY_BEGIN();
-	RUN_TEST(test_signal_function);
+	RUN_TEST(test_signal_function_return_1_for_positive_values_and_zero);
+	RUN_TEST(test_signal_function_return_minus_1_for_negative_values);
 	RUN_TEST(test_getRandomNumberBetween0and1);
 	RUN_TEST(test_getRandomNumberBetween0and1_positive);
 	RUN_TEST(test_curent_temperature_is_minor_equal_previous_temperature);
