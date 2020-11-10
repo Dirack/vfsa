@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 	semb0=0;
 
 	#pragma omp parallel for \
-	private(q,temp,c,RN,RNIP,BETA,cnew,semb) \
+	private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
 	shared(semb0,otsemb,otrn,otrnip,otbeta) \
 	schedule(dynamic)
 	for(i=0;i<repeat;i++){
