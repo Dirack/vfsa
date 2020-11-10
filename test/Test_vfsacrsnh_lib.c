@@ -85,7 +85,13 @@ void test_nonHyperbolicCRSapp(){
 }
 
 void test_semblance(){
+/*< Semblance function should return value inside interval [0,1]>*/
 	TEST_IGNORE_MESSAGE("TODO");
+	/*int i;
+	for(i=0;i<100;i++){
+		TEST_ASSERT_TRUE(semblance(float m0, float dm, float om, float oh, float dh, float dt, int nt,float t0, float v0,float RN, float RNIP, float BETA, float*** t)>=0.0);
+		TEST_ASSERT(getRandomNumberBetween0and1()<=1.0);
+	}*/
 }
 
 int main(void){
