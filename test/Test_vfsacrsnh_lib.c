@@ -49,8 +49,27 @@ void  test_getVfsaIterationTemperature(){
 	TEST_IGNORE_MESSAGE("TODO");
 }
 
-void test_disturbParameters(){
-	TEST_IGNORE_MESSAGE("TODO");
+void test_if_parameters_remains_in_its_limits_after_disturbance(){
+/*< CRS parameters (RN, RNIP,BETA) should remain in its pre defined limits >*/
+
+	int i;
+	const float c0=0.5;
+	const float temp0=10.;
+	float temp;
+	float cnew[3], c[3]={0.,0.,0.};
+	for(i=0;i<ITMAX;i++){
+		temp=getVfsaIterationTemperature(i,c0,temp0);
+		disturbParameters(temp,cnew,c);
+		TEST_ASSERT(cnew[0]<=Rn_MAX);
+		TEST_ASSERT(cnew[0]>=Rn_MIN);
+		TEST_ASSERT(cnew[1]<=Rnip_MAX);
+		TEST_ASSERT(cnew[1]>=Rnip_MIN);
+		TEST_ASSERT(cnew[2]<=Beta_MAX);
+		TEST_ASSERT(cnew[2]>=Beta_MIN);
+		c[0]=cnew[0];
+		c[1]=cnew[1];
+		c[2]=cnew[2];
+	}
 }
 
 void test_nonHyperbolicCRSapp(){
@@ -67,7 +86,7 @@ int main(void){
 	RUN_TEST(test_getRandomNumberBetween0and1);
 	RUN_TEST(test_getRandomNumberBetween0and1_positive);
 	RUN_TEST(test_getVfsaIterationTemperature);
-	RUN_TEST(test_disturbParameters);
+	RUN_TEST(test_if_parameters_remains_in_its_limits_after_disturbance);
 	RUN_TEST(test_nonHyperbolicCRSapp);
 	RUN_TEST(test_semblance);
 	return UNITY_END();
