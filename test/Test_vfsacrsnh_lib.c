@@ -45,8 +45,17 @@ void test_getRandomNumberBetween0and1_positive(){
 		TEST_ASSERT_TRUE(getRandomNumberBetween0and1()>=0.0);
 }
 
-void  test_getVfsaIterationTemperature(){
-	TEST_IGNORE_MESSAGE("TODO");
+void  test_curent_temperature_is_minor_equal_previous_temperature(){
+/*< Temperature function should converege to zero smoothly >*/
+
+	int i;
+	const float c0=0.5;
+	const float temp0=10.;
+	float temp, previousValue;
+	for(i=0;i<ITMAX;i++){
+		temp=getVfsaIterationTemperature(i,c0,temp0);
+		TEST_ASSERT(previousValue<=temp);
+	}
 }
 
 void test_if_parameters_remains_in_its_limits_after_disturbance(){
@@ -85,7 +94,7 @@ int main(void){
 	RUN_TEST(test_signal_function);
 	RUN_TEST(test_getRandomNumberBetween0and1);
 	RUN_TEST(test_getRandomNumberBetween0and1_positive);
-	RUN_TEST(test_getVfsaIterationTemperature);
+	RUN_TEST(test_curent_temperature_is_minor_equal_previous_temperature);
 	RUN_TEST(test_if_parameters_remains_in_its_limits_after_disturbance);
 	RUN_TEST(test_nonHyperbolicCRSapp);
 	RUN_TEST(test_semblance);
