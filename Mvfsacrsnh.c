@@ -108,8 +108,6 @@ int main(int argc, char* argv[])
 	srand(time(NULL));
 
 	/* Read seismic data cube */
-	//nh = hMAX+1;
-	//sf_warning("%d",nh);
 	t=sf_floatalloc3(nt,nh,nm);
 	sf_floatread(t[0][0],nm*nh*nt,in);
 
@@ -176,9 +174,9 @@ int main(int argc, char* argv[])
 			} /* Critical section parallelization */
 			
 		} /* loop over iterations */
-		sf_warning("(%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f;",i,otrn,otrnip,otbeta,otsemb);
+
+		if(verb) sf_warning("(%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f;",i,otrn,otrnip,otbeta,otsemb);
 		c[0]=0;c[1]=0;c[2]=0;
-		//if(otsemb >= 0.85) break;
 
 	} /* repeat VFSA global optimization */
 
