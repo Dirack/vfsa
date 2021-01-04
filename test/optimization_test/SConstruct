@@ -51,15 +51,19 @@ Flow('dataCube','gaussianReflector reflectorDip',
      put d2=0.0125 label3="CMP" unit3="Km" label2="Offset" unit2="Km" label1=Time unit1=s
      ''')
 
-m0=5
-t0=1.1
+om0=5
+dm0=0.1
+nm0=1
+ot0=1.1
+dt0=0.1
+nt0=3
 v0=1.5
 
 # Very Fast Simulated Aneelling Global Optimization (VFSA)
 Flow('crsParameters','dataCube',
 	'''
-	vfsacrsnh m0=%g v0=%g t0=%g verb=y repeat=10
-	''' % (m0,v0,t0))
+	vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=10
+	''' % (om0,dm0,nm0,ot0,dt0,nt0,v0))
 
 End()
 
