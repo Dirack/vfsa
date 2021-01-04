@@ -31,3 +31,8 @@ endif
 
 time:	optimization_test/SConstruct
 	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
+
+clean:
+	rm *.x
+
+.PHONY:	clean
