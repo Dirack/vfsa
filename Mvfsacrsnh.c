@@ -28,15 +28,15 @@ int main(int argc, char* argv[])
 	bool verb; // Key to turn On/Off active mode
 	float v0; // Near surface velocity
 	float t0; // Normal ray time travel
-	float cnew[3]; // Temporary ters vector - actual iteration
-	float c[3]; // Temporary ters vector - last iteration
-	float *otm; // Optimazed ters
+	float cnew[3]; // Temporary parameters vector - actual iteration
+	float c[3]; // Temporary parameters vector - last iteration
+	float **otm; // Optimazed parameters
 	float otrn, otrnip, otbeta, otsemb; // Optimazed ters - actual iteration
 	float deltaE, PM; // Metrópolis criteria
 	float Em0=0; // Major semblance
 	float u; // Random number
 	float ***t; // Data cube A(m,h,t)
-	int q, i; // loop counter
+	int q, i, k; // loop counter
 	float semb; // Semblance - actual iteration
 	float RN, RNIP, BETA; // CRS ters
 	float semb0; // Inicial semblance value
@@ -55,8 +55,6 @@ int main(int argc, char* argv[])
 
 	in = sf_input("in");
 	out = sf_output("out");
-
-	//p = (pars) malloc(sizeof(PARAMETERS));
 
 	if (!sf_getfloat("m0",&m0)) m0=0;
 	/* central CMP of the approximation (Km) */
@@ -116,97 +114,103 @@ int main(int argc, char* argv[])
 
 	semb0=0;
 
-	#pragma omp parallel for \
-	private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
-	shared(semb0,otsemb,otrn,otrnip,otbeta) \
-	schedule(dynamic)
-	for(i=0;i<repeat;i++){
+	/* Save optimized ters in ' file */
+	otm=sf_floatalloc2(8,2);
+	for(k=0;k<2;k++){
+		otsemb = 0.0;
+		t0 = k*dt0+ot0;
+		//m0 = k*dm0+om0;
+		#pragma omp parallel for \
+		private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
+		shared(semb0,otsemb,otrn,otrnip,otbeta) \
+		schedule(dynamic)
+		for(i=0;i<repeat;i++){
 
-		for (q=0; q <ITMAX; q++){
-				
-			/* calculate VFSA temperature for this iteration */
-			temp=getVfsaIterationTemperature(q,c0,temp0);
-							
-			/* ter disturbance */
-			disturbParameters(temp,cnew,c);
-																	
-			RN = cnew[0];
-			RNIP = cnew[1];
-			BETA = cnew[2];
+			for (q=0; q <ITMAX; q++){
+					
+				/* calculate VFSA temperature for this iteration */
+				temp=getVfsaIterationTemperature(q,c0,temp0);
+								
+				/* ter disturbance */
+				disturbParameters(temp,cnew,c);
+																		
+				RN = cnew[0];
+				RNIP = cnew[1];
+				BETA = cnew[2];
 
-			semb=0;
-		
-			/* Semblance: Non-hyperbolic CRS approximation with data */		
-			semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
+				semb=0;
+			
+				/* Semblance: Non-hyperbolic CRS approximation with data */		
+				semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
 
-			#pragma omp critical(evaluate_best_semblance)
-			{
+				#pragma omp critical(evaluate_best_semblance)
+				{
 
-				if(q > ITMAX*0.1 && otsemb > 0.9) q=ITMAX;	
-				/* VFSA ters convergence condition */		
-				if(fabs(semb) > fabs(semb0) ){
-					otsemb = semb;
-					otrn = RN;
-					otrnip = RNIP;
-					otbeta = BETA;
-					semb0 = semb;			
-				}
+					if(q > ITMAX*0.1 && otsemb > 0.9) q=ITMAX;	
+					/* VFSA ters convergence condition */		
+					if(fabs(semb) > fabs(semb0) ){
+						otsemb = semb;
+						otrn = RN;
+						otrnip = RNIP;
+						otbeta = BETA;
+						semb0 = semb;			
+					}
 
-				/* VFSA ters update condition */
-				deltaE = -semb - Em0;
-				
-				/* Metrópolis criteria */
-				PM = expf(-deltaE/temp);
-				
-				if (deltaE<=0){
-					c[0] = cnew[0];
-					c[1] = cnew[1];
-					c[2] = cnew[2];
-					Em0 = -semb;
-				} else {
-					u=getRandomNumberBetween0and1();
-					if (PM > u){
+					/* VFSA ters update condition */
+					deltaE = -semb - Em0;
+					
+					/* Metrópolis criteria */
+					PM = expf(-deltaE/temp);
+					
+					if (deltaE<=0){
 						c[0] = cnew[0];
 						c[1] = cnew[1];
 						c[2] = cnew[2];
 						Em0 = -semb;
+					} else {
+						u=getRandomNumberBetween0and1();
+						if (PM > u){
+							c[0] = cnew[0];
+							c[1] = cnew[1];
+							c[2] = cnew[2];
+							Em0 = -semb;
+						}	
 					}	
-				}	
-			} /* Critical section parallelization */
-			
-		} /* loop over iterations */
+				} /* Critical section parallelization */
+				
+			} /* loop over iterations */
 
-		if(verb) sf_warning("(%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f;",i,otrn,otrnip,otbeta,otsemb);
-		c[0]=0;c[1]=0;c[2]=0;
+			if(verb) sf_warning("(%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f;",i,otrn,otrnip,otbeta,otsemb);
+			c[0]=0;c[1]=0;c[2]=0;
 
-	} /* repeat VFSA global optimization */
+		} /* repeat VFSA global optimization */
+		otm[k][0] = otrn;
+		otm[k][1] = otrnip;
+		otm[k][2] = otbeta;
+		otm[k][3] = otsemb;
+		otm[k][4] = c0;
+		otm[k][5] = temp0;
+		otm[k][6] = t0;
+		otm[k][7] = m0;
+	
+		/* Show optimized ters on screen before save them */
+		if(verb) sf_warning("(%d/%d)\nOptimized parameters:\n RN=%f, RNIP=%f, BETA=%f, SEMB=%f",k+1,2,otrn,otrnip,otbeta,otsemb);
+
+	}
 
 	free(t);
 
-	/* Save optimized ters in ' file */
-	otm=sf_floatalloc(8);
-	otm[0] = otrn;
-	otm[1] = otrnip;
-	otm[2] = otbeta;
-	otm[3] = otsemb;
-	otm[4] = c0;
-	otm[5] = temp0;
-	otm[6] = t0;
-	otm[7] = m0;
-
-	/* Show optimized ters on screen before save them */
-	sf_warning("\nOptimized parameters:\n RN=%f, RNIP=%f, BETA=%f, SEMB=%f",otrn,otrnip,otbeta,otsemb);
 
 	/* axis = sf_maxa(n,o,d)*/
 	ax = sf_maxa(8, 0, 1);
-	ay = sf_maxa(1, 0, 1);
+	ay = sf_maxa(2, 0, 1);
 	az = sf_maxa(1, 0, 1);
 
 	/* sf_oaxa(file, axis, axis index) */
 	sf_oaxa(out,ax,1);
 	sf_oaxa(out,ay,2);
 	sf_oaxa(out,az,3);
-	sf_floatwrite(otm,8,out);
+	sf_floatwrite(otm[0],8*2,out);
 
 	sf_close();
 	exit(0);
