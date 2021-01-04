@@ -29,6 +29,9 @@ else
 	rm $@
 endif
 
+vfsa.x:	../Mvfsacrsnh.c $(DEP)
+	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $^ -o $@ -lrsf -lm
+
 time:	optimization_test/SConstruct
 	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
 
