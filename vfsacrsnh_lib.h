@@ -36,10 +36,10 @@ float getVfsaIterationTemperature(int iteration,float dampingFactor,float inicia
 
 
 void disturbParameters(float temperature, float* disturbedParameter, float* parameter);
-/*< Perturbar os parâmetros da iteração anterior >*/
+/*< Perturbar os parÃ¢metros da iteraÃ§Ã£o anterior >*/
 
 
-float nonHyperbolicCRSapp(float m, float h, float t0, float v0, float RN, float RNIP, float BETA);
+void nonHyperbolicCRSapp(float t[2*mMAX+1][hMAX], float m0, float dm, float om, float dh, float oh, float t0, float v0, float RN, float RNIP, float BETA);
 /*< Non hyperbolic CRS approximation (FOMEL; KAZINNIK, 2013) >*/
 
 
