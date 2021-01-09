@@ -38,4 +38,9 @@ time:	optimization_test/SConstruct
 clean:
 	rm *.x
 
-.PHONY:	clean
+help:
+	@echo "Compilation of the tests\nRun 'make' to unit test"
+	@echo "Run 'make vfsa.x' to prepare a program version for GDB"
+	@echo "Run 'make time' to run optimization tests"
+
+.PHONY:	clean help
