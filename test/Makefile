@@ -14,9 +14,10 @@
 #CENTOS=1 
 
 DEP = ../vfsacrsnh_lib.c
+GDBDEP = ../Mvfsacrsnh.c $(DEP)
 UNITY = Unity/unity.c
 
-all:	Test_vfsacrsnh_lib.x semblance
+all:	Test_vfsacrsnh_lib.x
 
 %.x:	%.c
 ifdef CENTOS
@@ -29,13 +30,11 @@ else
 	@rm $@
 endif
 
-vfsa.x:	../Mvfsacrsnh.c $(DEP)
-	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $^ -o $@ -lrsf -lm
+vfsa.x:	generate_data_cube $(GDBDEP)
+	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP) -o $@ -lrsf -lm
 
 time:	optimization_test/SConstruct
 	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
-
-semblance:	generate_data_cube Test_semblance.x
 
 generate_data_cube:	test_data_cube/SConstruct
 	@cd test_data_cube && scons -s -Q
