@@ -16,9 +16,7 @@
 #include "../vfsacrsnh_lib.h"
 #include <rsf.h>
 
-void setUp(){
-
-};
+void setUp(){};
 
 void tearDown(){};
 
@@ -80,24 +78,6 @@ void test_if_parameters_remains_in_its_limits_after_disturbance(){
 	}
 }
 
-void test_nonHyperbolicCRSapp_function_for_pre_calculated_values(){
-/*< Non-hyperbolic CRS traveltime approximation >*/
-	TEST_IGNORE_MESSAGE("TODO");
-	float BETA=0.,RN=3.,RNIP=1.5;
-	float m=5.0, h=0.0, t0=0.3, v0=1.5;
-//	TEST_ASSERT_FLOAT_WITHIN(0.001,2.0,nonHyperbolicCRSapp(m, h, t0, v0, RN, RNIP, BETA));
-}
-
-void test_semblance(){
-/*< Semblance function should return value inside interval [0,1]>*/
-	TEST_IGNORE_MESSAGE("TODO");
-	/*int i;
-	for(i=0;i<100;i++){
-		TEST_ASSERT_TRUE(semblance(float m0, float dm, float om, float oh, float dh, float dt, int nt,float t0, float v0,float RN, float RNIP, float BETA, float*** t)>=0.0);
-		TEST_ASSERT(getRandomNumberBetween0and1()<=1.0);
-	}*/
-}
-
 int main(void){
 	UNITY_BEGIN();
 	RUN_TEST(test_signal_function_return_1_for_positive_values_and_zero);
@@ -105,7 +85,5 @@ int main(void){
 	RUN_TEST(test_getRandomNumberBetween0and1_returns_float_between_0_and_1);
 	RUN_TEST(test_curent_temperature_is_minor_equal_previous_temperature);
 	RUN_TEST(test_if_parameters_remains_in_its_limits_after_disturbance);
-	RUN_TEST(test_nonHyperbolicCRSapp_function_for_pre_calculated_values);
-	RUN_TEST(test_semblance);
 	return UNITY_END();
 }

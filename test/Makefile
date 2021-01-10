@@ -16,17 +16,17 @@
 DEP = ../vfsacrsnh_lib.c
 UNITY = Unity/unity.c
 
-all:	Test_vfsacrsnh_lib.x
+all:	Test_vfsacrsnh_lib.x semblance
 
 %.x:	%.c
 ifdef CENTOS
-	gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
-	./$@
-	rm $@
+	@gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
+	@./$@
+	@rm $@
 else
-	gcc -I$$RSFSRC/include -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf 
-	./$@
-	rm $@
+	@gcc -I$$RSFSRC/include -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf 
+	@./$@
+	@rm $@
 endif
 
 vfsa.x:	../Mvfsacrsnh.c $(DEP)
@@ -34,6 +34,11 @@ vfsa.x:	../Mvfsacrsnh.c $(DEP)
 
 time:	optimization_test/SConstruct
 	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
+
+semblance:	generate_data_cube Test_semblance.x
+
+generate_data_cube:	test_data_cube/SConstruct
+	@cd test_data_cube && scons -s -Q
 
 clean:
 	rm *.x

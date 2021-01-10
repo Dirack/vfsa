@@ -14,5 +14,5 @@
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 cd optimization_test/
-set args <dataCube.rsf m0=5 v0=1.5 t0=1 verb=y repeat=1
+set args <dataCube.rsf om0=5 dm0=0.1 nm0=1 ot0=1.1 dt0=0.1 nt0=1 v0=1.5 verb=y repeat=1
 show args
