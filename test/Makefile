@@ -1,6 +1,7 @@
 # Makefile
 #
-# Purpose: Run c test with Unity Unity.
+# Purpose: Run unit tests, optimization tests and prepare a
+# debug version of the program.
 # 
 # Site: https://dirack.github.io
 # 
@@ -17,6 +18,7 @@ DEP = ../vfsacrsnh_lib.c
 GDBDEP = ../Mvfsacrsnh.c $(DEP)
 UNITY = Unity/unity.c
 
+# Default is to run the test
 all:	Test_vfsacrsnh_lib.x
 
 %.x:	%.c
@@ -30,12 +32,15 @@ else
 	@rm $@
 endif
 
+# Generate a version of the program for debugging with GDB
 vfsa.x:	generate_data_cube $(GDBDEP)
 	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP) -o $@ -lrsf -lm
 
+# run optimization test with scons to measure execution time
 time:	optimization_test/SConstruct
 	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
 
+# Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
 generate_data_cube:	test_data_cube/SConstruct
 	@cd test_data_cube && scons -s -Q
 
