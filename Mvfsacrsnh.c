@@ -118,12 +118,6 @@ int main(int argc, char* argv[])
 		sf_warning("n3=%i d3=%f o3=%f",nm,dm,om);
 	}
 	
-	c[0] = 0;
-	c[1] = 0;
-	c[2] = 0;
-	cnew[0] = 0;
-	cnew[1] = 0;
-	cnew[2] = 0;
 	srand(time(NULL));
 
 	/* Read seismic data cube */
@@ -142,6 +136,13 @@ int main(int argc, char* argv[])
 		m0 = l*dm0+om0;
 
 		for(k=0;k<nt0;k++){
+
+				c[0] = 0;
+				c[1] = 0;
+				c[2] = 0;
+				cnew[0] = 0;
+				cnew[1] = 0;
+				cnew[2] = 0;
 				otsemb = 0.0;
 				semb0 = 0.0;
 				t0 = k*dt0+ot0;
@@ -208,14 +209,14 @@ int main(int argc, char* argv[])
 					c[0]=0;c[1]=0;c[2]=0;
 
 				} /* repeat VFSA global optimization */
-				otm[k][0] = otrn;
-				otm[k][1] = otrnip;
-				otm[k][2] = otbeta;
-				otm[k][3] = otsemb;
-				otm[k][4] = c0;
-				otm[k][5] = temp0;
-				otm[k][6] = t0;
-				otm[k][7] = m0;
+				otm[l*nt0+k][0] = otrn;
+				otm[l*nt0+k][1] = otrnip;
+				otm[l*nt0+k][2] = otbeta;
+				otm[l*nt0+k][3] = otsemb;
+				otm[l*nt0+k][4] = c0;
+				otm[l*nt0+k][5] = temp0;
+				otm[l*nt0+k][6] = t0;
+				otm[l*nt0+k][7] = m0;
 			
 				/* Show optimized ters on screen before save them */
 				if(verb) sf_warning("(%d/%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f\r\r",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
