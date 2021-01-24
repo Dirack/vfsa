@@ -34,7 +34,11 @@ endif
 
 # Generate a version of the program for debugging with GDB
 vfsa.x:	generate_data_cube $(GDBDEP)
+ifdef CENTOS
+	gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $(GDBDEP) -o $@ -lm -lrsf -lopenblas -g
+else
 	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP) -o $@ -lrsf -lm
+endif
 
 # run optimization test with scons to measure execution time
 time:	optimization_test/SConstruct
