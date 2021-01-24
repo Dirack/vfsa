@@ -19,7 +19,7 @@ GDBDEP = ../Mvfsacrsnh.c $(DEP)
 UNITY = Unity/unity.c
 
 # Default is to run the test
-all:	Test_vfsacrsnh_lib.x
+all:	generate_data_cube Test_vfsacrsnh_lib.x
 
 %.x:	%.c
 ifdef CENTOS
