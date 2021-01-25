@@ -7,3 +7,13 @@
 .sconsign
 sfnhcrssurf
 sfvfsacrsnh
+Fig/
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.ltx
+*.out
+*.pdf
+*.x

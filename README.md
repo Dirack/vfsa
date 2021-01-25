@@ -54,9 +54,17 @@ A few motivating and useful examples of how that product can be used can be foun
 
 ## Release History
 
-* [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable
+* [v2.0.0](https://github.com/Dirack/vfsa/releases/tag/v2.0) - Beta release
+   * Optimized algorithm using opemmp
+   * New usage example: fullParametersOptimization
+   * It does the experiment for a set of (t0,m0) pairs
+   * Generate a new output: parameters cube for (t0,m0) pairs
 
-* [v1.0.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable
+* [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable release
+   * New usage example os a multi layer model
+
+* [v1.0.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable release
+
 
 [Please check out the full release history in our Wiki](https://github.com/Dirack/vfsa/wiki/Release-history).
 

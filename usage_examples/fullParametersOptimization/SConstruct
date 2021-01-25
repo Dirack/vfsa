@@ -4,12 +4,13 @@
 # SConstruct  (Madagascar Script)
 #
 # Purpose: Obtain zero offset CRS parameters using VFSA.
+# for a set of (t0,m0) pairs.
 #
 # Site: http://www.dirackslounge.online
 # 
 # Version 1.0
 #
-# Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
+# Programer: Rodolfo A. C. Neves (Dirack) 24/01/2021
 #
 # Email: rodolfo_profissional@hotmail.com
 #
@@ -21,9 +22,6 @@ from rsf.proj import *
 
 # Python math library
 import math
-
-# Ploting functions
-from graph_scons import *
 
 # Modeling: Gaussian reflector in a velocity linear model
 # velocity increases with depth and a 0.5 velocity gradient
@@ -54,46 +52,21 @@ Flow('dataCube','gaussianReflector reflectorDip',
      put d2=0.0125 label3="CMP" unit3="Km" label2="Offset" unit2="Km" label1=Time unit1=s
      ''')
 
-m0=5
-t0=1.1
+om0=3
+dm0=1
+nm0=3
+ot0=1.1
+dt0=0.1
+nt0=2
+ot0=1.1
 v0=1.5
+repeat=4
 
 # Very Fast Simulated Aneelling Global Optimization (VFSA)
 Flow('crsParameters','dataCube',
 	'''
-	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=1
-	''' % (m0,v0,t0))
-
-# Aproximation Error
-Flow('dataReflectionSurface','dataCube','envelope | max1 | window n1=1 | real')
-Plot('dataReflectionSurface',
-	'''
-	grey color=j bias=2 scalebar=y barlabel=Time barunit=s barreverse=y 
-	title="Modeled traveltime surface" label1=Half-Offset unit1=km label2=Midpoint unit2=km
-	''')
-Flow('crsAppSurface',['dataReflectionSurface','crsParameters'],
-	'''
-	nhcrssurf param=${SOURCES[1]} m0=%g v0=%g t0=%g verb=y
-	''' % (m0,v0,t0))
-Plot('crsAppSurface',
-	'''
-	grey color=j bias=2 scalebar=y barlabel=Time barunit=s barreverse=y 
-	title="Non-hyperbolic CRS m0=5Km" label1=Half-Offset unit1=km label2=Midpoint unit2=km
-	''')
-
-Flow('error',['crsAppSurface','dataReflectionSurface'],
-	'''
-	add scale=1,-1 ${SOURCES[1]} | 
-	math output="abs(input)" 
-	''')
-Plot('error',
-	'''
-	grey color=j scalebar=y barlabel=Time barunit=s barreverse=y 
-	title="Approximation error" label1=Half-Offset unit1=km label2=Midpoint unit2=km
-	maxval=1 minval=0
-	''')
-
-Result('errorAndCRSSurfaces',['dataReflectionSurface','crsAppSurface','error'],'SideBySideAniso')
+	vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
+	''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
 
 End()
 
