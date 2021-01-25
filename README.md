@@ -82,6 +82,12 @@ _For more examples and usage, please refer to the [Wiki](https://github.com/Dira
 
 ## Release History
 
+* [v2.0.0](https://github.com/Dirack/vfsa/releases/tag/v2.0) - Beta release
+   * Optimized algorithm using opemmp
+   * New usage example: fullParametersOptimization
+   * It does the experiment for a set of (t0,m0) pairs
+   * Generate a new output: parameters cube for (t0,m0) pairs
+
 * [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable release
    * New usage example os a multi layer model
 
