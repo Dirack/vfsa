@@ -3,11 +3,11 @@
 	 
 	 Purpose: 'Mvfsacrsnh.c' library.
 	 	 
-	 Version 1.0
+	 Version 2.0.1
 	 
-	 Site: http://www.dirackslounge.online
+	 Site: https://dirack.github.io
 	 
-	 Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
+	 Programmer: Rodolfo A. C. Neves (Dirack) 19/09/2019
 
 	 Email:  rodolfo_profissional@hotmail.com
 
@@ -15,18 +15,18 @@
 
 */
 
-#define Beta_MAX 1
-#define Beta_MIN -1
-#define BETA_APERTURE Beta_MAX-Beta_MIN
-#define Rnip_MAX 4
-#define Rnip_MIN 0
+#define Beta_MAX 1 // Beta maximum value
+#define Beta_MIN -1 // Beta minimun value
+#define BETA_APERTURE Beta_MAX-Beta_MIN 
+#define Rnip_MAX 4 // RNIP maximum value
+#define Rnip_MIN 0 // RNIP minimum value
 #define RNIP_APERTURE Rnip_MAX-Rnip_MIN
-#define Rn_MAX 5
-#define Rn_MIN 0
+#define Rn_MAX 5 // RN maximum value
+#define Rn_MIN 0 // RN minimum value
 #define RN_APERTURE Rn_MAX-Rn_MIN
-#define hMAX 50
-#define mMAX 50
-#define ITMAX 3000
+#define hMAX 50 // Max of samples to stack in half-offset
+#define mMAX 50 // Max of samples to stack in CMP
+#define ITMAX 3000 // Maximum number of iterations in VFSA
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,16 +44,25 @@ float getRandomNumberBetween0and1(){
 	return (float)(rand()%1000)/1000;
 }
 
-float getVfsaIterationTemperature(int iteration,float dampingFactor,float inicialTemperature){
+float getVfsaIterationTemperature(	int iteration /* Number of the current iteration */,
+					float dampingFactor /* C0, the VFSA damping factor */,
+					float initialTemperature /* T0, the VFSA Initial temperature */)
 /*< Temperature function for VFSA algorithm >*/
+{
 
-	return inicialTemperature*expf(-dampingFactor*pow(iteration,0.2));
+	return initialTemperature*expf(-dampingFactor*pow(iteration,0.2));
 
 }
 
-void disturbParameters(float temperature, float* disturbedParameter, float* parameter){
-/*< Perturbar os parâmetros da iteração anterior >*/
+void disturbParameters(  float temperature /* Temperature of the current iteration */,
+			 float* disturbedParameter /* disturbed parameters vector */,
+			 float* parameter /* parameters vector */)
+/*< Disturb parameters from the previous VFSA iteration
 
+Note: It receives a parameter vector and distubs it accordingly to 
+VFSA algorithm disturb parameters step.
+ >*/
+{
 	float u;
 	float disturbance;
 
@@ -61,7 +70,7 @@ void disturbParameters(float temperature, float* disturbedParameter, float* para
 			
 	disturbance = signal(u - 0.5) * temperature * (pow( (1+temperature),fabs(2*u-1) )-1);
 
-	/* RN */
+	/* Disturb RN */
 
 	disturbedParameter[0] = parameter[0] + disturbance * (RN_APERTURE);
 				
@@ -71,7 +80,7 @@ void disturbParameters(float temperature, float* disturbedParameter, float* para
 		
 	}
 
-	/* RNIP */
+	/* Disturb RNIP */
 
 	disturbedParameter[1] = parameter[1] + disturbance * (RNIP_APERTURE);
 				
@@ -81,7 +90,7 @@ void disturbParameters(float temperature, float* disturbedParameter, float* para
 		
 	}
 
-	/* BETA */
+	/* Disturb BETA */
 
 	disturbedParameter[2] = parameter[2] + (disturbance/10.) * (BETA_APERTURE);
 
@@ -93,8 +102,19 @@ void disturbParameters(float temperature, float* disturbedParameter, float* para
 
 }
 
-void nonHyperbolicCRSapp(float t[2*mMAX+1][hMAX], float m0, float dm, float om, float dh, float oh, float t0, float v0, float RN, float RNIP, float BETA){
-/*< Non hyperbolic CRS approximation (FOMEL; KAZINNIK, 2013) >*/
+void nonHyperbolicCRSapp(	float t[2*mMAX+1][hMAX] /* non-hyperbolic CRS traveltime surface */,
+				float m0 /* Central CMP of the approximation */,
+				float dm, /* CMP sampling */
+				float om /* CMP axis origin */,
+				float dh /* half-offset sampling */,
+				float oh /* half-offset axis origin */,
+				float t0 /* Normal ray traveltime */,
+				float v0 /* Near surface velocity */,
+				float RN /* RN, CRS parameter */,
+				float RNIP /* RNIP, CRS parameter */,
+				float BETA /* BETA, CRS parameter */)
+/*< Returns the Non hyperbolic CRS approximation surface (FOMEL; KAZINNIK, 2013) >*/
+{
 	float m0_index=(int)(m0/dm);
 	float a1, a2, b2, c1, Fd, Fd1, Fd2;
 	int im, ih;
@@ -127,8 +147,21 @@ void nonHyperbolicCRSapp(float t[2*mMAX+1][hMAX], float m0, float dm, float om, 
 
 }
 
-float semblance(float m0, float dm, float om, float oh, float dh, float dt, int nt,float t0, float v0,float RN, float RNIP, float BETA, float*** t){
-/*< Semblance: Non Hyperbolic CRS approximation with data >*/
+float semblance(float m0 /* Central CMP of the approximation */,
+		float dm /* CMP sampling */,
+		float om /* CMP axis origin */,
+		float oh /* half-offset axis origin */,
+		float dh /* half-offset axis sampling */,
+		float dt /* time sampling */,
+		int nt /* number of time samples */,
+		float t0 /* Normal ray traveltime */,
+		float v0 /* Near surface velocity */,
+		float RN /* RN, CRS parameter */,
+		float RNIP /* RNIP, CRS parameter */,
+		float BETA /* BETA, CRS parameter */,
+		float*** t /* reflection data cube A(m,h,t) */)
+/*< Calculate semblance between the Non Hyperbolic CRS approximation surface and reflection data >*/
+{
 
 	int im, ih, numSamples=0;
 	float amplitude=0.;
