@@ -1,6 +1,8 @@
-/* Version 1.0 - Zero offset CRS ter inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization
+/* Zero offset CRS ter inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization
 
-This program the Non-Hyperbolic CRS approximation to fit data cube and get the ters (Fomel, 2013).
+This program uses the Non-Hyperbolic CRS approximation to fit data cube and get the ters (Fomel, 2013).
+
+Version 2.0.1
 
 Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
 
@@ -8,7 +10,7 @@ Email:  rodolfo_profissional@hotmail.com
 
 License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
- */
+*/
 
 #include "vfsacrsnh_lib.h"
 
@@ -52,7 +54,8 @@ int main(int argc, char* argv[])
 	int nt0;
 
 	/* RSF files I/O */  
-	sf_file in, out;
+	sf_file in; /* Seismic data cube A(m,h,t) */
+	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 
 	/* RSF files axis */
 	sf_axis ax,ay,az;

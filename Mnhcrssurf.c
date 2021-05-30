@@ -1,6 +1,8 @@
-/* Version 1.0 - Build Non-Hyperbolic CRS approximation surface giver RN, RNIP and BETA parameters.
+/* Build Non-Hyperbolic CRS approximation surface for RN, RNIP and BETA parameters given.
 
-Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
+Version 2.0.1
+
+Programmer: Rodolfo A. C. Neves (Dirack) 19/09/2019
 
 Email:  rodolfo_profissional@hotmail.com
 
@@ -29,14 +31,17 @@ int main(int argc, char* argv[])
 	float *c; // Temporary parameters vector - last iteration
 	float **t; // CRS surface t(m,h)
 	float RN, RNIP, BETA; // CRS parameters
-	float Fd, Fd1, Fd2;
-	float c1, a1, a2, b2;
-	float m;
-	float h;
-	int nc, ih, im;
+	float Fd, Fd1, Fd2; // Non-hyperbolic CRS parameters
+	float c1, a1, a2, b2; // Non-hyperbolic CRS parameters
+	float m; // CMP
+	float h; // half-offset
+	int nc; // number of parameters
+	int ih, im; // loop counters
 
 	/* RSF files I/O */  
-	sf_file in, out, par;
+	sf_file in; // Traveltime surface with the output dimensions
+	sf_file out; // Non-hyperbolic traveltime surface output
+	sf_file par; // RN, RNIP and BETA parameters
 
 	/* RSF files axis */
 	sf_axis ax,ay,az;
@@ -94,22 +99,22 @@ int main(int argc, char* argv[])
 			
 		for(ih=0;ih<nh;ih++){
 
-		m = om + (im * dm);
-		m = m - m0;
-		h = oh + (ih * dh);
-	
-		a1=(2*sin(BETA))/(v0);		
-		a2=(2*cos(BETA)*cos(BETA)*t0)/(v0*RN);
-		b2=(2*cos(BETA)*cos(BETA)*t0)/(v0*RNIP);
-		c1=2*b2+a1*a1-a2;
-													
-		Fd=(t0+a1*m)*(t0+a1*m)+a2*m*m;				
-		Fd2=(t0+a1*(m-h))*(t0+a1*(m-h))+a2*(m-h)*(m-h);
-		Fd1=(t0+a1*(m+h))*(t0+a1*(m+h))+a2*(m+h)*(m+h);					
-		t[im][ih]=sqrt((Fd+c1*h*h+sqrt(Fd2*Fd1))*0.5); 
+			m = om + (im * dm);
+			m = m - m0;
+			h = oh + (ih * dh);
+		
+			a1=(2*sin(BETA))/(v0);		
+			a2=(2*cos(BETA)*cos(BETA)*t0)/(v0*RN);
+			b2=(2*cos(BETA)*cos(BETA)*t0)/(v0*RNIP);
+			c1=2*b2+a1*a1-a2;
+														
+			Fd=(t0+a1*m)*(t0+a1*m)+a2*m*m;				
+			Fd2=(t0+a1*(m-h))*(t0+a1*(m-h))+a2*(m-h)*(m-h);
+			Fd1=(t0+a1*(m+h))*(t0+a1*(m+h))+a2*(m+h)*(m+h);					
+			t[im][ih]=sqrt((Fd+c1*h*h+sqrt(Fd2*Fd1))*0.5); 
 
-		}
-	}
+		} /* Loop over half-offset */
+	} /* Loop over CMP*/
 
 	/* axis = sf_maxa(n,o,d)*/
 	ax = sf_maxa(nh, oh, dh);
