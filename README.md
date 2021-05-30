@@ -4,10 +4,10 @@
 
 ![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
 
-This package uses Very Fast Simulated Aneeling (VFSA) global optimization inversion to obtain the zero offset Common Reflection Surface (CRS) parameters, RN, RNIP, and BETA, from a reflection data cube (seismic data organized in CMP x half-offset X Time coordinates). These parameters are obtained by fiting the non-hyperbolic CRS traveltime approximation in the reflection data, the semblance between these surface and the data is the optimization criterion.
+This package uses Very Fast Simulated Aneeling (VFSA) global optimization inversion to obtain the zero offset Common Reflection Surface (CRS) parameters (RN, RNIP, and BETA) from a reflection data cube (seismic data organized in CMP x half-offset X Time coordinates). These parameters are obtained by fiting the non-hyperbolic CRS traveltime surface in the reflection data cube using the semblance between them as the optimization criterion.
 
-In the image above we show the expected result after VFSA global optimization algorithm application. It shows the convergence of the approximated surface, generated with the non-hyperbolic CRS traveltime approximation (midle), and the reflection surface extracted from the data (left).
-The difference between the two surfaces is the approximation error (right, not in the same scale). The CRS paramters (RN, RNIP and BETA)
+In the image above we show the expected result after VFSA global optimization algorithm application. It shows the convergence of the approximated surface generated with the non-hyperbolic CRS traveltime approximation (midle) with the reflection surface extracted from the data (left).
+The difference between these two surfaces is the approximation error (right, and not in the same scale). The CRS paramters (RN, RNIP and BETA)
 that produced the minimum error will be the optimized ones. 
 
 * For more details please check out ["What is VFSA?"](https://github.com/Dirack/vfsa/wiki/Very-Fast-Simulated-Anneling-(VFSA)) and ["What is non-hyperbolic CRS?"](https://github.com/Dirack/vfsa/wiki/Non-hyperbolic-CRS) in our Wiki.
