@@ -172,7 +172,6 @@ int main(int argc, char* argv[])
 						#pragma omp critical(evaluate_best_semblance)
 						{
 
-							if(q > ITMAX*0.2 && otsemb > 0.9) q=ITMAX;	
 							/* VFSA ters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
 								otsemb = semb;

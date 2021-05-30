@@ -15,7 +15,7 @@
 #define RN_APERTURE Rn_MAX-Rn_MIN
 #define hMAX 50 // Max of samples to stack in half-offset
 #define mMAX 50 // Max of samples to stack in CMP
-#define ITMAX 3000 // Maximum number of iterations in VFSA
+#define ITMAX 5000 // Maximum number of iterations in VFSA
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -61,7 +61,7 @@ v0=1.5
 # Very Fast Simulated Aneelling Global Optimization (VFSA)
 Flow('crsParameters','dataCube',
 	'''
-	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=1
+	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=10
 	''' % (m0,v0,t0))
 
 # Aproximation Error
