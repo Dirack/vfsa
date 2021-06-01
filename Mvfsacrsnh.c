@@ -1,6 +1,4 @@
-/* Zero offset CRS ter inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization
-
-This program uses the Non-Hyperbolic CRS approximation to fit data cube and get the ters (Fomel, 2013).
+/* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Aneeling (VFSA) Global Optimization . This program uses the Non-Hyperbolic CRS approximation to fit data cube and get the parameters (Fomel, 2013).
 
 Version 2.0.1
 
@@ -46,12 +44,12 @@ int main(int argc, char* argv[])
 	float temp0; // inicial VFSA temperature
 	float temp; // VFSA temperature
 	int repeat; // perform VFSA optimization more than once
-	float om0;
-	float dm0;
-	int nm0;
-	float ot0;
-	float dt0;
-	int nt0;
+	float om0; // m0s axis origin
+	float dm0; // m0s sampling
+	int nm0; // number of Central CMPs m0s
+	float ot0; // t0s axis origin
+	float dt0; // t0s sampling
+	int nt0; // number of t0s samples
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -113,9 +111,9 @@ int main(int argc, char* argv[])
 	if (verb) {
 
 		sf_warning("Active mode on!!!");
-		sf_warning("Command line ters: "); 
+		sf_warning("Command line parameters: "); 
 		sf_warning("m0=%f v0=%f t0=%f c0=%f temp0=%f repeat=%i",m0,v0,t0,c0,temp0,repeat);
-		sf_warning("Input file ters: ");
+		sf_warning("Input file parameters: ");
 		sf_warning("n1=%i d1=%f o1=%f",nt,dt,ot);
 		sf_warning("n2=%i d2=%f o2=%f",nh,dh,oh);
 		sf_warning("n3=%i d3=%f o3=%f",nm,dm,om);
@@ -239,7 +237,9 @@ int main(int argc, char* argv[])
 	sf_oaxa(out,ay,2);
 	sf_oaxa(out,az,3);
 	sf_putstring(out,"label1","parameters");
-	sf_putstring(out,"label2","(t0,m0) index");
+	sf_putstring(out,"unit1","RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0");
+	sf_putstring(out,"label2","(t0,m0)");
+	sf_putstring(out,"unit2","index");
 	sf_floatwrite(otm[0],8*nt0*nm0,out);
 
 	sf_close();
