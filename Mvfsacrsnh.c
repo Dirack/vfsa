@@ -1,8 +1,8 @@
-/* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Aneeling (VFSA) Global Optimization . This program uses the Non-Hyperbolic CRS approximation to fit data cube and get the parameters (Fomel, 2013).
+/* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Aneeling (VFSA) Global Optimization. This program uses the Non-Hyperbolic CRS approximation (Fomel, 2013) to fit seismic data cube and get the best parameters using semblance criteria.
 
-Version 2.0.1
+Package version: 2.0.1
 
-Programer: Rodolfo A. C. Neves (Dirack) 19/09/2019
+Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 
 Email:  rodolfo_profissional@hotmail.com
 
@@ -15,7 +15,7 @@ License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 int main(int argc, char* argv[])
 {
 
-	float m0; // central CMP
+	float m0; // Central CMP
 	float om; // CMP axis origin
 	float dm; // CMP sampling
 	int nm; // Number of CMP's
@@ -25,31 +25,32 @@ int main(int argc, char* argv[])
 	int nt; // Number of time samples
 	float ot; // Time axis origin
 	float dt; // Time sampling
-	bool verb; // Key to turn On/Off active mode
+	bool verb; // Key to turn On/Off verbose mode
 	float v0; // Near surface velocity
 	float t0; // Normal ray time travel
 	float cnew[3]; // Temporary parameters vector - actual iteration
 	float c[3]; // Temporary parameters vector - last iteration
-	float **otm; // Optimazed parameters
-	float otrn, otrnip, otbeta, otsemb; // Optimazed ters - actual iteration
+	float **otm; // Optimized parameters
+	float otrn=0., otrnip=0., otbeta=0.; // Optimized parameters
+	float otsemb=0.; // Optimized semblance
 	float deltaE, PM; // Metrópolis criteria
-	float Em0=0; // Major semblance
+	float Em0=0; // Best semblance
 	float u; // Random number
 	float ***t; // Data cube A(m,h,t)
 	int q, i, k, l; // loop counter
 	float semb; // Semblance - actual iteration
-	float RN, RNIP, BETA; // CRS ters
-	float semb0; // Inicial semblance value
+	float RN, RNIP, BETA; // CRS parameters
+	float semb0; // Initial semblance value
 	float c0; // VFSA damping factor
-	float temp0; // inicial VFSA temperature
+	float temp0; // initial VFSA temperature
 	float temp; // VFSA temperature
-	int repeat; // perform VFSA optimization more than once
-	float om0; // m0s axis origin
-	float dm0; // m0s sampling
-	int nm0; // number of Central CMPs m0s
-	float ot0; // t0s axis origin
-	float dt0; // t0s sampling
-	int nt0; // number of t0s samples
+	int repeat; // Perform VFSA optimization more than once
+	float om0; // m0's axis origin
+	float dm0; // m0's sampling
+	int nm0; // Number of m0's
+	float ot0; // t0's axis origin
+	float dt0; // t0's sampling
+	int nt0; // Number of t0's
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -90,7 +91,7 @@ int main(int argc, char* argv[])
 	/* damping factor of VFSA */
 
 	if (!sf_getfloat("temp0",&temp0)) temp0=10;
-	/* inicial VFSA temperature */
+	/* initial VFSA temperature */
 
 	if(!sf_getint("repeat",&repeat)) repeat=1;
 	/* How many times to perform VFSA global optimization */
@@ -129,7 +130,7 @@ int main(int argc, char* argv[])
 
 	semb0=0;
 
-	/* Save optimized ters in ' file */
+	/* Save optimized parameters in ' file */
 	otm=sf_floatalloc2(8,nm0*nt0);
 
 	for(l=0;l<nm0;l++){
@@ -158,7 +159,7 @@ int main(int argc, char* argv[])
 						/* calculate VFSA temperature for this iteration */
 						temp=getVfsaIterationTemperature(q,c0,temp0);
 										
-						/* ter disturbance */
+						/* parameter disturbance */
 						disturbParameters(temp,cnew,c);
 																				
 						RN = cnew[0];
@@ -173,7 +174,7 @@ int main(int argc, char* argv[])
 						#pragma omp critical(evaluate_best_semblance)
 						{
 
-							/* VFSA ters convergence condition */		
+							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
 								otsemb = semb;
 								otrn = RN;
@@ -182,7 +183,7 @@ int main(int argc, char* argv[])
 								semb0 = semb;			
 							}
 
-							/* VFSA ters update condition */
+							/* VFSA parameters update condition */
 							deltaE = -semb - Em0;
 							
 							/* Metrópolis criteria */
@@ -218,8 +219,8 @@ int main(int argc, char* argv[])
 				otm[l*nt0+k][6] = t0;
 				otm[l*nt0+k][7] = m0;
 			
-				/* Show optimized ters on screen before save them */
-				if(verb) sf_warning("(%d/%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f\r\r",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
+				/* Show optimized parameters on screen before save them */
+				if(verb) sf_warning("(%d/%d): RN=%.3f, RNIP=%.3f, BETA=%.3f, SEMB=%.3f ;",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
 
 			}
 	}
@@ -241,7 +242,4 @@ int main(int argc, char* argv[])
 	sf_putstring(out,"label2","(t0,m0)");
 	sf_putstring(out,"unit2","index");
 	sf_floatwrite(otm[0],8*nt0*nm0,out);
-
-	sf_close();
-	exit(0);
 }

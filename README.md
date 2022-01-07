@@ -2,7 +2,7 @@
 
 [![Github release](https://img.shields.io/github/v/release/Dirack/vfsa)](https://github.com/Dirack/vfsa/releases/latest) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Madagascar](https://img.shields.io/badge/Madagascar-v3.0-blue)](https://github.com/ahay/src/tree/master) [![Build Status](https://travis-ci.com/Dirack/vfsa.svg?branch=master)](https://travis-ci.com/Dirack/vfsa)
 
-![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/images/surfaces.png)
+![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/res/surfaces.png)
 
 This package uses Very Fast Simulated Aneeling (VFSA) global optimization inversion to obtain the zero offset Common Reflection Surface (CRS) parameters (RN, RNIP, and BETA) from a reflection data cube (seismic data organized in CMP x half-offset X Time coordinates). These parameters are obtained by fiting the non-hyperbolic CRS traveltime surface in the reflection data cube using the semblance between them as the optimization criterion.
 
@@ -23,7 +23,7 @@ It is a simple process described in details in [install dependencies](https://gi
 
 ## Usage example
 
-A few motivating and useful examples of how that product can be used can be found in the [usage_examples directory](https://github.com/Dirack/vfsa/tree/master/usage_examples). For more details, please refer to the [Wiki](https://github.com/Dirack/vfsa/wiki).
+A few motivating and useful examples of how that product can be used can be found in the [usage examples directory](https://github.com/Dirack/vfsa/tree/master/doc/usage). For more details, please refer to the [Wiki](https://github.com/Dirack/vfsa/wiki).
 
 ## Release History
 
