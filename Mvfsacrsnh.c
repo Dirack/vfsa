@@ -219,7 +219,7 @@ int main(int argc, char* argv[])
 				otm[l*nt0+k][7] = m0;
 			
 				/* Show optimized parameters on screen before save them */
-				if(verb) sf_warning("(%d/%d): RN=%f, RNIP=%f, BETA=%f, SEMB=%f\r\r",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
+				if(verb) sf_warning("(%d/%d): RN=%.3f, RNIP=%.3f, BETA=%.3f, SEMB=%.3f ;",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
 
 			}
 	}
