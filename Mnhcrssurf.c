@@ -1,6 +1,6 @@
-/* Build Non-Hyperbolic CRS approximation surface for RN, RNIP and BETA parameters given.
+/* Build Non-Hyperbolic CRS approximation surface (Fomel and Kazinnik, 2013) for RN, RNIP and BETA parameters given.
 
-Version 2.0.1
+Package version: 2.0.1
 
 Programmer: Rodolfo A. C. Neves (Dirack) 19/09/2019
 
