@@ -6,9 +6,7 @@
 # 
 # Site: http://www.dirackslounge.online
 # 
-# Version 1.0
-# 
-# Programer: Rodolfo Dirack 22/08/2019
+# Programmer: Rodolfo Dirack 22/08/2019
 # 
 # Email: rodolfo_profissional@hotmail.com
 # 

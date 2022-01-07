@@ -1,6 +1,6 @@
-/* Version 2.0 - Zero offset CRS parameters inversion (RN, RNIP, BETA) with Very Fast Simulated Aneeling (VFSA) Global Optimization
+/* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Aneeling (VFSA) Global Optimization. This program uses the Non-Hyperbolic CRS approximation (Fomel and Kazinnik, 2013) to fit seismic data cube and get the best parameters using semblance criteria.
 
-This program uses the Non-Hyperbolic CRS approximation to fit data cube and get the zero-offset CRS parameters (Fomel, 2013).
+Package version: 2.0.1
 
 Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 
@@ -8,7 +8,7 @@ Email:  rodolfo_profissional@hotmail.com
 
 License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
- */
+*/
 
 #include "vfsacrsnh_lib.h"
 
@@ -53,7 +53,8 @@ int main(int argc, char* argv[])
 	int nt0; // Number of t0's
 
 	/* RSF files I/O */  
-	sf_file in, out;
+	sf_file in; /* Seismic data cube A(m,h,t) */
+	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 
 	/* RSF files axis */
 	sf_axis ax,ay,az;
@@ -237,9 +238,8 @@ int main(int argc, char* argv[])
 	sf_oaxa(out,ay,2);
 	sf_oaxa(out,az,3);
 	sf_putstring(out,"label1","parameters");
-	sf_putstring(out,"label2","(t0,m0) index");
+	sf_putstring(out,"unit1","RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0");
+	sf_putstring(out,"label2","(t0,m0)");
+	sf_putstring(out,"unit2","index");
 	sf_floatwrite(otm[0],8*nt0*nm0,out);
-
-	sf_close();
-	exit(0);
 }

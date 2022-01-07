@@ -7,15 +7,12 @@
 # for a set of (t0,m0) pairs.
 #
 # Site: https://dirack.github.io
-# 
-# Version 1.0
 #
 # Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 #
 # Email: rodolfo_profissional@hotmail.com
 #
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
-
 
 # Madagascar library
 from rsf.proj import *
@@ -41,7 +38,7 @@ Flow('velocityModel','gaussianReflector',
 
 Flow('reflectorDip','gaussianReflector','math output="2/3*(x1-5)*input" ')
 
-# Kirchoff Modeling
+# Kirchhoff Modeling
 Flow('dataCube','gaussianReflector reflectorDip',
      '''
      kirmod cmp=y dip=${SOURCES[1]} 

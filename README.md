@@ -27,6 +27,8 @@ A few motivating and useful examples of how that product can be used can be foun
 
 ## Release History
 
+* [v2.0.1](https://github.com/Dirack/vfsa/releases/tag/v2.0.1) - Stable release
+
 * [v2.0.0](https://github.com/Dirack/vfsa/releases/tag/v2.0) - Beta release
 
 * [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable release
@@ -39,7 +41,7 @@ A few motivating and useful examples of how that product can be used can be foun
 
 [main page](https://github.com/Dirack/vfsa/wiki)
 
-Rodolfo Dirack – [@dirack](https://github.com/Dirack) – rodolfo_profissional@hotmail.com
+Rodolfo Dirack – [@dirack](https://github.com/Dirack) – rodolfo\_profissional@hotmail.com
 
 Distributed under the GPL3 license. See ``LICENSE`` for more information.
 

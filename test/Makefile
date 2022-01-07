@@ -5,7 +5,7 @@
 # 
 # Site: https://dirack.github.io
 # 
-# Programer: Rodolfo A C Neves (Dirack) 06/11/2020
+# Programmer: Rodolfo A C Neves (Dirack) 06/11/2020
 # 
 # Email: rodolfo_profissional@hotmail.com
 # 
@@ -48,12 +48,16 @@ time:	optimization_test/SConstruct
 generate_data_cube:	test_data_cube/SConstruct
 	@cd test_data_cube && scons -s -Q
 
+gdbtest:	vfsa.x
+	gdb -q --command=gdb_scripts/gdb_test $<
+
 clean:
 	rm *.x
 
 help:
 	@echo "Compilation of the tests\nRun 'make' to unit test"
 	@echo "Run 'make vfsa.x' to prepare a program version for GDB"
+	@echo "Run 'make gdbtest' run test in GDB shell"
 	@echo "Run 'make time' to run optimization tests"
 
 .PHONY:	clean help
