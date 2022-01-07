@@ -5,7 +5,7 @@
 * 
 * Site: https://dirack.github.io
 * 
-* Programer: Rodolfo A C Neves (Dirack) 06/11/2020
+* Programmer: Rodolfo A C Neves (Dirack) 06/11/2020
 * 
 * Email: rodolfo_profissional@hotmail.com
 * 
