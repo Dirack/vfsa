@@ -20,16 +20,14 @@ UNITY = Unity/unity.c
 
 # Default is to run the test
 all:	generate_data_cube Test_vfsacrsnh_lib.x
+	@./Test_vfsacrsnh_lib.x
+	@rm Test_vfsacrsnh_lib.x
 
 %.x:	%.c
 ifdef CENTOS
 	@gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
-	@./$@
-	@rm $@
 else
 	@gcc -I$$RSFSRC/include -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf 
-	@./$@
-	@rm $@
 endif
 
 # Generate a version of the program for debugging with GDB
@@ -60,4 +58,4 @@ help:
 	@echo "Run 'make gdbtest' run test in GDB shell"
 	@echo "Run 'make time' to run optimization tests"
 
-.PHONY:	clean help
+.PHONY:	clean help all
