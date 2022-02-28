@@ -81,12 +81,13 @@ void if_parameters_remains_in_its_limits_after_disturbance(){
 	for(i=0;i<ITMAX;i++){
 		temp=getVfsaIterationTemperature(i,c0,temp0);
 		disturbParameters(temp,cnew,c);
-		TEST_ASSERT(cnew[0]<=Rn_MAX);
-		TEST_ASSERT(cnew[0]>=Rn_MIN);
-		TEST_ASSERT(cnew[1]<=Rnip_MAX);
-		TEST_ASSERT(cnew[1]>=Rnip_MIN);
-		TEST_ASSERT(cnew[2]<=Beta_MAX);
-		TEST_ASSERT(cnew[2]>=Beta_MIN);
+		/* TODO Correct the way you threat float precision */
+		TEST_ASSERT_MESSAGE(cnew[0]<=Rn_MAX+0.00001,"RN > RN_MAX");
+		TEST_ASSERT_MESSAGE(cnew[0]>=Rn_MIN-0.00001,"RN < RN_MIN");
+		TEST_ASSERT_MESSAGE(cnew[1]<=Rnip_MAX+0.00001,"RNIP > RNIP_MAX");
+		TEST_ASSERT_MESSAGE(cnew[1]>=Rnip_MIN-0.00001,"RNIP < RNIP_MIN");
+		TEST_ASSERT_MESSAGE(cnew[2]<=Beta_MAX+0.00001,"BETA > BETA_MAX");
+		TEST_ASSERT_MESSAGE(cnew[2]>=Beta_MIN-0.00001,"BETA < BETA_MIN");
 		c[0]=cnew[0];
 		c[1]=cnew[1];
 		c[2]=cnew[2];
@@ -105,12 +106,11 @@ void nonHyperbolicCRSapp_function_for_pre_calculated_values(){
 
 	/* In the CMP m0 and h0, time is equal to t0 */
 	/* CMP 51 is m0, that is the midle of CMP window */
-	TEST_ASSERT_FLOAT_WITHIN(0.001,t0,returnedValues[51][0]);
+	TEST_ASSERT_FLOAT_WITHIN_MESSAGE(0.001,t0,returnedValues[mMAX+1][0],"Returned t0 is different");
 
 	/* Test pre calculated values in central CMP m0 */
-	for(h=0;h<50;h++){
-		TEST_ASSERT_FLOAT_WITHIN(0.001,
-		preCalculatedValues[h],returnedValues[51][h]);
+	for(h=0;h<hMAX, h>=50;h++){
+		TEST_ASSERT_FLOAT_WITHIN(0.001,preCalculatedValues[h],returnedValues[mMAX+1][h]);
 	}
 }
 
