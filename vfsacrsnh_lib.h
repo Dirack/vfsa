@@ -7,11 +7,11 @@
 #define Beta_MAX 1 // Beta maximum value
 #define Beta_MIN -1 // Beta minimun value
 #define BETA_APERTURE Beta_MAX-Beta_MIN 
-#define Rnip_MAX 4 // RNIP maximum value
-#define Rnip_MIN 0 // RNIP minimum value
+#define Rnip_MAX 5 // RNIP maximum value
+#define Rnip_MIN 1.8 // RNIP minimum value
 #define RNIP_APERTURE Rnip_MAX-Rnip_MIN
-#define Rn_MAX 5 // RN maximum value
-#define Rn_MIN 0 // RN minimum value
+#define Rn_MAX 10 // RN maximum value
+#define Rn_MIN 2.5 // RN minimum value
 #define RN_APERTURE Rn_MAX-Rn_MIN
 #define hMAX 50 // Max of samples to stack in half-offset
 #define mMAX 50 // Max of samples to stack in CMP

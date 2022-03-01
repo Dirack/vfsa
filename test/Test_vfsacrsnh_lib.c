@@ -94,6 +94,23 @@ void if_parameters_remains_in_its_limits_after_disturbance(){
 	}
 }
 
+void if_parameter_RN_is_major_than_RNIP(){
+/*< CRS parameter RN must be major than RNIP >*/
+	int i;
+	const float c0=0.5;
+	const float temp0=10.;
+	float temp;
+	float cnew[3], c[3]={0.,0.,0.};
+	for(i=0;i<ITMAX;i++){
+		temp=getVfsaIterationTemperature(i,c0,temp0);
+		disturbParameters(temp,cnew,c);
+		TEST_ASSERT_MESSAGE(cnew[0]>cnew[1],"Error: RN < RNIP");
+		c[0]=cnew[0];
+		c[1]=cnew[1];
+		c[2]=cnew[2];
+	}
+}
+
 void nonHyperbolicCRSapp_function_for_pre_calculated_values(){
 /*< Non-hyperbolic CRS approximation function comparison with pre calculated values >*/
 	float BETA=0.,RN=3.,RNIP=1.5;
@@ -148,6 +165,7 @@ int main(int argc, char* argv[]){
 	RUN_TEST(getRandomNumberBetween0and1_returns_float_between_0_and_1);
 	RUN_TEST(curent_temperature_is_minor_equal_previous_temperature);
 	RUN_TEST(if_parameters_remains_in_its_limits_after_disturbance);
+	RUN_TEST(if_parameter_RN_is_major_than_RNIP);
 	RUN_TEST(nonHyperbolicCRSapp_function_for_pre_calculated_values);
 	RUN_TEST(semblance_return_value_between_0_1);
 
