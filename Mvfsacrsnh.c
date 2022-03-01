@@ -139,9 +139,9 @@ int main(int argc, char* argv[])
 
 		for(k=0;k<nt0;k++){
 
-				c[0] = 0;
-				c[1] = 0;
-				c[2] = 0;
+				c[0] = 0.;
+				c[1] = 0.;
+				c[2] = 0.;
 				cnew[0] = 0;
 				cnew[1] = 0;
 				cnew[2] = 0;
@@ -171,16 +171,17 @@ int main(int argc, char* argv[])
 						/* Semblance: Non-hyperbolic CRS approximation with data */		
 						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
 
-						#pragma omp critical(evaluate_best_semblance)
-						{
 
 							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
+								#pragma omp critical(evaluate_best_semblance)
+								{
 								otsemb = semb;
 								otrn = RN;
 								otrnip = RNIP;
 								otbeta = BETA;
 								semb0 = semb;			
+								} /* Critical section parallelization */
 							}
 
 							/* VFSA parameters update condition */
@@ -203,7 +204,6 @@ int main(int argc, char* argv[])
 									Em0 = -semb;
 								}	
 							}	
-						} /* Critical section parallelization */
 						
 					} /* loop over iterations */
 

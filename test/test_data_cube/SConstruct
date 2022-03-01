@@ -57,14 +57,14 @@ Flow('dataCube','gaussianReflector reflectorDip',
 
 # Original velocity model
 xmax = 6.0
-zmax = 4.0
+zmax = 5.0
 
 layers = ((1.00,1.00,1.00,1.00),
-          (1.85,1.85,1.85,1.85))
+          (1.50,1.50,1.50,1.50))
 
-velocities = (1.508,
-              1.690,
-              2.0)
+velocities = (2.0,
+              2.5,
+              4.0)
 
 # Generate multi layer model
 mlmod(interfaces='interfaces',
@@ -94,6 +94,19 @@ kinewmod(reflectors='interfaces',
         nh=nh,
         dh=dh)
 
+om0=2
+dm0=0.1
+nm0=10
+ot0=1.
+dt0=0.05
+nt0=1
+v0=2.
+
+# Very Fast Simulated Aneelling Global Optimization (VFSA)
+Flow('crsParameters','simpleDataCube',
+        '''
+        vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=8 
+        ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0))
 
 End()
 
