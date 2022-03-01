@@ -19,7 +19,7 @@ GDBDEP = ../Mvfsacrsnh.c $(DEP)
 UNITY = Unity/unity.c
 
 # Default is to run the test
-all:	generate_data_cube Test_vfsacrsnh_lib.x
+all:	generate_data_cube generate_simple_cube Test_vfsacrsnh_lib.x
 	@./Test_vfsacrsnh_lib.x
 	@rm Test_vfsacrsnh_lib.x
 
@@ -44,7 +44,11 @@ time:	optimization_test/SConstruct
 
 # Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
 generate_data_cube:	test_data_cube/SConstruct
-	@cd test_data_cube && scons -s -Q
+	@cd test_data_cube && scons -s -Q dataCube.rsf
+
+# Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
+generate_simple_cube:	test_data_cube/SConstruct
+	@cd test_data_cube && scons -s -Q simpleDataCube.rsf
 
 gdbtest:	vfsa.x
 	gdb -q --command=gdb_scripts/gdb_test $<
