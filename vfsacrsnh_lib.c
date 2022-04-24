@@ -15,16 +15,16 @@
 
 */
 
-#define Beta_MAX 1 // Beta maximum value
-#define Beta_MIN -1 // Beta minimun value
+#define Beta_MAX 0.5 // Beta maximum value
+#define Beta_MIN -0.5 // Beta minimun value
 #define BETA_APERTURE Beta_MAX-Beta_MIN 
-#define Rnip_MAX 5. // RNIP maximum value
-#define Rnip_MIN 1. // RNIP minimum value
+#define Rnip_MAX 6. // RNIP maximum value
+#define Rnip_MIN 1.8 // RNIP minimum value
 #define RNIP_APERTURE Rnip_MAX-Rnip_MIN
-#define Rn_MAX 10 // RN maximum value
-#define Rn_MIN 2.5 // RN minimum value
+#define Rn_MAX 50 // RN maximum value
+#define Rn_MIN -50 // RN minimum value
 #define RN_APERTURE Rn_MAX-Rn_MIN
-#define hMAX 25 // Max of samples to stack in half-offset
+#define hMAX 50 // Max of samples to stack in half-offset
 #define mMAX 25 // Max of samples to stack in CMP
 #define ITMAX 5000 // Maximum number of iterations in VFSA
 #include <math.h>
@@ -56,7 +56,13 @@ float getVfsaIterationTemperature(	int iteration /* Number of the current iterat
 
 void disturbParameters(  float temperature /* Temperature of the current iteration */,
 			 float* disturbedParameter /* disturbed parameters vector */,
-			 float* parameter /* parameters vector */)
+			 float* parameter /* parameters vector */,
+			 float rn_max,
+			 float rn_min,
+			 float rnip_max,
+			 float rnip_min,
+			 float beta_max,
+			 float beta_min)
 /*< Disturb parameters from the previous VFSA iteration
 
 Note: It receives a parameter vector and distubs it accordingly to 
@@ -65,6 +71,9 @@ VFSA algorithm disturb parameters step.
 {
 	float u;
 	float disturbance;
+	float rn_aperture=rn_max-rn_min;
+	float rnip_aperture=rnip_max-rnip_min;
+	float beta_aperture=beta_max-beta_min;
 
 	u=getRandomNumberBetween0and1();
 			
@@ -72,36 +81,31 @@ VFSA algorithm disturb parameters step.
 
 	/* Disturb RN */
 
-	disturbedParameter[0] = parameter[0] + disturbance * (RN_APERTURE);
+	disturbedParameter[0] = parameter[0] + disturbance * (rn_aperture);
 				
-	if (disturbedParameter[0] >= Rn_MAX || disturbedParameter[0] <= Rn_MIN) {
+	if (disturbedParameter[0] >= rn_max || disturbedParameter[0] <= rn_min) {
 
-		disturbedParameter[0] = (RN_APERTURE) * getRandomNumberBetween0and1() + Rn_MIN;
+		disturbedParameter[0] = (rn_aperture) * getRandomNumberBetween0and1() + rn_min;
 		
 	}
 
 	/* Disturb RNIP */
 
-	disturbedParameter[1] = parameter[1] + disturbance * (RNIP_APERTURE);
+	disturbedParameter[1] = parameter[1] + disturbance * (rnip_aperture);
 				
-	if (disturbedParameter[1] >= Rnip_MAX || disturbedParameter[1] <= Rnip_MIN) {
+	if (disturbedParameter[1] >= (rnip_max) || disturbedParameter[1] <= (rnip_min)) {
 
-		disturbedParameter[1] = (RNIP_APERTURE) * getRandomNumberBetween0and1() + Rnip_MIN;
+		disturbedParameter[1] = (rnip_aperture) * getRandomNumberBetween0and1() + rnip_min;
 		
-	}
-
-	/* RNIP must be minor than RN */
-	if(disturbedParameter[1]>disturbedParameter[0]){
-		disturbedParameter[1] = disturbedParameter[0] - (disturbedParameter[0]-Rnip_MIN) * getRandomNumberBetween0and1();
 	}
 
 	/* Disturb BETA */
 
-	disturbedParameter[2] = parameter[2] + (disturbance/10.) * (BETA_APERTURE);
+	disturbedParameter[2] = parameter[2] + (disturbance/10.) * (beta_aperture);
 
-	if (disturbedParameter[2] >= Beta_MAX || disturbedParameter[2] <= Beta_MIN) {
+	if (disturbedParameter[2] >= beta_max || disturbedParameter[2] <= beta_min) {
 
-		disturbedParameter[2] = (BETA_APERTURE) * getRandomNumberBetween0and1() + Beta_MIN;
+		disturbedParameter[2] = (beta_aperture) * getRandomNumberBetween0and1() + beta_min;
 
 	}		
 
@@ -186,7 +190,7 @@ float semblance(float m0 /* Central CMP of the approximation */,
 			
 		for(ih=0;ih<hMAX;ih++){
 
-			tetai=teta[im-m0_index_init][ih]/dt;
+			tetai=roundf(teta[im-m0_index_init][ih]/dt);
 
 			if(tetai>=0 && tetai < nt){
 				amplitude = t[im][ih][tetai];

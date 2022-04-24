@@ -51,9 +51,18 @@ int main(int argc, char* argv[])
 	float ot0; // t0's axis origin
 	float dt0; // t0's sampling
 	int nt0; // Number of t0's
+	float rnip_max, rnip_min; // RNIP limits
+	float rn_max, rn_min; // RN limits
+	float beta_max, beta_min; // BETA limits
+	float *rnmaxvec=NULL, *rnminvec=NULL; // RN limits vector
+	float *rnipmaxvec=NULL, *rnipminvec=NULL; // RNIP limits vector
+	float *betamaxvec=NULL, *betaminvec=NULL; // BETA limits vector
+	bool varlim; // y, variable search window to parameters
+	int ntest; // Limits vector files dimension
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
+	sf_file rnminfile=NULL, rnmaxfile=NULL, rnipminfile=NULL, rnipmaxfile=NULL, betaminfile=NULL, betamaxfile=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 
 	/* RSF files axis */
@@ -96,6 +105,71 @@ int main(int argc, char* argv[])
 	if(!sf_getint("repeat",&repeat)) repeat=1;
 	/* How many times to perform VFSA global optimization */
 
+	if(!sf_getbool("varlim",&varlim)) varlim=false;
+	/* Set 'y' to use variable window search for parameters */
+
+	if(!sf_getfloat("rnmax",&rn_max)) rn_max=5;
+	/* RN maximum value */
+
+	if(!sf_getfloat("rnmin",&rn_min)) rn_min=0;
+	/* RN minimum value */
+
+	if(!sf_getfloat("rnipmax",&rnip_max)) rnip_max=4.;
+	/* RNIP maximum value */
+
+	if(!sf_getfloat("rnipmin",&rnip_min)) rnip_min=0;
+	/* RNIP minimum value */
+
+	if(!sf_getfloat("betamax",&beta_max)) beta_max=1;
+	/* BETA maximun value (radians) */
+
+	if(!sf_getfloat("betamin",&beta_min)) beta_min=-1;
+	/* BETA minimum value (radians) */
+
+	if(varlim){
+		rnmaxfile = sf_input("rnmaxfile");
+		if(!sf_histint(rnmaxfile,"n1",&ntest)) sf_error("No n1= in rnmaxfile");
+		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in rnmaxfile");
+		rnmaxvec = sf_floatalloc(nt0*nm0);
+		sf_floatread(rnmaxvec,nt0*nm0,rnmaxfile);
+		sf_fileclose(rnmaxfile);
+
+		rnminfile = sf_input("rnminfile");
+		if(!sf_histint(rnminfile,"n1",&ntest)) sf_error("No n1= in rnminfile");
+		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in rnminfile");
+		rnminvec = sf_floatalloc(nt0*nm0);
+		sf_floatread(rnminvec,nt0*nm0,rnminfile);
+		sf_fileclose(rnminfile);
+
+		rnipmaxfile = sf_input("rnipmaxfile");
+		if(!sf_histint(rnipmaxfile,"n1",&ntest)) sf_error("No n1= in rnipmaxfile");
+		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in rnipmaxfile");
+		rnipmaxvec = sf_floatalloc(nt0*nm0);
+		sf_floatread(rnipmaxvec,nt0*nm0,rnipmaxfile);
+		sf_fileclose(rnipmaxfile);
+
+		rnipminfile = sf_input("rnipminfile");
+		if(!sf_histint(rnipminfile,"n1",&ntest)) sf_error("No n1= in rnipminfile");
+		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in ripminfile");
+		rnipminvec = sf_floatalloc(nt0*nm0);
+		sf_floatread(rnipminvec,nt0*nm0,rnipminfile);
+		sf_fileclose(rnipminfile);
+
+		betamaxfile = sf_input("betamaxfile");
+		if(!sf_histint(betamaxfile,"n1",&ntest)) sf_error("No n1= in betamaxfile");
+		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in betamaxfile");
+		betamaxvec = sf_floatalloc(nt0*nm0);
+		sf_floatread(betamaxvec,nt0*nm0,betamaxfile);
+		sf_fileclose(betamaxfile);
+
+		betaminfile = sf_input("betaminfile");
+		if(!sf_histint(betaminfile,"n1",&ntest)) sf_error("No n1= in betaminfile");
+		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in betaminfile");
+		betaminvec = sf_floatalloc(nt0*nm0);
+		sf_floatread(betaminvec,nt0*nm0,betaminfile);
+		sf_fileclose(betaminfile);
+	}
+
 	if (!sf_histint(in,"n1",&nt)) sf_error("No n1= in input");
 	if (!sf_histfloat(in,"d1",&dt)) sf_error("No d1= in input");
 	if (!sf_histfloat(in,"o1",&ot)) sf_error("No o1= in input");
@@ -106,8 +180,8 @@ int main(int argc, char* argv[])
 	if (!sf_histfloat(in,"d3",&dm)) sf_error("No d3= in input");
 	if (!sf_histfloat(in,"o3",&om)) sf_error("No o3= in input");
 
-	if(! sf_getbool("verb",&verb)) verb=0;
-	/* 1: active mode; 0: quiet mode */
+	if(! sf_getbool("verb",&verb)) verb=false;
+	/* y: active mode; n: quiet mode */
 
 	if (verb) {
 
@@ -120,8 +194,6 @@ int main(int argc, char* argv[])
 		sf_warning("n3=%i d3=%f o3=%f",nm,dm,om);
 	}
 	
-	srand(time(NULL));
-
 	/* Read seismic data cube */
 	t=sf_floatalloc3(nt,nh,nm);
 	sf_floatread(t[0][0],nm*nh*nt,in);
@@ -130,7 +202,7 @@ int main(int argc, char* argv[])
 
 	semb0=0;
 
-	/* Save optimized parameters in ' file */
+	/* Save optimized parameters in vector */
 	otm=sf_floatalloc2(8,nm0*nt0);
 
 	for(l=0;l<nm0;l++){
@@ -139,15 +211,29 @@ int main(int argc, char* argv[])
 
 		for(k=0;k<nt0;k++){
 
-				c[0] = 0.;
-				c[1] = 0.;
-				c[2] = 0.;
-				cnew[0] = 0;
-				cnew[1] = 0;
-				cnew[2] = 0;
-				otsemb = 0.0;
-				semb0 = 0.0;
 				t0 = k*dt0+ot0;
+
+				srand(time(NULL)*t0*m0);
+
+				if(varlim){
+					rn_max=rnmaxvec[k+nt0*l];
+					rn_min=rnminvec[k+nt0*l];
+					rnip_max=rnipmaxvec[k+nt0*l];
+					rnip_min=rnipminvec[k+nt0*l];
+					beta_max=betamaxvec[k+nt0*l];
+					beta_min=betaminvec[k+nt0*l];
+				}
+				c[0] = (rn_max-rn_min)/2.;
+				c[1] = (rnip_max-rnip_min)/2.;
+				c[2] = (beta_max-beta_min)/2.;
+				cnew[0] = c[0];
+				cnew[1] = c[1];
+				cnew[2] = c[2];
+				otrn=c[0];
+				otrnip=c[1];
+				otbeta=c[2];
+				semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t);
+				otsemb = semb0;
 				#pragma omp parallel for \
 				private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
 				shared(semb0,otsemb,otrn,otrnip,otbeta) \
@@ -160,17 +246,16 @@ int main(int argc, char* argv[])
 						temp=getVfsaIterationTemperature(q,c0,temp0);
 										
 						/* parameter disturbance */
-						disturbParameters(temp,cnew,c);
-																				
+						disturbParameters(temp,cnew,c,rn_max,
+						rn_min,rnip_max,rnip_min,beta_max,beta_min);
+
 						RN = cnew[0];
 						RNIP = cnew[1];
 						BETA = cnew[2];
 
 						semb=0;
 					
-						/* Semblance: Non-hyperbolic CRS approximation with data */		
 						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
-
 
 							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
@@ -207,8 +292,6 @@ int main(int argc, char* argv[])
 						
 					} /* loop over iterations */
 
-					c[0]=0;c[1]=0;c[2]=0;
-
 				} /* repeat VFSA global optimization */
 				otm[l*nt0+k][0] = otrn;
 				otm[l*nt0+k][1] = otrnip;
@@ -231,7 +314,6 @@ int main(int argc, char* argv[])
 	ax = sf_maxa(8, 0, 1);
 	ay = sf_maxa(nt0*nm0, 0, 1);
 	az = sf_maxa(1, 0, 1);
-
 
 	/* sf_oaxa(file, axis, axis index) */
 	sf_oaxa(out,ax,1);

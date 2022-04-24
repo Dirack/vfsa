@@ -4,16 +4,16 @@
 #define _vfsacrsnh_lib_h
 
 
-#define Beta_MAX 1 // Beta maximum value
-#define Beta_MIN -1 // Beta minimun value
+#define Beta_MAX 0.5 // Beta maximum value
+#define Beta_MIN -0.5 // Beta minimun value
 #define BETA_APERTURE Beta_MAX-Beta_MIN 
-#define Rnip_MAX 5. // RNIP maximum value
-#define Rnip_MIN 1. // RNIP minimum value
+#define Rnip_MAX 6. // RNIP maximum value
+#define Rnip_MIN 1.8 // RNIP minimum value
 #define RNIP_APERTURE Rnip_MAX-Rnip_MIN
-#define Rn_MAX 10 // RN maximum value
-#define Rn_MIN 2.5 // RN minimum value
+#define Rn_MAX 50 // RN maximum value
+#define Rn_MIN -50 // RN minimum value
 #define RN_APERTURE Rn_MAX-Rn_MIN
-#define hMAX 25 // Max of samples to stack in half-offset
+#define hMAX 50 // Max of samples to stack in half-offset
 #define mMAX 25 // Max of samples to stack in CMP
 #define ITMAX 5000 // Maximum number of iterations in VFSA
 #include <math.h>
@@ -39,7 +39,13 @@ float getVfsaIterationTemperature(	int iteration /* Number of the current iterat
 
 void disturbParameters(  float temperature /* Temperature of the current iteration */,
 			 float* disturbedParameter /* disturbed parameters vector */,
-			 float* parameter /* parameters vector */);
+			 float* parameter /* parameters vector */,
+			 float rn_max,
+			 float rn_min,
+			 float rnip_max,
+			 float rnip_min,
+			 float beta_max,
+			 float beta_min);
 /*< Disturb parameters from the previous VFSA iteration
 
 Note: It receives a parameter vector and distubs it accordingly to 
