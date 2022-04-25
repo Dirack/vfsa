@@ -78,16 +78,17 @@ void if_parameters_remains_in_its_limits_after_disturbance(){
 	const float temp0=10.;
 	float temp;
 	float cnew[3], c[3]={0.,0.,0.};
+	float rn_max=5., rn_min=0., rnip_max=4., rnip_min=0., beta_max=1., beta_min=-1.;
 	for(i=0;i<ITMAX;i++){
 		temp=getVfsaIterationTemperature(i,c0,temp0);
-		disturbParameters(temp,cnew,c);
+		disturbParameters(temp,cnew,c,rn_max,rn_min,rnip_max,rnip_min,beta_max,beta_min);
 		/* TODO Correct the way you threat float precision */
-		TEST_ASSERT_MESSAGE(cnew[0]<=Rn_MAX+0.00001,"RN > RN_MAX");
-		TEST_ASSERT_MESSAGE(cnew[0]>=Rn_MIN-0.00001,"RN < RN_MIN");
-		TEST_ASSERT_MESSAGE(cnew[1]<=Rnip_MAX+0.00001,"RNIP > RNIP_MAX");
-		TEST_ASSERT_MESSAGE(cnew[1]>=Rnip_MIN-0.00001,"RNIP < RNIP_MIN");
-		TEST_ASSERT_MESSAGE(cnew[2]<=Beta_MAX+0.00001,"BETA > BETA_MAX");
-		TEST_ASSERT_MESSAGE(cnew[2]>=Beta_MIN-0.00001,"BETA < BETA_MIN");
+		TEST_ASSERT_MESSAGE(cnew[0]<=rn_max+0.00001,"RN > RN_MAX");
+		TEST_ASSERT_MESSAGE(cnew[0]>=rn_min-0.00001,"RN < RN_MIN");
+		TEST_ASSERT_MESSAGE(cnew[1]<=rnip_max+0.00001,"RNIP > RNIP_MAX");
+		TEST_ASSERT_MESSAGE(cnew[1]>=rnip_min-0.00001,"RNIP < RNIP_MIN");
+		TEST_ASSERT_MESSAGE(cnew[2]<=beta_max+0.00001,"BETA > BETA_MAX");
+		TEST_ASSERT_MESSAGE(cnew[2]>=beta_min-0.00001,"BETA < BETA_MIN");
 		c[0]=cnew[0];
 		c[1]=cnew[1];
 		c[2]=cnew[2];
@@ -101,9 +102,10 @@ void if_parameter_RN_is_major_than_RNIP(){
 	const float temp0=10.;
 	float temp;
 	float cnew[3], c[3]={0.,0.,0.};
+	float rn_max=5., rn_min=0., rnip_max=4., rnip_min=0., beta_max=1., beta_min=-1.;
 	for(i=0;i<ITMAX;i++){
 		temp=getVfsaIterationTemperature(i,c0,temp0);
-		disturbParameters(temp,cnew,c);
+		disturbParameters(temp,cnew,c,rn_max,rn_min,rnip_max,rnip_min,beta_max,beta_min);
 		TEST_ASSERT_MESSAGE(cnew[0]>cnew[1],"Error: RN < RNIP");
 		c[0]=cnew[0];
 		c[1]=cnew[1];
