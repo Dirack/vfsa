@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 	float t0; // Normal ray time travel
 	float cnew[3]; // Temporary parameters vector - actual iteration
 	float c[3]; // Temporary parameters vector - last iteration
-	float **otm; // Optimized parameters
+	float ***otm; // Optimized parameters
 	float otrn=0., otrnip=0., otbeta=0.; // Optimized parameters
 	float otsemb=0.; // Optimized semblance
 	float deltaE, PM; // Metrópolis criteria
@@ -203,7 +203,7 @@ int main(int argc, char* argv[])
 	semb0=0;
 
 	/* Save optimized parameters in vector */
-	otm=sf_floatalloc2(8,nm0*nt0);
+	otm=sf_floatalloc3(nt0,nm0,8);
 
 	for(l=0;l<nm0;l++){
 		
@@ -293,14 +293,14 @@ int main(int argc, char* argv[])
 					} /* loop over iterations */
 
 				} /* repeat VFSA global optimization */
-				otm[l*nt0+k][0] = otrn;
-				otm[l*nt0+k][1] = otrnip;
-				otm[l*nt0+k][2] = otbeta;
-				otm[l*nt0+k][3] = otsemb;
-				otm[l*nt0+k][4] = c0;
-				otm[l*nt0+k][5] = temp0;
-				otm[l*nt0+k][6] = t0;
-				otm[l*nt0+k][7] = m0;
+				otm[0][l][k] = otrn;
+				otm[1][l][k] = otrnip;
+				otm[2][l][k] = otbeta;
+				otm[3][l][k] = otsemb;
+				otm[4][l][k] = c0;
+				otm[5][l][k] = temp0;
+				otm[6][l][k] = t0;
+				otm[7][l][k] = m0;
 			
 				/* Show optimized parameters on screen before save them */
 				if(verb) sf_warning("(%d/%d): RN=%.3f, RNIP=%.3f, BETA=%.3f, SEMB=%.3f ;",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
@@ -325,5 +325,5 @@ int main(int argc, char* argv[])
 	sf_putstring(out,"unit2","km");
 	sf_putstring(out,"label3","parameters");
 	sf_putstring(out,"unit3","RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0");
-	sf_floatwrite(otm[0],8*nt0*nm0,out);
+	sf_floatwrite(otm[0][0],8*nt0*nm0,out);
 }
