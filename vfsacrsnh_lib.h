@@ -4,18 +4,8 @@
 #define _vfsacrsnh_lib_h
 
 
-#define Beta_MAX 0.5 // Beta maximum value
-#define Beta_MIN -0.5 // Beta minimun value
-#define BETA_APERTURE Beta_MAX-Beta_MIN 
-#define Rnip_MAX 6. // RNIP maximum value
-#define Rnip_MIN 1.8 // RNIP minimum value
-#define RNIP_APERTURE Rnip_MAX-Rnip_MIN
-#define Rn_MAX 50 // RN maximum value
-#define Rn_MIN -50 // RN minimum value
-#define RN_APERTURE Rn_MAX-Rn_MIN
 #define hMAX 50 // Max of samples to stack in half-offset
 #define mMAX 25 // Max of samples to stack in CMP
-#define ITMAX 5000 // Maximum number of iterations in VFSA
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

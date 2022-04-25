@@ -59,6 +59,7 @@ int main(int argc, char* argv[])
 	float *betamaxvec=NULL, *betaminvec=NULL; // BETA limits vector
 	bool varlim; // y, variable search window to parameters
 	int ntest; // Limits vector files dimension
+	int itmax; // Maximum VFSA iterations
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -125,6 +126,9 @@ int main(int argc, char* argv[])
 
 	if(!sf_getfloat("betamin",&beta_min)) beta_min=-1;
 	/* BETA minimum value (radians) */
+
+	if(!sf_getint("itmax",&itmax)) itmax=5000;
+	/* Max VFSA iterations */
 
 	if(varlim){
 		rnmaxfile = sf_input("rnmaxfile");
@@ -240,7 +244,7 @@ int main(int argc, char* argv[])
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
 
-					for (q=0; q <ITMAX; q++){
+					for (q=0; q <itmax; q++){
 							
 						/* calculate VFSA temperature for this iteration */
 						temp=getVfsaIterationTemperature(q,c0,temp0);
@@ -265,7 +269,7 @@ int main(int argc, char* argv[])
 								otrn = RN;
 								otrnip = RNIP;
 								otbeta = BETA;
-								semb0 = semb;			
+								semb0 = semb;
 								} /* Critical section parallelization */
 							}
 
@@ -305,8 +309,8 @@ int main(int argc, char* argv[])
 				/* Show optimized parameters on screen before save them */
 				if(verb) sf_warning("(%d/%d): RN=%.3f, RNIP=%.3f, BETA=%.3f, SEMB=%.3f ;",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
 
-			}
-	}
+			} /* Loop over t0s */
+	} /* Loop over m0s */
 
 	free(t);
 
