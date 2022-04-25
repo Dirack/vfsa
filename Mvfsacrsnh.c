@@ -311,19 +311,19 @@ int main(int argc, char* argv[])
 	free(t);
 
 	/* axis = sf_maxa(n,o,d)*/
-	ax = sf_maxa(8, 0, 1);
-	ay = sf_maxa(nt0, ot0, dt0);
-	az = sf_maxa(nm0, om0, dm0);
+	ax = sf_maxa(nt0, ot0, dt0);
+	ay = sf_maxa(nm0, om0, dm0);
+	az = sf_maxa(8, 0, 1);
 
 	/* sf_oaxa(file, axis, axis index) */
 	sf_oaxa(out,ax,1);
 	sf_oaxa(out,ay,2);
 	sf_oaxa(out,az,3);
-	sf_putstring(out,"label1","parameters");
-	sf_putstring(out,"unit1","RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0");
-	sf_putstring(out,"label2","t0");
-	sf_putstring(out,"unit2","s");
-	sf_putstring(out,"label3","m0");
-	sf_putstring(out,"unit3","km");
+	sf_putstring(out,"label1","t0");
+	sf_putstring(out,"unit1","s");
+	sf_putstring(out,"label2","m0");
+	sf_putstring(out,"unit2","km");
+	sf_putstring(out,"label3","parameters");
+	sf_putstring(out,"unit3","RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0");
 	sf_floatwrite(otm[0],8*nt0*nm0,out);
 }
