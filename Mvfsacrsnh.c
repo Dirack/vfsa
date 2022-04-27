@@ -1,6 +1,6 @@
 /* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Aneeling (VFSA) Global Optimization. This program uses the Non-Hyperbolic CRS approximation (Fomel and Kazinnik, 2013) to fit seismic data cube and get the best parameters using semblance criteria.
 
-Package version: 2.0.1
+Package version: 2.0.2
 
 Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 
@@ -190,12 +190,23 @@ int main(int argc, char* argv[])
 	if (verb) {
 
 		sf_warning("Active mode on!!!");
-		sf_warning("Command line parameters: "); 
-		sf_warning("m0=%f v0=%f t0=%f c0=%f temp0=%f repeat=%i",m0,v0,t0,c0,temp0,repeat);
 		sf_warning("Input file parameters: ");
 		sf_warning("n1=%i d1=%f o1=%f",nt,dt,ot);
 		sf_warning("n2=%i d2=%f o2=%f",nh,dh,oh);
 		sf_warning("n3=%i d3=%f o3=%f",nm,dm,om);
+		sf_warning("Command line parameters: "); 
+		sf_warning("c0=%f temp0=%f v0=%f itmax=%d repeat=%d",c0,temp0,v0,itmax,repeat);
+		sf_warning("nt0=%d ot0=%f dt0=%f (%f s)",nt0,ot0,dt0,dt0*nt0);
+		sf_warning("nm0=%d om0=%f dm0=%f (%f km)",nm0,om0,dm0,dm0*nm0);
+		if(varlim){
+			sf_warning("Parameters search window: varlim=y");
+			sf_warning("FROM FILES");
+		}else{
+			sf_warning("Parameters search window: varlim=n");
+			sf_warning("%f < RN < %f",rn_min,rn_max);
+			sf_warning("%f < RNIP < %f",rnip_min,rnip_max);
+			sf_warning("%f < BETA < %f",beta_min,beta_max);
+		}
 	}
 	
 	/* Read seismic data cube */
