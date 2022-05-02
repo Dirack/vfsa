@@ -54,11 +54,11 @@ int main(int argc, char* argv[])
 	float rnip_max, rnip_min; // RNIP limits
 	float rn_max, rn_min; // RN limits
 	float beta_max, beta_min; // BETA limits
-	float *rnmaxvec=NULL, *rnminvec=NULL; // RN limits vector
-	float *rnipmaxvec=NULL, *rnipminvec=NULL; // RNIP limits vector
-	float *betamaxvec=NULL, *betaminvec=NULL; // BETA limits vector
+	float **rnmaxvec=NULL, **rnminvec=NULL; // RN limits vector
+	float **rnipmaxvec=NULL, **rnipminvec=NULL; // RNIP limits vector
+	float **betamaxvec=NULL, **betaminvec=NULL; // BETA limits vector
 	bool varlim; // y, variable search window to parameters
-	int ntest; // Limits vector files dimension
+	int ntest1, ntest2; // Limits vector files dimension
 	int itmax; // Maximum VFSA iterations
 
 	/* RSF files I/O */  
@@ -132,45 +132,57 @@ int main(int argc, char* argv[])
 
 	if(varlim){
 		rnmaxfile = sf_input("rnmaxfile");
-		if(!sf_histint(rnmaxfile,"n1",&ntest)) sf_error("No n1= in rnmaxfile");
-		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in rnmaxfile");
-		rnmaxvec = sf_floatalloc(nt0*nm0);
-		sf_floatread(rnmaxvec,nt0*nm0,rnmaxfile);
+		if(!sf_histint(rnmaxfile,"n1",&ntest1)) sf_error("No n1= in rnmaxfile");
+		if(!sf_histint(rnmaxfile,"n2",&ntest2)) sf_error("No n2= in rnmaxfile");
+		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in rnmaxfile");
+		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in rnmaxfile");
+		rnmaxvec = sf_floatalloc2(nt0,nm0);
+		sf_floatread(rnmaxvec[0],nt0*nm0,rnmaxfile);
 		sf_fileclose(rnmaxfile);
 
 		rnminfile = sf_input("rnminfile");
-		if(!sf_histint(rnminfile,"n1",&ntest)) sf_error("No n1= in rnminfile");
-		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in rnminfile");
-		rnminvec = sf_floatalloc(nt0*nm0);
-		sf_floatread(rnminvec,nt0*nm0,rnminfile);
+		if(!sf_histint(rnminfile,"n1",&ntest1)) sf_error("No n1= in rnminfile");
+		if(!sf_histint(rnminfile,"n2",&ntest2)) sf_error("No n2= in rnminfile");
+		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in rnminfile");
+		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in rnminfile");
+		rnminvec = sf_floatalloc2(nt0,nm0);
+		sf_floatread(rnminvec[0],nt0*nm0,rnminfile);
 		sf_fileclose(rnminfile);
 
 		rnipmaxfile = sf_input("rnipmaxfile");
-		if(!sf_histint(rnipmaxfile,"n1",&ntest)) sf_error("No n1= in rnipmaxfile");
-		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in rnipmaxfile");
-		rnipmaxvec = sf_floatalloc(nt0*nm0);
-		sf_floatread(rnipmaxvec,nt0*nm0,rnipmaxfile);
+		if(!sf_histint(rnipmaxfile,"n1",&ntest1)) sf_error("No n1= in rnipmaxfile");
+		if(!sf_histint(rnipmaxfile,"n2",&ntest2)) sf_error("No n2= in rnipmaxfile");
+		if(ntest1!=nt0) sf_error("n2 should be equal to nt0 in rnipmaxfile");
+		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in rnipmaxfile");
+		rnipmaxvec = sf_floatalloc2(nt0,nm0);
+		sf_floatread(rnipmaxvec[0],nt0*nm0,rnipmaxfile);
 		sf_fileclose(rnipmaxfile);
 
 		rnipminfile = sf_input("rnipminfile");
-		if(!sf_histint(rnipminfile,"n1",&ntest)) sf_error("No n1= in rnipminfile");
-		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in ripminfile");
-		rnipminvec = sf_floatalloc(nt0*nm0);
-		sf_floatread(rnipminvec,nt0*nm0,rnipminfile);
+		if(!sf_histint(rnipminfile,"n1",&ntest1)) sf_error("No n1= in rnipminfile");
+		if(!sf_histint(rnipminfile,"n2",&ntest2)) sf_error("No n2= in rnipminfile");
+		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in ripminfile");
+		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in ripminfile");
+		rnipminvec = sf_floatalloc2(nt0,nm0);
+		sf_floatread(rnipminvec[0],nt0*nm0,rnipminfile);
 		sf_fileclose(rnipminfile);
 
 		betamaxfile = sf_input("betamaxfile");
-		if(!sf_histint(betamaxfile,"n1",&ntest)) sf_error("No n1= in betamaxfile");
-		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in betamaxfile");
-		betamaxvec = sf_floatalloc(nt0*nm0);
-		sf_floatread(betamaxvec,nt0*nm0,betamaxfile);
+		if(!sf_histint(betamaxfile,"n1",&ntest1)) sf_error("No n1= in betamaxfile");
+		if(!sf_histint(betamaxfile,"n2",&ntest2)) sf_error("No n2= in betamaxfile");
+		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in betamaxfile");
+		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in betamaxfile");
+		betamaxvec = sf_floatalloc2(nt0,nm0);
+		sf_floatread(betamaxvec[0],nt0*nm0,betamaxfile);
 		sf_fileclose(betamaxfile);
 
 		betaminfile = sf_input("betaminfile");
-		if(!sf_histint(betaminfile,"n1",&ntest)) sf_error("No n1= in betaminfile");
-		if(ntest!=(nt0*nm0)) sf_error("n1 should be equal to nt0*nm0 in betaminfile");
-		betaminvec = sf_floatalloc(nt0*nm0);
-		sf_floatread(betaminvec,nt0*nm0,betaminfile);
+		if(!sf_histint(betaminfile,"n1",&ntest1)) sf_error("No n1= in betaminfile");
+		if(!sf_histint(betaminfile,"n2",&ntest2)) sf_error("No n2= in betaminfile");
+		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in betaminfile");
+		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in betaminfile");
+		betaminvec = sf_floatalloc2(nt0,nm0);
+		sf_floatread(betaminvec[0],nt0*nm0,betaminfile);
 		sf_fileclose(betaminfile);
 	}
 
@@ -231,16 +243,16 @@ int main(int argc, char* argv[])
 				srand(time(NULL)*t0*m0);
 
 				if(varlim){
-					rn_max=rnmaxvec[k+nt0*l];
-					rn_min=rnminvec[k+nt0*l];
-					rnip_max=rnipmaxvec[k+nt0*l];
-					rnip_min=rnipminvec[k+nt0*l];
-					beta_max=betamaxvec[k+nt0*l];
-					beta_min=betaminvec[k+nt0*l];
+					rn_max=rnmaxvec[l][k];
+					rn_min=rnminvec[l][k];
+					rnip_max=rnipmaxvec[l][k];
+					rnip_min=rnipminvec[l][k];
+					beta_max=betamaxvec[l][k];
+					beta_min=betaminvec[l][k];
 				}
-				c[0] = (rn_max-rn_min)/2.;
-				c[1] = (rnip_max-rnip_min)/2.;
-				c[2] = (beta_max-beta_min)/2.;
+				c[0] = (rn_max+rn_min)/2.;
+				c[1] = (rnip_max+rnip_min)/2.;
+				c[2] = (beta_max+beta_min)/2.;
 				cnew[0] = c[0];
 				cnew[1] = c[1];
 				cnew[2] = c[2];
@@ -249,6 +261,7 @@ int main(int argc, char* argv[])
 				otbeta=c[2];
 				semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t);
 				otsemb = semb0;
+if(cnew[1]<rnip_min) sf_error("rnip < rnip_min, %f < %f < %f",rnip_max,cnew[1],rnip_min);
 				#pragma omp parallel for \
 				private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
 				shared(semb0,otsemb,otrn,otrnip,otbeta) \

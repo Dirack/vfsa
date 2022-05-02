@@ -16,7 +16,7 @@
 */
 
 #define hMAX 50 // Max of samples to stack in half-offset
-#define mMAX 25 // Max of samples to stack in CMP
+#define mMAX 50 // Max of samples to stack in CMP
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,6 +88,8 @@ VFSA algorithm disturb parameters step.
 		disturbedParameter[1] = (rnip_aperture) * getRandomNumberBetween0and1() + rnip_min;
 		
 	}
+
+	if(disturbedParameter[1]<rnip_min) sf_error("rnip < rnip_min, %f < %f",disturbedParameter[1],rnip_min);
 
 	/* Disturb BETA */
 

@@ -5,7 +5,7 @@
 
 
 #define hMAX 50 // Max of samples to stack in half-offset
-#define mMAX 25 // Max of samples to stack in CMP
+#define mMAX 50 // Max of samples to stack in CMP
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
