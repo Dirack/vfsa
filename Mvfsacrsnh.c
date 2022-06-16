@@ -60,10 +60,14 @@ int main(int argc, char* argv[])
 	bool varlim; // y, variable search window to parameters
 	int ntest1, ntest2; // Limits vector files dimension
 	int itmax; // Maximum VFSA iterations
+	float t0i, t0f;
+	int ki, kf;
+	bool interval;
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
 	sf_file rnminfile=NULL, rnmaxfile=NULL, rnipminfile=NULL, rnipmaxfile=NULL, betaminfile=NULL, betamaxfile=NULL;
+	sf_file parameters=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 
 	/* RSF files axis */
@@ -129,6 +133,14 @@ int main(int argc, char* argv[])
 
 	if(!sf_getint("itmax",&itmax)) itmax=5000;
 	/* Max VFSA iterations */
+
+	if(!sf_getfloat("t0i",&t0i)) t0i=0.;
+	/* Initial t0 */
+
+	if(!sf_getfloat("t0f",&t0f)) t0f=nt0*dt0+ot0;
+	/* final t0 */
+
+	if(!sf_getbool("interval",&interval)) interval=false;
 
 	if(varlim){
 		rnmaxfile = sf_input("rnmaxfile");
@@ -230,13 +242,22 @@ int main(int argc, char* argv[])
 	semb0=0;
 
 	/* Save optimized parameters in vector */
-	otm=sf_floatalloc3(nt0,nm0,8);
+	otm=sf_floatalloc3(nt0,nm0,4);
+	if(interval){
+		parameters=sf_input("parameters");
+		sf_floatread(otm[0][0],nt0*nm0*4,parameters);
+		ki=(int)((t0i-ot0)/dt0);
+		kf=(int)((t0f-ot0)/dt0);
+	}else{
+		ki=0;
+		kf=nt0;
+	}
 
 	for(l=0;l<nm0;l++){
 		
 		m0 = l*dm0+om0;
 
-		for(k=0;k<nt0;k++){
+		for(k=ki;k<kf;k++){
 
 				t0 = k*dt0+ot0;
 
@@ -250,18 +271,32 @@ int main(int argc, char* argv[])
 					beta_max=betamaxvec[l][k];
 					beta_min=betaminvec[l][k];
 				}
-				c[0] = (rn_max+rn_min)/2.;
-				c[1] = (rnip_max+rnip_min)/2.;
-				c[2] = (beta_max+beta_min)/2.;
-				cnew[0] = c[0];
-				cnew[1] = c[1];
-				cnew[2] = c[2];
-				otrn=c[0];
-				otrnip=c[1];
-				otbeta=c[2];
-				semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t);
-				otsemb = semb0;
-if(cnew[1]<rnip_min) sf_error("rnip < rnip_min, %f < %f < %f",rnip_max,cnew[1],rnip_min);
+				if(interval){
+					c[0] = otm[0][l][k];
+					c[1] = otm[1][l][k];
+					c[2] = otm[2][l][k];
+					cnew[0] = c[0];
+					cnew[1] = c[1];
+					cnew[2] = c[2];
+					otrn=c[0];
+					otrnip=c[1];
+					otbeta=c[2];
+					semb0=otm[3][l][k];
+					otsemb = semb0;
+				}else{
+					c[0] = (rn_max+rn_min)/2.;
+					c[1] = (rnip_max+rnip_min)/2.;
+					c[2] = (beta_max+beta_min)/2.;
+					cnew[0] = c[0];
+					cnew[1] = c[1];
+					cnew[2] = c[2];
+					otrn=c[0];
+					otrnip=c[1];
+					otbeta=c[2];
+					semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t);
+					otsemb = semb0;
+				}
+
 				#pragma omp parallel for \
 				private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
 				shared(semb0,otsemb,otrn,otrnip,otbeta) \
@@ -325,13 +360,9 @@ if(cnew[1]<rnip_min) sf_error("rnip < rnip_min, %f < %f < %f",rnip_max,cnew[1],r
 				otm[1][l][k] = otrnip;
 				otm[2][l][k] = otbeta;
 				otm[3][l][k] = otsemb;
-				otm[4][l][k] = c0;
-				otm[5][l][k] = temp0;
-				otm[6][l][k] = t0;
-				otm[7][l][k] = m0;
 			
 				/* Show optimized parameters on screen before save them */
-				if(verb) sf_warning("(%d/%d): RN=%.3f, RNIP=%.3f, BETA=%.3f, SEMB=%.3f ;",l*nt0+k+1,nm0*nt0,otrn,otrnip,otbeta,otsemb);
+				if(verb) sf_warning("(%d/%d): RN=%.3f, RNIP=%.3f, BETA=%.3f, SEMB=%.3f ;",l*(kf-ki)+k+1,nm0*(kf-ki),otrn,otrnip,otbeta,otsemb);
 
 			} /* Loop over t0s */
 	} /* Loop over m0s */
@@ -341,7 +372,7 @@ if(cnew[1]<rnip_min) sf_error("rnip < rnip_min, %f < %f < %f",rnip_max,cnew[1],r
 	/* axis = sf_maxa(n,o,d)*/
 	ax = sf_maxa(nt0, ot0, dt0);
 	ay = sf_maxa(nm0, om0, dm0);
-	az = sf_maxa(8, 0, 1);
+	az = sf_maxa(4, 0, 1);
 
 	/* sf_oaxa(file, axis, axis index) */
 	sf_oaxa(out,ax,1);
@@ -352,6 +383,8 @@ if(cnew[1]<rnip_min) sf_error("rnip < rnip_min, %f < %f < %f",rnip_max,cnew[1],r
 	sf_putstring(out,"label2","m0");
 	sf_putstring(out,"unit2","km");
 	sf_putstring(out,"label3","parameters");
-	sf_putstring(out,"unit3","RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0");
-	sf_floatwrite(otm[0][0],8*nt0*nm0,out);
+	sf_putstring(out,"unit3","RN, RNIP, BETA, Semblance");
+	sf_putfloat(out,"C0",c0);
+	sf_putfloat(out,"temp0",temp0);
+	sf_floatwrite(otm[0][0],4*nt0*nm0,out);
 }

@@ -15,6 +15,7 @@
 #include "Unity/unity.h"
 #include "../vfsacrsnh_lib.h"
 #include <rsf.h>
+#define ITMAX 100
 
 /* Seimic datacube parameters to be used in tests */
 float*** t; // it stores seismic datacube
