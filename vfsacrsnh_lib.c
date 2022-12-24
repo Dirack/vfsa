@@ -113,7 +113,8 @@ void nonHyperbolicCRSapp(	float t[2*mMAX+1][hMAX] /* non-hyperbolic CRS travelti
 				float v0 /* Near surface velocity */,
 				float RN /* RN, CRS parameter */,
 				float RNIP /* RNIP, CRS parameter */,
-				float BETA /* BETA, CRS parameter */)
+				float BETA /* BETA, CRS parameter */,
+				bool half /* Half-Offset coordinates */)
 /*< Returns the Non hyperbolic CRS approximation surface (FOMEL; KAZINNIK, 2013) >*/
 {
 	float m0_index=(int)(m0/dm);
@@ -136,6 +137,7 @@ void nonHyperbolicCRSapp(	float t[2*mMAX+1][hMAX] /* non-hyperbolic CRS travelti
 		for(ih=0;ih<hMAX;ih++){
 			
 			h=ih*dh+oh;
+			if(!half) h/=2;
 			mmh=m-h;
 			mph=m+h;
 
@@ -160,7 +162,8 @@ float semblance(float m0 /* Central CMP of the approximation */,
 		float RN /* RN, CRS parameter */,
 		float RNIP /* RNIP, CRS parameter */,
 		float BETA /* BETA, CRS parameter */,
-		float*** t /* reflection data cube A(m,h,t) */)
+		float*** t /* reflection data cube A(m,h,t) */,
+		bool half /* Half-offset coordinates */)
 /*< Calculate semblance between the Non Hyperbolic CRS approximation surface and reflection data >*/
 {
 
@@ -176,7 +179,7 @@ float semblance(float m0 /* Central CMP of the approximation */,
 	m0_index_init = (int)(m0/dm)-mMAX;
 	m0_index_end = (int)(m0/dm)+mMAX;
 
-	nonHyperbolicCRSapp(teta,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA);
+	nonHyperbolicCRSapp(teta,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA,half);
 
 	for (im=m0_index_init; im < m0_index_end; im++){
 			

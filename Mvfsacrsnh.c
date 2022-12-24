@@ -63,6 +63,7 @@ int main(int argc, char* argv[])
 	float t0i, t0f;
 	int ki, kf;
 	bool interval;
+	bool half; // Use half-offset instead of offset
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -77,6 +78,9 @@ int main(int argc, char* argv[])
 
 	in = sf_input("in");
 	out = sf_output("out");
+
+	if(!sf_getbool("half",&half)) half=false;
+	/* Use half-offset coordinates (y/n) */
 
 	if (!sf_getfloat("om0",&om0)) om0=0.0;
 	/* central CMP's origin  (Km) */
@@ -293,7 +297,7 @@ int main(int argc, char* argv[])
 					otrn=c[0];
 					otrnip=c[1];
 					otbeta=c[2];
-					semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t);
+					semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,half);
 					otsemb = semb0;
 				}
 
@@ -318,7 +322,7 @@ int main(int argc, char* argv[])
 
 						semb=0;
 					
-						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
+						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,half);
 
 							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
