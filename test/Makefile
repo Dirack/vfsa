@@ -3,7 +3,7 @@
 # Purpose: Run unit tests, optimization tests and prepare a
 # debug version of the program.
 # 
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
 # Programmer: Rodolfo A C Neves (Dirack) 06/11/2020
 # 

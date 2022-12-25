@@ -121,8 +121,9 @@ void nonHyperbolicCRSapp_function_for_pre_calculated_values(){
 	float dh=0.0125, dt=0.001;
 	float t0=1.1, v0=1.5;
 	int h;
+	int half=1;
 
-	nonHyperbolicCRSapp(returnedValues,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA);
+	nonHyperbolicCRSapp(returnedValues,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA,half);
 
 	/* In the CMP m0 and h0, time is equal to t0 */
 	/* CMP 51 is m0, that is the midle of CMP window */
@@ -143,9 +144,10 @@ void semblance_return_value_between_0_1(){
 	float t0=0.3, v0=1.5;
 	int i;
 	float semb;
+	int half=1;
 
 	for(i=0;i<100;i++){
-		semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t);
+		semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,half);
 		TEST_ASSERT(semb>=0.0 && semb <= 1.0);
 	}
 }
