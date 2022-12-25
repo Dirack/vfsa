@@ -3,10 +3,10 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Obtain zero offset CRS parameters using VFSA.
+# Purpose: Obtain zero offset CRS parameters using VFSA
 # for a set of (t0,m0) pairs.
 #
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 #
 # Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 #
@@ -20,15 +20,36 @@ from rsf.proj import *
 # Python math library
 import math
 
-# Modeling: Gaussian reflector in a velocity linear model
-# velocity increases with depth and a 0.5 velocity gradient
+__author__="Rodolfo Dirack <rodolfo_profissional@hotmail.com>"
+__version__="1.0"
+__site__="https://www.geofisicando.com"
+
+Help('''
+    Obtain zero offset CRS parameters using VFSA for a set of (t0,m0) pairs
+    =======================================================================
+
+    Obtain RN, RNIP and BETA parameters using Very Fast Simulated Annealing (VFSA)
+    global optimization
+
+    Author: %s
+    Version: %s
+    Site: %s
+    ''' % (__author__,__version__,__site__))
+
+Help('''
+### Kirchhoff modeling ###
+
+Use Kirchhoff modeling in a Gaussian reflector linear velocity model
+velocity increases with depth with a 0.5 velocity gradient
+''')
+
 Flow('gaussianReflector',None,
      '''
      math d1=0.01 n1=2001 o1=-5 unit1=km label1=Offset
      output="4-3*exp(-(x1-5)^2/9)"
      ''')
 
-# Velocity Model
+# Define gaussian velocity Model
 Flow('velocityModel','gaussianReflector',
      '''
      window min1=0 max1=10 |
@@ -59,6 +80,13 @@ ot0=1.1
 v0=1.5
 repeat=4
 
+Help('''
+### Very Fast Simulated Annealing (VFSA) ###
+
+Obtain RN, RNIP and BETA parameters for nm0=%g om0=%g dm0=%g nt0=%g ot0=%g dt0=%g v0=%g
+using non-hyperbolic CRS aproximation and VFSA repeated %d times
+''' % (nm0,om0,dm0,nt0,ot0,dt0,v0,repeat))
+
 # Very Fast Simulated Annealling Global Optimization (VFSA)
 Flow('crsParameters','dataCube',
 	'''
@@ -66,4 +94,3 @@ Flow('crsParameters','dataCube',
 	''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
 
 End()
-
