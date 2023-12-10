@@ -1,6 +1,6 @@
 # Makefile
 #
-# Purpose: Run tests and optimization tests.
+# Purpose: Prepare a debug version of the program.
 # 
 # Site: https://www.geofisicando.com
 # 
@@ -18,9 +18,7 @@ GDBDEP = ../Mvfsacrsnh.c $(DEP)
 UNITY = Unity/unity.c
 
 # Default is to run the test
-all:	generate_data_cube generate_simple_cube Test_vfsacrsnh_lib.x
-	@./Test_vfsacrsnh_lib.x
-	@rm Test_vfsacrsnh_lib.x
+all:	vfsa.x generate_data_cube
 
 %.x:	%.c
 ifdef CENTOS
@@ -38,22 +36,18 @@ else
 endif
 
 # run optimization test with scons to measure execution time
-time:	optimization_test/SConstruct
-	cd optimization_test && scons --clean && scons dataCube.rsf && scons --debug=time
-
-# Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
 generate_data_cube:	test_data_cube/SConstruct
-	@cd test_data_cube && scons -s -Q dataCube.rsf
+	@echo "Generate a data cube for tests"
+	cd test_data_cube && scons -s -Q dataCube.rsf
 
-# Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
-generate_simple_cube:	test_data_cube/SConstruct
-	@cd test_data_cube && scons -s -Q simpleDataCube.rsf
+gdbtest:	vfsa.x
+	gdb -q --command=gdb_scripts/gdb_test $<
 
 clean:
 	rm *.x
 
 help:
-	@echo "Compilation of the tests\nRun 'make' to unit test"
-	@echo "Run 'make time' to run optimization tests"
+	@echo "Run 'make' or 'make vfsa.x' to prepare a program version for GDB"
+	@echo "Run 'make gdbtest' run test in GDB shell"
 
 .PHONY:	clean help all
