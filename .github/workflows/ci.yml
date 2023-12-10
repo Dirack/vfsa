@@ -1,0 +1,14 @@
+name:   CI tests
+
+on:
+        workflow_dispatch:
+
+jobs:
+        test:
+                runs_on: ubuntu-latest
+
+                steps:
+                        - uses: actions/checkout@v3
+
+                        - name: Test
+                          run: make -C test test
