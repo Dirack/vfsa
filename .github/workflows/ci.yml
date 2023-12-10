@@ -2,6 +2,8 @@ name:   CI tests
 
 on:
         workflow_dispatch:
+                branches:
+                        - "develop/2.0.2"
 
 jobs:
         test:
