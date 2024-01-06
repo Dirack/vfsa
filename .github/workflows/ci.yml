@@ -1,9 +1,15 @@
 name:   CI tests
 
 on:
+        push:
+                branches:
+                        - "master"
+        pull_request:
+                branches:
+                        - "master"
         workflow_dispatch:
                 branches:
-                        - "develop/2.0.2"
+                        - "develop/*"
 
 jobs:
         test:
@@ -12,5 +18,7 @@ jobs:
                 steps:
                         - uses: actions/checkout@v3
 
-                        - name: Build docker image - Madagascar Environment
-                          run: docker build . --file Dockerfile
+                        - name: Build docker image and test - Madagascar Environment
+                          run: |
+                                  echo "Build the image in the Dockerfile and call 'make -C test' to run all the tests"
+                                  docker build . --file Dockerfile
