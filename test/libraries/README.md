@@ -1,4 +1,4 @@
-#### TESTS DIRECTORY OF VFSA PROGRAMS
+#### TESTS DIRECTORY OF VFSA PROGRAMS - Tests for libraries and functions
 
 Those tests run in the program make. There are several
 types of tests that can be done:
