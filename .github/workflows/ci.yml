@@ -23,7 +23,13 @@ jobs:
                 container: ghcr.io/dirack/madagascarenvironment:1.0.1
                 needs: checkout
                 steps:
-                        - uses: GuillaumeFalourd/clone-github-repo-action@main
+                        - name: Clone GuillaumeFalourd/poc-github-actions PUBLIC repository
+                          uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+                          with:
+                                  depth: 1 
+                                  branch: 'master'
+                                  owner: 'dirack'
+                                  repository: 'vfsa'
 
                         - name: Build docker image and run tests
                           run: |
