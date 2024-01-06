@@ -1,5 +1,8 @@
 name:   CI tests
 
+runs:
+        using: 'docker'
+        image: 'Dockerfile'
 on:
         push:
                 branches:
@@ -26,7 +29,4 @@ jobs:
                           uses: actions/checkout@v3
 
                         - name: Build docker image and run tests
-                          runs:
-                                using: 'docker'
-                                image: 'Dockerfile'
                           run: ls
