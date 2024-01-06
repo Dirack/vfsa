@@ -1,8 +1,5 @@
 name:   CI tests
 
-runs:
-        using: 'docker'
-        image: 'Dockerfile'
 on:
         push:
                 branches:
@@ -29,4 +26,4 @@ jobs:
                           uses: actions/checkout@v3
 
                         - name: Build docker image and run tests
-                          run: ls
+                          run: docker run -it -v $PWD:/home/tryitondocker/madagascar-3.0/user/vfsa ghcr.io/dirack/madagascarenvironment:1.0.1 ls
