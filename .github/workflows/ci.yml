@@ -23,17 +23,17 @@ jobs:
 
                         - name: Build and push
                           uses: docker/build-push-action@v2
-                                with:
-                                        context: .
-                                        file: ./Dockerfile
-                                        tags: testimage:latest
-                                        outputs: type=docker,dest=/tmp/testimage.tar
+                          with:
+                                context: .
+                                file: ./Dockerfile
+                                tags: testimage:latest
+                                outputs: type=docker,dest=/tmp/testimage.tar
 
                         - name: Upload artifact
                           uses: actions/upload-artifact@v2
-                                with:
-                                        name: testimage
-                                        path: /tmp/testimage.tar
+                          with:
+                                name: testimage
+                                path: /tmp/testimage.tar
 
         test:
                 runs-on: ubuntu-latest
