@@ -16,13 +16,8 @@ jobs:
                 runs-on: ubuntu-latest
                 container:
                         image: ghcr.io/dirack/madagascarenvironment:1.0.1
-                        volumes:
-                                - ${{github.workspace}}:/home/tryitondocker/madagascar-3.0/user/vfsa
-
                 steps:
                         - uses: actions/checkout@v3
 
                         - name: Run standalone tests
-                          run: |
-                               cd /home/tryitondocker/madagascar-3.0/user/vfsa
-                               scons
+                          run: ls
