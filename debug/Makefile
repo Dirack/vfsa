@@ -29,22 +29,26 @@ endif
 
 # Generate a version of the program for debugging with GDB
 vfsa.x:	generate_data_cube $(GDBDEP)
+	@echo "\033[95mGenerate a version of the program for debugging with GDB...\033[m"
 ifdef CENTOS
 	gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $(GDBDEP) -o $@ -lm -lrsf -lopenblas -g -fopenmp
 else
 	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP) -o $@ -lrsf -lm -fopenmp
 endif
+	@echo "...done"
 
 # run optimization test with scons to measure execution time
 generate_data_cube:	test_data_cube/SConstruct
-	@echo "Generate a data cube for tests"
+	@echo "\033[95mGenerate a data cube for tests\033[m"
 	cd test_data_cube && scons -s -Q dataCube.rsf
+	@echo "...done"
 
 gdbtest:	vfsa.x
+	@echo "\033[95mRunning tests in a GDB shell\033[m"
 	gdb -q --command=gdb_scripts/gdb_test $<
 
 clean:
-	rm *.x
+	scons -C test_data_cube -c; rm *.x
 
 help:
 	@echo "Run 'make' or 'make vfsa.x' to prepare a program version for GDB"
