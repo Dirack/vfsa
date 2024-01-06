@@ -14,8 +14,9 @@ on:
 jobs:
         test:
                 runs-on: ubuntu-latest
-                container:
-                        image: 'ghcr.io/dirack/madagascarenvironment:1.0.1'
                 steps:
+                        - uses: actions/checkout@v3
+
                         - name: Run standalone tests
+                          uses: 'ghcr.io/dirack/madagascarenvironment:1.0.1'
                           run: ls
