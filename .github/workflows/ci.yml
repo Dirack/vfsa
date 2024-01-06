@@ -26,7 +26,7 @@ jobs:
                           with:
                                 context: .
                                 file: ./Dockerfile
-                                tags: testimage:latest
+                                tags: testimage:1.0.1
                                 outputs: type=docker,dest=/tmp/testimage.tar
 
                         - name: Upload artifact
