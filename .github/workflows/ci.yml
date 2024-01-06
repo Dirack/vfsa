@@ -14,9 +14,6 @@ on:
 jobs:
         checkout:
                 runs-on: ubuntu-latest
-                container:
-                        image: ghcr.io/dirack/madagascarenvironment:1.0.1
-                        options: "--entrypoint /bin/bash"
                 steps:
                         - uses: actions/checkout@v3
                         - name: Repository checkout
@@ -29,6 +26,6 @@ jobs:
                           uses: actions/checkout@v3
 
                         - name: Build docker image and run tests
-                          run: |
-                                  echo "Build the image in the Dockerfile and call 'make -C test' to run all the tests"
-
+                          runs:
+                                using: 'docker'
+                                image: 'Dockerfile'
