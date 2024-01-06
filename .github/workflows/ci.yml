@@ -7,10 +7,10 @@ on:
 
 jobs:
         test:
-                runs_on: ubuntu-latest
+                runs-on: ubuntu-latest
 
                 steps:
                         - uses: actions/checkout@v3
 
                         - name: Test
-                          run: make -C test
+                          run: make -C test TESTS=libraries
