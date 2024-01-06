@@ -20,8 +20,6 @@ jobs:
                           run: ls
         test:
                 runs-on: ubuntu-latest
-                container:
-                        image: "ghcr.io/dirack/madagascarenvironment:1.0.1"
 
                 needs: checkout
                 steps:
@@ -30,4 +28,5 @@ jobs:
                         - name: Build docker image and run tests
                           run: |
                                   echo "Build the image in the Dockerfile and call 'make -C test' to run all the tests"
+                                  docker run -ti -v "${{github.workspace}}:/home/tryitondocker/madagascar-3.0/user/vfsa" ghcr.io/dirack/madagascarenvironment:1.0.1
 
