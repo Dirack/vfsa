@@ -67,8 +67,8 @@ jobs:
                           run: |
                                docker load --input /tmp/testimage.tar
 
-                        - name: Build docker image and run tests
-                          run: docker run -t testeimage:0.1.0 ls
+                        - name: Run tests
+                          run: docker run -t testimage:0.1.0 "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=libraries"
 
-                        - name: Build docker image and run tests
-                          run: docker run -t testeimage:0.1.0 echo oi
+                        - name: Run optimization tests
+                          run: docker run -t testimage:0.1.0 "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=optimization"
