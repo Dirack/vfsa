@@ -17,7 +17,5 @@ jobs:
                 container:
                         image: 'ghcr.io/dirack/madagascarenvironment:1.0.1'
                 steps:
-                        - uses: actions/checkout@main
-
                         - name: Run standalone tests
                           run: ls
