@@ -27,3 +27,6 @@ jobs:
 
                         - name: Build docker image and run tests
                           run: docker run -t -v $PWD:/home/tryitondocker/madagascar-3.0/user/vfsa ghcr.io/dirack/madagascarenvironment:1.0.1 ls
+
+                        - name: Build docker image and run tests
+                          run: docker run -t -v $PWD:/home/tryitondocker/madagascar-3.0/user/vfsa ghcr.io/dirack/madagascarenvironment:1.0.1 echo oi
