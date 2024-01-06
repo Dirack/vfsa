@@ -5,12 +5,13 @@ on:
                 branches:
                         - "develop/2.0.2"
 
-runs:
-        using: 'docker'
-        image: 'Dockerfile'
 jobs:
         test:
                 runs-on: ubuntu-latest
+                container:
+                        image: ghcr.io/dirack/madagascarenvironment:1.0.0
+                        volumes:
+                                - /home/tryitondocker/madagascar-3.0/user/vfsa:.
 
                 steps:
                         - uses: actions/checkout@v3
