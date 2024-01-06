@@ -20,11 +20,14 @@ jobs:
                           run: ls
         test:
                 runs-on: ubuntu-latest
+                container:
+                        image: "ghcr.io/dirack/madagascarenvironment:1.0.1"
 
                 needs: checkout
                 steps:
+                        - uses: actions/checkout@v3
+
                         - name: Build docker image and run tests
                           run: |
                                   echo "Build the image in the Dockerfile and call 'make -C test' to run all the tests"
-                                  docker build . --file infra/Dockerfile.test
 
