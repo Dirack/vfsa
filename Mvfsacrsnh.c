@@ -60,15 +60,18 @@ int main(int argc, char* argv[])
 	bool varlim; // y, variable search window to parameters
 	int ntest1, ntest2; // Limits vector files dimension
 	int itmax; // Maximum VFSA iterations
+	float *cost_func=NULL;
 	float t0i, t0f;
 	int ki, kf;
 	bool interval;
+	bool get_convergence_graph;
 	bool half; // Use half-offset instead of offset
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
 	sf_file rnminfile=NULL, rnmaxfile=NULL, rnipminfile=NULL, rnipmaxfile=NULL, betaminfile=NULL, betamaxfile=NULL;
 	sf_file parameters=NULL;
+	sf_file convergence_graph=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 
 	/* RSF files axis */
@@ -78,6 +81,10 @@ int main(int argc, char* argv[])
 
 	in = sf_input("in");
 	out = sf_output("out");
+
+	if(!sf_getbool("getgraph",&get_convergence_graph)) get_convergence_graph=false;
+	/* Convergence test - Generate convergence graph (y/n) */
+	if(get_convergence_graph) convergence_graph = sf_output("convgraph");
 
 	if(!sf_getbool("half",&half)) half=false;
 	/* Use half-offset coordinates (y/n) */
@@ -257,6 +264,11 @@ int main(int argc, char* argv[])
 		kf=nt0;
 	}
 
+	if(get_convergence_graph){
+		cost_func = sf_floatalloc(itmax);
+		if(repeat!=1) sf_error("The getgraph option is only available for repeat=1 to avoid multithread errors!");
+	}
+
 	for(l=0;l<nm0;l++){
 		
 		m0 = l*dm0+om0;
@@ -335,7 +347,7 @@ int main(int argc, char* argv[])
 								otrnip = RNIP;
 								otbeta = BETA;
 								semb0 = semb;
-								sf_warning("(%d) hit",omp_get_thread_num());
+								//sf_warning("(%d) hit",omp_get_thread_num());
 								} /* Critical section parallelization */
 							}
 
@@ -360,6 +372,8 @@ int main(int argc, char* argv[])
 								}	
 							}	
 						
+							if(get_convergence_graph) cost_func[q] = -otsemb;
+
 					} /* loop over iterations */
 
 				} /* repeat VFSA global optimization */
@@ -394,4 +408,11 @@ int main(int argc, char* argv[])
 	sf_putfloat(out,"C0",c0);
 	sf_putfloat(out,"temp0",temp0);
 	sf_floatwrite(otm[0][0],4*nt0*nm0,out);
+
+	if(get_convergence_graph){
+		sf_putint(convergence_graph,"n1",itmax);
+		sf_putfloat(convergence_graph,"d1",1.0);
+		sf_putfloat(convergence_graph,"o1",0.0);
+		sf_floatwrite(cost_func,itmax,convergence_graph);
+	}
 }
