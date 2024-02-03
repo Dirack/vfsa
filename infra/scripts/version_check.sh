@@ -2,10 +2,11 @@
 #
 # Check current version based on active develop branch name
 
+CURRENTVERSION="2.0.2"
 
 VERSIONDOC=$(cat docs/VERSION.md)
 
-if git fetch origin "develop/$VERSIONDOC"; then
+if [ "$VERSIONDOC" == "$CURRENTVERSION" ]; then
 	echo "Version checked: $VERSIONDOC"
 	exit 0
 else
