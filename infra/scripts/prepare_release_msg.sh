@@ -2,7 +2,7 @@
 #
 # Generate current release message based on active develop branch name
 
-git pull --tag
+git log --oneline
 
 CURRENTVERSION=$(cat $(dirname $0)/../../docs/VERSION.md)
 LATESTVERSION=$(git describe --abbrev=0)
