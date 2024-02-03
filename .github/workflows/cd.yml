@@ -54,7 +54,7 @@ jobs:
                         - name: Check version
                           run: docker run -t testimage:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && ./infra/scripts/version_check.sh"
                         - name: Generate a changelog
-                          run: docker run -t testimage:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && ./infra/scripts/generate_release_msg.sh" >> changelog.md
+                          run: docker run -t testimage:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && ./infra/scripts/generate_release_msg.sh"
                         - name: Upload changelog artifact
                           uses: actions/upload-artifact@v2
                           with:
