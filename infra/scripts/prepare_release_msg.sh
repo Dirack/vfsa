@@ -2,8 +2,6 @@
 #
 # Generate current release message based on active develop branch name
 
-git log --oneline
-
 CURRENTVERSION=$(cat $(dirname $0)/../../docs/VERSION.md)
 LATESTVERSION=$(git describe --abbrev=0)
 GITLOG=$(git log "$LATESTVERSION...HEAD" --oneline)
