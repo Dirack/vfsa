@@ -51,6 +51,17 @@ jobs:
                           run: |
                                docker load --input /tmp/testimage.tar
                                docker image ls -a
+                        - name: Check version
+                          run: ./infra/scripts/version_check.sh
+                        - name: Generate a changelog
+                          run: ./infra/scripts/generate_release_msg.sh >> ./changelog.md
+                        - name: Upload changelog artifact
+                          uses: actions/upload-artifact@v2
+                          with:
+                                name: changelog
+                                path: ./changelog.md
+                                retention-days: 0
+
 
         test:
                 runs-on: ubuntu-latest
