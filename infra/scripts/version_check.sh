@@ -2,6 +2,8 @@
 #
 # Check current version based on active develop branch name
 
+git fetch origin develop/2.0.2
+
 VERSIONDOC=$(cat docs/VERSION.md)
 CURRENTVERSION=$(git branch -a)
 
