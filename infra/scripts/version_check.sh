@@ -3,7 +3,7 @@
 # Check current version based on active develop branch name
 
 VERSIONDOC=$(cat docs/VERSION.md)
-CURRENTVERSION=$(git branch -a | grep develop | cut -d"/" -f4)
+CURRENTVERSION=$(git branch -a)
 
 if [ "$VERSIONDOC" != "$CURRENTVERSION"	]; then
 	echo "Package version in VERSION.md file does not seem correct!"
