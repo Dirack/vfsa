@@ -2,14 +2,14 @@
 #
 # Check current version based on active develop branch name
 
-git fetch origin develop/2.0.2
 
 VERSIONDOC=$(cat docs/VERSION.md)
-CURRENTVERSION=$(git branch -a)
 
-if [ "$VERSIONDOC" != "$CURRENTVERSION"	]; then
+if git fetch origin "develop/$VERSIONDOC"; then
+	echo "Version checked: $VERSIONDOC"
+	exit 0
+else
 	echo "Package version in VERSION.md file does not seem correct!"
 	echo "Version from VERSION.md file: $VERSIONDOC"
-	echo "Version extracted from active develp branch name: $CURRENTVERSION"
 	exit 1
 fi
