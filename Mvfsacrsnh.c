@@ -269,6 +269,11 @@ int main(int argc, char* argv[])
 		kf=nt0;
 	}
 
+	if(get_convergence_graph){
+		cost_func = sf_floatalloc(itmax);
+		if(repeat!=1) sf_error("The getgraph option is only available for repeat=1 to avoid multithread errors!");
+	}
+
 	for(l=0;l<nm0;l++){
 		
 		m0 = l*dm0+om0;
@@ -339,6 +344,8 @@ int main(int argc, char* argv[])
 					
 						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,half);
 
+						/* Show optimized parameters on screen before save them */
+						//if(verb) sf_warning("thread=%d it=%d, SEMB=%f %f",omp_get_thread_num(),q,semb,semb0);
 							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
 								#pragma omp critical(evaluate_best_semblance)
@@ -348,6 +355,7 @@ int main(int argc, char* argv[])
 								otrnip = RNIP;
 								otbeta = BETA;
 								semb0 = semb;
+								//sf_warning("(%d) hit",omp_get_thread_num());
 								} /* Critical section parallelization */
 							}
 
@@ -374,6 +382,8 @@ int main(int argc, char* argv[])
 								}	
 							}	
 						
+							if(get_convergence_graph) cost_func[q] = -otsemb;
+
 					} /* loop over iterations */
 
 				} /* repeat VFSA global optimization */
