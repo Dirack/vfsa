@@ -60,11 +60,9 @@ int main(int argc, char* argv[])
 	bool varlim; // y, variable search window to parameters
 	int ntest1, ntest2; // Limits vector files dimension
 	int itmax; // Maximum VFSA iterations
-	float *cost_func=NULL;
 	float t0i, t0f;
 	int ki, kf;
 	bool interval;
-	bool get_convergence_graph;
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph;
 	float *cost_func=NULL;
