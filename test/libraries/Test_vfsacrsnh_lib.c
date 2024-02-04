@@ -153,6 +153,34 @@ void semblance_return_value_between_0_1(){
 	}
 }
 
+void repeat_should_be_1_when_get_convercence_graph_true(){
+/*< Repeat option should be equal 1 (use one thread) when get convergence graph option is true
+ * This is done to avoid multiple theads during convergence graph generation
+ * >*/
+
+	TEST_ASSERT(repeatOptionEqual1ForGetConvergenceGraphTrue(true,1));
+	TEST_ASSERT_FALSE(repeatOptionEqual1ForGetConvergenceGraphTrue(true,10));
+
+}
+
+void convergence_graph_file_preparation(){
+/*< Test convergence graph file preparation. Test if the parameters set is correct >*/
+	sf_file outgraph=NULL;
+	int itmax = 500, repeat = 1;
+	bool get_convergence_graph=true;
+	int n1;
+	float d1;
+	float o1;
+
+	prepareConvergenceGraphFile(outgraph = sf_output("convgraph"),get_convergence_graph,repeat,itmax);
+	TEST_ASSERT_TRUE(sf_histint(outgraph,"n1",&n1));
+	TEST_ASSERT_EQUAL(n1,itmax);
+	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"d1",&d1));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,d1,1.0);
+	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"o1",&o1));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,o1,0.0);
+}
+
 int main(int argc, char* argv[]){
 
 	/* Redirect the stdin to datacube file */
@@ -174,6 +202,8 @@ int main(int argc, char* argv[]){
 	RUN_TEST(if_parameter_RN_is_major_than_RNIP);
 	RUN_TEST(nonHyperbolicCRSapp_function_for_pre_calculated_values);
 	RUN_TEST(semblance_return_value_between_0_1);
+	RUN_TEST(repeat_should_be_1_when_get_convercence_graph_true);
+	RUN_TEST(convergence_graph_file_preparation);
 
 	return UNITY_END();
 }

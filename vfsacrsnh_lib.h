@@ -74,4 +74,12 @@ float semblance(float m0 /* Central CMP of the approximation */,
 		bool half /* Half-offset coordinates */);
 /*< Calculate semblance between the Non Hyperbolic CRS approximation surface and reflection data >*/
 
+
+bool repeatOptionEqual1ForGetConvergenceGraphTrue(bool get_convergence_graph, int repeat);
+/*< Repeat option should be equal one when get_convergence_graph flag is on to avoid multiple thread >*/
+
+
+void prepareConvergenceGraphFile(sf_file outgraph, bool get_convergence_graph, int repeat, int itmax);
+/*< Check parameters (repeat should be equal to 1 when generating a convergence graph)  and Prepare the convergence graph file >*/
+
 #endif

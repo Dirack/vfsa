@@ -64,15 +64,14 @@ int main(int argc, char* argv[])
 	int ki, kf;
 	bool interval;
 	bool half; // Use half-offset instead of offset
-	bool get_convergence_graph;
-	float *cost_func=NULL;
+	bool get_convergence_graph; // Option to generate a convergence graph
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
 	sf_file rnminfile=NULL, rnmaxfile=NULL, rnipminfile=NULL, rnipmaxfile=NULL, betaminfile=NULL, betamaxfile=NULL;
 	sf_file parameters=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
-	sf_file outgraph=NULL;
+	sf_file outgraph=NULL; /* Convergence graph */
 
 	/* RSF files axis */
 	sf_axis ax,ay,az;
@@ -153,9 +152,9 @@ int main(int argc, char* argv[])
 	if(!sf_getbool("interval",&interval)) interval=false;
 
 	if(get_convergence_graph){
-		if(repeat!=1) sf_error("The repeat parameter should be equal 1 for getgraph=y!");
-		outgraph = sf_output("convgraph");
-		cost_func = sf_floatalloc(itmax);
+		if(!repeatOptionEqual1ForGetConvergenceGraphTrue(get_convergence_graph,repeat))
+			sf_error("The repeat parameter should be equal 1 for getgraph=y!");
+		prepareConvergenceGraphFile(outgraph = sf_output("convgraph"),get_convergence_graph,repeat,itmax);
 	}
 
 	if(varlim){
@@ -269,11 +268,6 @@ int main(int argc, char* argv[])
 		kf=nt0;
 	}
 
-	if(get_convergence_graph){
-		cost_func = sf_floatalloc(itmax);
-		if(repeat!=1) sf_error("The getgraph option is only available for repeat=1 to avoid multithread errors!");
-	}
-
 	for(l=0;l<nm0;l++){
 		
 		m0 = l*dm0+om0;
@@ -344,8 +338,6 @@ int main(int argc, char* argv[])
 					
 						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,half);
 
-						/* Show optimized parameters on screen before save them */
-						//if(verb) sf_warning("thread=%d it=%d, SEMB=%f %f",omp_get_thread_num(),q,semb,semb0);
 							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
 								#pragma omp critical(evaluate_best_semblance)
@@ -355,7 +347,6 @@ int main(int argc, char* argv[])
 								otrnip = RNIP;
 								otbeta = BETA;
 								semb0 = semb;
-								//sf_warning("(%d) hit",omp_get_thread_num());
 								} /* Critical section parallelization */
 							}
 
@@ -365,8 +356,6 @@ int main(int argc, char* argv[])
 							/* Metrópolis criteria */
 							PM = expf(-deltaE/temp);
 							
-							if(get_convergence_graph) cost_func[q] = -semb0;
-
 							if (deltaE<=0){
 								c[0] = cnew[0];
 								c[1] = cnew[1];
@@ -382,7 +371,7 @@ int main(int argc, char* argv[])
 								}	
 							}	
 						
-							if(get_convergence_graph) cost_func[q] = -otsemb;
+							if(get_convergence_graph) sf_floatwrite(&otsemb,1,outgraph);
 
 					} /* loop over iterations */
 
@@ -418,11 +407,4 @@ int main(int argc, char* argv[])
 	sf_putfloat(out,"C0",c0);
 	sf_putfloat(out,"temp0",temp0);
 	sf_floatwrite(otm[0][0],4*nt0*nm0,out);
-
-	if(get_convergence_graph){
-		sf_putint(outgraph,"n1",itmax);
-		sf_putfloat(outgraph,"d1",1);
-		sf_putfloat(outgraph,"o1",0);
-		sf_floatwrite(cost_func,itmax,outgraph);
-	}
 }

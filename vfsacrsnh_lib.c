@@ -206,3 +206,22 @@ float semblance(float m0 /* Central CMP of the approximation */,
 		return semblance=(amplitudeSampleSum*amplitudeSampleSum)/(numSamples*amplitudeSquaredSampleSum);
 
 }
+
+bool repeatOptionEqual1ForGetConvergenceGraphTrue(bool get_convergence_graph, int repeat)
+/*< Repeat option should be equal one when get_convergence_graph flag is on to avoid multiple thread >*/
+{
+	return repeat==1 && get_convergence_graph;
+}
+
+void prepareConvergenceGraphFile(sf_file outgraph, bool get_convergence_graph, int repeat, int itmax)
+/*< Check parameters (repeat should be equal to 1 when generating a convergence graph)  and Prepare the convergence graph file >*/
+{
+	if(!repeatOptionEqual1ForGetConvergenceGraphTrue(get_convergence_graph,repeat))
+		sf_error("The repeat parameter should be equal 1 for getgraph=y!");
+	sf_putint(outgraph,"n1",itmax);
+	sf_putfloat(outgraph,"d1",1);
+	sf_putfloat(outgraph,"o1",0);
+	sf_putstring(outgraph,"title","Convergence graph");
+	sf_putstring(outgraph,"label1","iteration");
+	sf_putstring(outgraph,"label2","Semblance");
+}

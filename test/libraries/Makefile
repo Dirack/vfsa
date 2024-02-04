@@ -19,8 +19,7 @@ UNITY = ../Unity/unity.c
 
 # Default is to run the test
 all:	generate_data_cube generate_simple_cube Test_vfsacrsnh_lib.x
-	@./Test_vfsacrsnh_lib.x
-	@rm Test_vfsacrsnh_lib.x
+	@./Test_vfsacrsnh_lib.x; rm Test_vfsacrsnh_lib.x
 
 %.x:	%.c
 ifdef CENTOS
