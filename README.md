@@ -1,6 +1,6 @@
-# Very Fast Simulated Anneeling global optimization of zero offset CRS parameters (VFSA).
+# Very Fast Simulated Annealing global optimization of the zero offset CRS parameters (VFSA).
 
-[![Github release](https://img.shields.io/github/v/release/Dirack/vfsa)](https://github.com/Dirack/vfsa/releases/latest) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Madagascar](https://img.shields.io/badge/Madagascar-v3.0-blue)](https://github.com/ahay/src/tree/master) [![Build Status](https://travis-ci.com/Dirack/vfsa.svg?branch=master)](https://travis-ci.com/Dirack/vfsa)
+[![Github release](https://img.shields.io/github/v/release/Dirack/vfsa)](https://github.com/Dirack/vfsa/releases/latest) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Madagascar](https://img.shields.io/badge/Madagascar-v3.0-blue)](https://github.com/ahay/src/tree/master)
 
 ![Result of the convergence test](https://github.com/Dirack/vfsa/blob/master/res/surfaces.png)
 
@@ -23,23 +23,14 @@ It is a simple process described in details in [install dependencies](https://gi
 
 ## Usage example
 
-A few motivating and useful examples of how that product can be used can be found in the [usage examples directory](https://github.com/Dirack/vfsa/tree/master/doc/usage). For more details, please refer to the [Wiki](https://github.com/Dirack/vfsa/wiki).
+A few motivating and useful examples of how that product can be used can be found in the [usage examples directory](https://github.com/Dirack/vfsa/tree/master/examples).
+For more details, please refer to the [Wiki](https://github.com/Dirack/vfsa/wiki).
 
 ## Release History
-
-* [v2.0.1](https://github.com/Dirack/vfsa/releases/tag/v2.0.1) - Stable release
-
-* [v2.0.0](https://github.com/Dirack/vfsa/releases/tag/v2.0) - Beta release
-
-* [v1.1.1](https://github.com/Dirack/vfsa/releases/tag/v1.1.1) - Stable release
-
-* [v1.0.0](https://github.com/Dirack/vfsa/releases/tag/v1.0) - Stable release
 
 [Please check out the full release history in our Wiki](https://github.com/Dirack/vfsa/wiki/Release-history).
 
 ## Meta
-
-[main page](https://github.com/Dirack/vfsa/wiki)
 
 Rodolfo Dirack – [@dirack](https://github.com/Dirack) – rodolfo\_profissional@hotmail.com
 
