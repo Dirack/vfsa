@@ -12,19 +12,19 @@ echo "[Description]"
 echo ""
 
 echo "## Added"
-echo "$(echo "$GITLOG" | grep -E "^\[(feat|test)\]" | sed 's/^/- /')"
+echo "$(echo "$GITLOG" | grep -E "\[(feat|test)\]" | sed 's/^/- /')"
 echo ""
 
 echo "## Changed"
-echo "$(echo "$GITLOG" | grep -E "^\[(perf|docs)\]" | sed 's/^/- /')"
+echo "$(echo "$GITLOG" | grep -E "\[(perf|docs)\]" | sed 's/^/- /')"
 echo ""
 
 echo "## Fixed"
-echo "$(echo "$GITLOG" | grep -E "^\[(fix)\]" | sed 's/^/- /')"
+echo "$(echo "$GITLOG" | grep -E "\[(fix)\]" | sed 's/^/- /')"
 echo ""
 
 echo "## Removed"
-echo "$(echo "$GITLOG" | grep -E "^\[(revert)\]" | sed 's/^/- /')"
+echo "$(echo "$GITLOG" | grep -E "\[(revert)\]" | sed 's/^/- /')"
 echo ""
 
 echo "## Development"
