@@ -87,10 +87,24 @@ Obtain RN, RNIP and BETA parameters for nm0=%g om0=%g dm0=%g nt0=%g ot0=%g dt0=%
 using non-hyperbolic CRS aproximation and VFSA repeated %d times
 ''' % (nm0,om0,dm0,nt0,ot0,dt0,v0,repeat))
 
-# Very Fast Simulated Annealling Global Optimization (VFSA)
-Flow('crsParameters','dataCube',
-	'''
-	vfsacrsnh getgraph=y convgraph=teste.rsf om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
-	''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
+ngraphs = 3
+graphs = []
+
+for i in range(ngraphs+1):
+
+    parameter = 'crsParameters-%d' % i
+    graph = 'graph-%d' % i
+
+    # Very Fast Simulated Annealling Global Optimization (VFSA)
+    Flow([parameter,graph],'dataCube',
+            '''
+            vfsacrsnh getgraph=y convgraph=${TARGETS[1]} half=y temp0=10 c0=0.5 om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
+            ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
+    graphs.append(graph)
+
+Flow('graphset',graphs,
+        '''
+        rcat ${SOURCES[1:%d]} axis=2 | put n2=%d d2=1 o2=0 n3=1
+        ''' % (ngraphs,ngraphs))
 
 End()
