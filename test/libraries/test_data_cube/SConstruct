@@ -101,10 +101,12 @@ dt0=0.05
 nt0=1
 v0=2.
 
-# Very Fast Simulated Aneelling Global Optimization (VFSA)
-Flow('crsParameters','simpleDataCube',
-        '''
-        vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=8 
-        ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0))
+# Parameters files to test varlim flag
+Flow('rnmax',None,'spike n1=25 d1=1 o1=0 mag=10 | put n1=5 n2=5')
+Flow('rnmin',None,'spike n1=25 d1=1 o1=0 mag=0 | put n1=5 n2=5')
+Flow('rnipmax',None,'spike n1=25 d1=1 o1=0 mag=3 | put n1=5 n2=5')
+Flow('rnipmin',None,'spike n1=25 d1=1 o1=0 mag=1 | put n1=5 n2=5')
+Flow('betamax',None,'spike n1=25 d1=1 o1=0 mag=1 | put n1=5 n2=5')
+Flow('betamin',None,'spike n1=25 d1=1 o1=0 mag=-1 | put n1=5 n2=5')
 
 End()

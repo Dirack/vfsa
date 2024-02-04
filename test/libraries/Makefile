@@ -19,7 +19,14 @@ UNITY = ../Unity/unity.c
 
 # Default is to run the test
 all:	generate_data_cube generate_simple_cube Test_vfsacrsnh_lib.x
-	@./Test_vfsacrsnh_lib.x; rm Test_vfsacrsnh_lib.x
+	@./Test_vfsacrsnh_lib.x dummyheader=test_data_cube/dummyheader.rsf \
+		rnmax=test_data_cube/rnmax.rsf \
+		rnmin=test_data_cube/rnmin.rsf \
+		rnipmax=test_data_cube/rnipmax.rsf \
+		rnipmin=test_data_cube/rnipmin.rsf \
+		betamax=test_data_cube/betamax.rsf \
+		betamin=test_data_cube/betamin.rsf \
+		; rm Test_vfsacrsnh_lib.x
 
 %.x:	%.c
 ifdef CENTOS
@@ -39,7 +46,7 @@ endif
 # Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
 generate_data_cube:	test_data_cube/SConstruct
 	@echo "\033[95mGenerate a data cube for semblance and nonHyperbolicCRSApp functions tests\033[m"
-	@cd test_data_cube && scons -s -Q dataCube.rsf
+	@cd test_data_cube && scons -s -Q
 	@echo ...done
 
 # Generate a data cube for semblance and nonHyperbolicCRSApp functions tests

@@ -82,4 +82,20 @@ bool repeatOptionEqual1ForGetConvergenceGraphTrue(bool get_convergence_graph, in
 void prepareConvergenceGraphFile(sf_file outgraph, bool get_convergence_graph, int repeat, int itmax);
 /*< Check parameters (repeat should be equal to 1 when generating a convergence graph)  and Prepare the convergence graph file >*/
 
+
+bool checkParametersFileDimensionReturnStrError(sf_file parametersFile,int nt0, int nm0, char* strerr);
+/*< check n1 and n2 dimension and n1 should be equal to nt0 and n2 should be equal to nm0 in parameters files >*/
+
+
+bool checkAndLoadDataCubeDimensionsReturnStrError(sf_file in,
+						  int *n1, float *o1, float *d1,
+						  int *n2, float *o2, float *d2,
+						  int *n3, float *o3, float *d3,
+						  char *strerr);
+/*< Check each dimension for a data cube and load it >*/
+
+
+void loadParametersFilesVectors(float** parametersFilesVectors[6],char* labels[6], int nt0, int nm0);
+/*< Load parameters file vector >*/
+
 #endif

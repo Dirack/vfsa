@@ -181,6 +181,128 @@ void convergence_graph_file_preparation(){
 	TEST_ASSERT_FLOAT_WITHIN(0.001,o1,0.0);
 }
 
+void check_parameters_file_dimensions(){
+/*< Test of the function to check parameters file dimension n1 and n2
+ *  Dimensions should be defined and n1=nt0, n2=nm0
+ * >*/
+
+	int nt0=10, nm0=10;
+	char* strerr = (char*) malloc(50*sizeof(char));
+	sf_file parametersFiles = NULL;
+	parametersFiles = sf_input("dummyheader");
+
+        TEST_ASSERT_FALSE(checkParametersFileDimensionReturnStrError(parametersFiles,nt0,nm0,strerr));
+	TEST_ASSERT_EQUAL_STRING("No n1= in file",strerr);
+
+	sf_putint(parametersFiles,"n1",5);
+        TEST_ASSERT_FALSE(checkParametersFileDimensionReturnStrError(parametersFiles,nt0,nm0,strerr));
+	TEST_ASSERT_EQUAL_STRING("No n2= in file",strerr);
+
+	sf_putint(parametersFiles,"n2",5);
+        TEST_ASSERT_FALSE(checkParametersFileDimensionReturnStrError(parametersFiles,nt0,nm0,strerr));
+	TEST_ASSERT_EQUAL_STRING("n1 should be equal to nt0 in file",strerr);
+
+	sf_putint(parametersFiles,"n1",10);
+        TEST_ASSERT_FALSE(checkParametersFileDimensionReturnStrError(parametersFiles,nt0,nm0,strerr));
+	TEST_ASSERT_EQUAL_STRING("n2 should be equal to nm0 in file",strerr);
+
+	sf_putint(parametersFiles,"n2",10);
+        TEST_ASSERT_TRUE(checkParametersFileDimensionReturnStrError(parametersFiles,nt0,nm0,strerr));
+}
+
+void check_load_data_cube_file_dimensions(){
+/*< Test of the function to check and load a data cube file >*/
+	int n1, n2, n3;
+	float o1, o2, o3;
+	float d1, d2, d3;
+	char* strerr = (char*) malloc(50*sizeof(char));
+	sf_file in = NULL;
+	in = sf_input("dummyheader");
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No n1= in input",strerr);
+
+	sf_putint(in,"n1",5);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_EQUAL(n1,5);
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No o1= in input",strerr);
+
+	sf_putfloat(in,"o1",0.);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_FLOAT_WITHIN(0.001,o1,0.);
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No d1= in input",strerr);
+
+	sf_putfloat(in,"d1",1.);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_FLOAT_WITHIN(0.001,d1,1.);
+
+	TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No n2= in input",strerr);
+
+	sf_putint(in,"n2",5);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_EQUAL(n2,5);
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No o2= in input",strerr);
+
+	sf_putfloat(in,"o2",0.);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_FLOAT_WITHIN(0.001,o2,0.);
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No d2= in input",strerr);
+
+	sf_putfloat(in,"d2",1.);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_FLOAT_WITHIN(0.001,d2,1.);
+
+	TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No n3= in input",strerr);
+
+	sf_putint(in,"n3",5);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_EQUAL(n3,5);
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No o3= in input",strerr);
+
+	sf_putfloat(in,"o3",0.);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_FLOAT_WITHIN(0.001,o3,0.);
+
+        TEST_ASSERT_FALSE(checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr));
+	TEST_ASSERT_EQUAL_STRING("No d3= in input",strerr);
+
+	sf_putfloat(in,"d3",1.);
+        checkAndLoadDataCubeDimensionsReturnStrError(in,&n1,&o1,&d1,&n2,&o2,&d2,&n3,&o3,&d3,strerr);
+	TEST_ASSERT_FLOAT_WITHIN(0.001,d3,1.);
+
+}
+
+void check_load_parameters_file_data(){
+/*< Check if the data is loaded correctly in parameters file vector >*/
+	float** parametersFilesVectors[6];
+	char* parametersFilesLabels[6] = {"rnmax","rnmin","rnipmax","rnipmin","betamax","betamin"};
+	int nt0=5, nm0=5;
+	int i, j, k;
+	float values[6]={10.,0.,3.,1.,1,-1};
+
+	loadParametersFilesVectors(parametersFilesVectors,parametersFilesLabels,nt0,nm0);
+
+	for(k=0;k<6;k++){
+		for(j=0;j<nm0;j++){
+			for(i=0;i<nt0;i++){
+				TEST_ASSERT_FLOAT_WITHIN(0.001,values[k],parametersFilesVectors[k][j][i]);
+			}
+		}
+	}
+}
+
 int main(int argc, char* argv[]){
 
 	/* Redirect the stdin to datacube file */
@@ -204,6 +326,9 @@ int main(int argc, char* argv[]){
 	RUN_TEST(semblance_return_value_between_0_1);
 	RUN_TEST(repeat_should_be_1_when_get_convercence_graph_true);
 	RUN_TEST(convergence_graph_file_preparation);
+	RUN_TEST(check_parameters_file_dimensions);
+	RUN_TEST(check_load_data_cube_file_dimensions);
+	RUN_TEST(check_load_parameters_file_data);
 
 	return UNITY_END();
 }

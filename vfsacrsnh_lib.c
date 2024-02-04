@@ -225,3 +225,72 @@ void prepareConvergenceGraphFile(sf_file outgraph, bool get_convergence_graph, i
 	sf_putstring(outgraph,"label1","iteration");
 	sf_putstring(outgraph,"label2","Semblance");
 }
+
+bool checkParametersFileDimensionReturnStrError(sf_file parametersFile,int nt0, int nm0, char* strerr)
+/*< check n1 and n2 dimension and n1 should be equal to nt0 and n2 should be equal to nm0 in parameters files >*/
+{
+	int n1, n2;
+
+	if(!sf_histint(parametersFile,"n1",&n1)){
+		strcpy(strerr,"No n1= in file");
+	}else if(!sf_histint(parametersFile,"n2",&n2)){
+		strcpy(strerr,"No n2= in file");
+	}else if(n1!=nt0){
+		strcpy(strerr,"n1 should be equal to nt0 in file");
+	}else if(n2!=nm0){
+		strcpy(strerr,"n2 should be equal to nm0 in file");
+	}else{
+		return true;
+	}
+	return false;
+}
+
+bool checkAndLoadDataCubeDimensionsReturnStrError(sf_file in,
+						  int *n1, float *o1, float *d1,
+						  int *n2, float *o2, float *d2,
+						  int *n3, float *o3, float *d3,
+						  char *strerr)
+/*< Check each dimension for a data cube and load it >*/
+{
+        if(!sf_histint(in,"n1",n1)){
+		strcpy(strerr,"No n1= in input");
+	}else if (!sf_histfloat(in,"o1",o1)){
+		strcpy(strerr,"No o1= in input");
+	}else if (!sf_histfloat(in,"d1",d1)){
+		strcpy(strerr,"No d1= in input");
+	}else if (!sf_histint(in,"n2",n2)){
+		strcpy(strerr,"No n2= in input");
+	}else if (!sf_histfloat(in,"o2",o2)){
+	       	strcpy(strerr,"No o2= in input");
+	}else if (!sf_histfloat(in,"d2",d2)){
+		strcpy(strerr,"No d2= in input");
+	}else if (!sf_histint(in,"n3",n3)){
+		strcpy(strerr,"No n3= in input");
+	}else if (!sf_histfloat(in,"o3",o3)){
+		strcpy(strerr,"No o3= in input");
+	}else if (!sf_histfloat(in,"d3",d3)){
+		strcpy(strerr,"No d3= in input");
+	}else{
+		return true;
+	}
+
+	return false;
+
+}
+
+void loadParametersFilesVectors(float** parametersFilesVectors[6],char* labels[6], int nt0, int nm0)
+/*< Load parameters file vector >*/
+{
+	int q;
+	sf_file parametersFiles;
+	char strerr[50];
+
+	for(q=0;q<6;q++){
+		parametersFiles = sf_input(labels[q]);
+		if(!checkParametersFileDimensionReturnStrError(parametersFiles,nt0,nm0,strerr))
+			sf_error("%s %s",strerr,labels[q]);
+		parametersFilesVectors[q] = sf_floatalloc2(nt0,nm0);
+		sf_floatread(parametersFilesVectors[q][0],nt0*nm0,parametersFiles);
+		sf_fileclose(parametersFiles);
+	}
+}

@@ -54,21 +54,19 @@ int main(int argc, char* argv[])
 	float rnip_max, rnip_min; // RNIP limits
 	float rn_max, rn_min; // RN limits
 	float beta_max, beta_min; // BETA limits
-	float **rnmaxvec=NULL, **rnminvec=NULL; // RN limits vector
-	float **rnipmaxvec=NULL, **rnipminvec=NULL; // RNIP limits vector
-	float **betamaxvec=NULL, **betaminvec=NULL; // BETA limits vector
 	bool varlim; // y, variable search window to parameters
-	int ntest1, ntest2; // Limits vector files dimension
 	int itmax; // Maximum VFSA iterations
 	float t0i, t0f;
 	int ki, kf;
 	bool interval;
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph; // Option to generate a convergence graph
+	char strerr[50];
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
-	sf_file rnminfile=NULL, rnmaxfile=NULL, rnipminfile=NULL, rnipmaxfile=NULL, betaminfile=NULL, betamaxfile=NULL;
+	char* parametersFilesLabels[6] = {"rnmaxfile","rnminfile","rnipmaxfile","rnipminfile","betamaxfile","betaminfile"};
+	float** parametersFilesVectors[6] = {NULL,NULL,NULL,NULL,NULL,NULL}; 
 	sf_file parameters=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 	sf_file outgraph=NULL; /* Convergence graph */
@@ -151,83 +149,27 @@ int main(int argc, char* argv[])
 
 	if(!sf_getbool("interval",&interval)) interval=false;
 
+	if(! sf_getbool("verb",&verb)) verb=false;
+	/* y: active mode; n: quiet mode */
+
 	if(get_convergence_graph){
 		if(!repeatOptionEqual1ForGetConvergenceGraphTrue(get_convergence_graph,repeat))
 			sf_error("The repeat parameter should be equal 1 for getgraph=y!");
 		prepareConvergenceGraphFile(outgraph = sf_output("convgraph"),get_convergence_graph,repeat,itmax);
 	}
 
-	if(varlim){
-		rnmaxfile = sf_input("rnmaxfile");
-		if(!sf_histint(rnmaxfile,"n1",&ntest1)) sf_error("No n1= in rnmaxfile");
-		if(!sf_histint(rnmaxfile,"n2",&ntest2)) sf_error("No n2= in rnmaxfile");
-		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in rnmaxfile");
-		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in rnmaxfile");
-		rnmaxvec = sf_floatalloc2(nt0,nm0);
-		sf_floatread(rnmaxvec[0],nt0*nm0,rnmaxfile);
-		sf_fileclose(rnmaxfile);
+	if(varlim)
+		loadParametersFilesVectors(parametersFilesVectors,parametersFilesLabels,nt0,nm0);
 
-		rnminfile = sf_input("rnminfile");
-		if(!sf_histint(rnminfile,"n1",&ntest1)) sf_error("No n1= in rnminfile");
-		if(!sf_histint(rnminfile,"n2",&ntest2)) sf_error("No n2= in rnminfile");
-		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in rnminfile");
-		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in rnminfile");
-		rnminvec = sf_floatalloc2(nt0,nm0);
-		sf_floatread(rnminvec[0],nt0*nm0,rnminfile);
-		sf_fileclose(rnminfile);
+	/* Read seismic data cube */
+	if(!checkAndLoadDataCubeDimensionsReturnStrError(in,&nt,&ot,&dt,&nh,&oh,&dh,&nm,&om,&dm,strerr))
+		sf_error("%s",strerr);
 
-		rnipmaxfile = sf_input("rnipmaxfile");
-		if(!sf_histint(rnipmaxfile,"n1",&ntest1)) sf_error("No n1= in rnipmaxfile");
-		if(!sf_histint(rnipmaxfile,"n2",&ntest2)) sf_error("No n2= in rnipmaxfile");
-		if(ntest1!=nt0) sf_error("n2 should be equal to nt0 in rnipmaxfile");
-		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in rnipmaxfile");
-		rnipmaxvec = sf_floatalloc2(nt0,nm0);
-		sf_floatread(rnipmaxvec[0],nt0*nm0,rnipmaxfile);
-		sf_fileclose(rnipmaxfile);
-
-		rnipminfile = sf_input("rnipminfile");
-		if(!sf_histint(rnipminfile,"n1",&ntest1)) sf_error("No n1= in rnipminfile");
-		if(!sf_histint(rnipminfile,"n2",&ntest2)) sf_error("No n2= in rnipminfile");
-		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in ripminfile");
-		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in ripminfile");
-		rnipminvec = sf_floatalloc2(nt0,nm0);
-		sf_floatread(rnipminvec[0],nt0*nm0,rnipminfile);
-		sf_fileclose(rnipminfile);
-
-		betamaxfile = sf_input("betamaxfile");
-		if(!sf_histint(betamaxfile,"n1",&ntest1)) sf_error("No n1= in betamaxfile");
-		if(!sf_histint(betamaxfile,"n2",&ntest2)) sf_error("No n2= in betamaxfile");
-		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in betamaxfile");
-		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in betamaxfile");
-		betamaxvec = sf_floatalloc2(nt0,nm0);
-		sf_floatread(betamaxvec[0],nt0*nm0,betamaxfile);
-		sf_fileclose(betamaxfile);
-
-		betaminfile = sf_input("betaminfile");
-		if(!sf_histint(betaminfile,"n1",&ntest1)) sf_error("No n1= in betaminfile");
-		if(!sf_histint(betaminfile,"n2",&ntest2)) sf_error("No n2= in betaminfile");
-		if(ntest1!=nt0) sf_error("n1 should be equal to nt0 in betaminfile");
-		if(ntest2!=nm0) sf_error("n2 should be equal to nm0 in betaminfile");
-		betaminvec = sf_floatalloc2(nt0,nm0);
-		sf_floatread(betaminvec[0],nt0*nm0,betaminfile);
-		sf_fileclose(betaminfile);
-	}
-
-	if (!sf_histint(in,"n1",&nt)) sf_error("No n1= in input");
-	if (!sf_histfloat(in,"d1",&dt)) sf_error("No d1= in input");
-	if (!sf_histfloat(in,"o1",&ot)) sf_error("No o1= in input");
-	if (!sf_histint(in,"n2",&nh)) sf_error("No n2= in input");
-	if (!sf_histfloat(in,"d2",&dh)) sf_error("No d2= in input");
-	if (!sf_histfloat(in,"o2",&oh)) sf_error("No o2= in input");
-	if (!sf_histint(in,"n3",&nm)) sf_error("No n3= in input");
-	if (!sf_histfloat(in,"d3",&dm)) sf_error("No d3= in input");
-	if (!sf_histfloat(in,"o3",&om)) sf_error("No o3= in input");
-
-	if(! sf_getbool("verb",&verb)) verb=false;
-	/* y: active mode; n: quiet mode */
+	t=sf_floatalloc3(nt,nh,nm);
+	sf_floatread(t[0][0],nm*nh*nt,in);
+	sf_fileclose(in);
 
 	if (verb) {
-
 		sf_warning("Active mode on!!!");
 		sf_warning("Input file parameters: ");
 		sf_warning("n1=%i d1=%f o1=%f",nt,dt,ot);
@@ -239,7 +181,7 @@ int main(int argc, char* argv[])
 		sf_warning("nm0=%d om0=%f dm0=%f (%f km)",nm0,om0,dm0,dm0*nm0);
 		if(varlim){
 			sf_warning("Parameters search window: varlim=y");
-			sf_warning("FROM FILES");
+			sf_warning("READING LIMITS FROM FILES");
 		}else{
 			sf_warning("Parameters search window: varlim=n");
 			sf_warning("%f < RN < %f",rn_min,rn_max);
@@ -248,14 +190,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	
-	/* Read seismic data cube */
-	t=sf_floatalloc3(nt,nh,nm);
-	sf_floatread(t[0][0],nm*nh*nt,in);
-
-	sf_fileclose(in);
-
-	semb0=0;
-
+	
 	/* Save optimized parameters in vector */
 	otm=sf_floatalloc3(nt0,nm0,4);
 	if(interval){
@@ -278,13 +213,15 @@ int main(int argc, char* argv[])
 
 				srand(time(NULL)*t0*m0);
 
+				semb0=0;
+
 				if(varlim){
-					rn_max=rnmaxvec[l][k];
-					rn_min=rnminvec[l][k];
-					rnip_max=rnipmaxvec[l][k];
-					rnip_min=rnipminvec[l][k];
-					beta_max=betamaxvec[l][k];
-					beta_min=betaminvec[l][k];
+					rn_max=parametersFilesVectors[0][l][k];
+					rn_min=parametersFilesVectors[1][l][k];
+					rnip_max=parametersFilesVectors[2][l][k];
+					rnip_min=parametersFilesVectors[3][l][k];
+					beta_max=parametersFilesVectors[4][l][k];
+					beta_min=parametersFilesVectors[5][l][k];
 				}
 				if(interval){
 					c[0] = otm[0][l][k];

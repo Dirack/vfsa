@@ -40,7 +40,7 @@ endif
 # run optimization test with scons to measure execution time
 generate_data_cube:	test_data_cube/SConstruct
 	@echo "\033[95mGenerate a data cube for tests\033[m"
-	cd test_data_cube && scons -s -Q dataCube.rsf
+	cd test_data_cube && scons -s -Q
 	@echo "...done"
 
 gdbtest:	vfsa.x
