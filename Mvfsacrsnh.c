@@ -64,12 +64,15 @@ int main(int argc, char* argv[])
 	int ki, kf;
 	bool interval;
 	bool half; // Use half-offset instead of offset
+	bool get_convergence_graph;
+	float *cost_func=NULL;
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
 	sf_file rnminfile=NULL, rnmaxfile=NULL, rnipminfile=NULL, rnipmaxfile=NULL, betaminfile=NULL, betamaxfile=NULL;
 	sf_file parameters=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
+	sf_file outgraph=NULL;
 
 	/* RSF files axis */
 	sf_axis ax,ay,az;
@@ -78,6 +81,9 @@ int main(int argc, char* argv[])
 
 	in = sf_input("in");
 	out = sf_output("out");
+
+	if(!sf_getbool("getgraph",&get_convergence_graph)) get_convergence_graph=false;
+	/* Generate convergence graph (y/n) */
 
 	if(!sf_getbool("half",&half)) half=false;
 	/* Use half-offset coordinates (y/n) */
@@ -145,6 +151,12 @@ int main(int argc, char* argv[])
 	/* final t0 */
 
 	if(!sf_getbool("interval",&interval)) interval=false;
+
+	if(get_convergence_graph){
+		if(repeat!=1) sf_error("The repeat parameter should be equal 1 for getgraph=y!");
+		outgraph = sf_output("convgraph");
+		cost_func = sf_floatalloc(itmax);
+	}
 
 	if(varlim){
 		rnmaxfile = sf_input("rnmaxfile");
@@ -289,8 +301,11 @@ int main(int argc, char* argv[])
 					otsemb = semb0;
 				}else{
 					c[0] = (rn_max+rn_min)/2.;
+					c[0] += getRandomNumberBetween0and1()*c[0];
 					c[1] = (rnip_max+rnip_min)/2.;
+					c[1] += getRandomNumberBetween0and1()*c[1];
 					c[2] = (beta_max+beta_min)/2.;
+					c[2] += getRandomNumberBetween0and1()*c[2];
 					cnew[0] = c[0];
 					cnew[1] = c[1];
 					cnew[2] = c[2];
@@ -337,23 +352,25 @@ int main(int argc, char* argv[])
 							}
 
 							/* VFSA parameters update condition */
-							deltaE = -semb - Em0;
+							deltaE = semb - Em0;
 							
 							/* Metrópolis criteria */
 							PM = expf(-deltaE/temp);
 							
+							if(get_convergence_graph) cost_func[q] = -semb0;
+
 							if (deltaE<=0){
 								c[0] = cnew[0];
 								c[1] = cnew[1];
 								c[2] = cnew[2];
-								Em0 = -semb;
+								Em0 = semb;
 							} else {
 								u=getRandomNumberBetween0and1();
 								if (PM > u){
 									c[0] = cnew[0];
 									c[1] = cnew[1];
 									c[2] = cnew[2];
-									Em0 = -semb;
+									Em0 = semb;
 								}	
 							}	
 						
@@ -391,4 +408,11 @@ int main(int argc, char* argv[])
 	sf_putfloat(out,"C0",c0);
 	sf_putfloat(out,"temp0",temp0);
 	sf_floatwrite(otm[0][0],4*nt0*nm0,out);
+
+	if(get_convergence_graph){
+		sf_putint(outgraph,"n1",itmax);
+		sf_putfloat(outgraph,"d1",1);
+		sf_putfloat(outgraph,"o1",0);
+		sf_floatwrite(cost_func,itmax,outgraph);
+	}
 }
