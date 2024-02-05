@@ -107,6 +107,6 @@ Flow('graphset',graphs,
         rcat ${SOURCES[1:%d]} axis=2 | put n2=%d d2=1 o2=0 n3=1
         ''' % (ngraphs,ngraphs))
 
-Result('graphset','graph symbol=*')
+Result('graphset','scale axis=1 rscale=-1 | graph symbol=*')
 
 End()
