@@ -211,8 +211,6 @@ int main(int argc, char* argv[])
 
 				t0 = k*dt0+ot0;
 
-				srand(time(NULL)*t0*m0);
-
 				semb0=0;
 				
 				#pragma omp parallel for \
@@ -220,6 +218,8 @@ int main(int argc, char* argv[])
 				shared(semb0,otsemb,otrn,otrnip,otbeta) \
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
+
+					srand((unsigned)time(NULL));
 
 					if(varlim){
 						rn_max=parametersFilesVectors[0][l][k];
@@ -243,11 +243,8 @@ int main(int argc, char* argv[])
 						otsemb = semb0;
 					}else{
 						c[0] = (rn_max+rn_min)/2.;
-						c[0] += getRandomNumberBetween0and1()*c[0];
 						c[1] = (rnip_max+rnip_min)/2.;
-						c[1] += getRandomNumberBetween0and1()*c[1];
 						c[2] = (beta_max+beta_min)/2.;
-						c[2] += getRandomNumberBetween0and1()*c[2];
 						cnew[0] = c[0];
 						cnew[1] = c[1];
 						cnew[2] = c[2];

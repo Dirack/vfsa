@@ -30,7 +30,6 @@
 
 float getRandomNumberBetween0and1(){
 /*< Function to get a random number between 0 and 1 >*/
-
 	return (float)(rand()%1000)/1000;
 }
 
