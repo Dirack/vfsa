@@ -214,49 +214,49 @@ int main(int argc, char* argv[])
 				srand(time(NULL)*t0*m0);
 
 				semb0=0;
-
-				if(varlim){
-					rn_max=parametersFilesVectors[0][l][k];
-					rn_min=parametersFilesVectors[1][l][k];
-					rnip_max=parametersFilesVectors[2][l][k];
-					rnip_min=parametersFilesVectors[3][l][k];
-					beta_max=parametersFilesVectors[4][l][k];
-					beta_min=parametersFilesVectors[5][l][k];
-				}
-				if(interval){
-					c[0] = otm[0][l][k];
-					c[1] = otm[1][l][k];
-					c[2] = otm[2][l][k];
-					cnew[0] = c[0];
-					cnew[1] = c[1];
-					cnew[2] = c[2];
-					otrn=c[0];
-					otrnip=c[1];
-					otbeta=c[2];
-					semb0=otm[3][l][k];
-					otsemb = semb0;
-				}else{
-					c[0] = (rn_max+rn_min)/2.;
-					c[0] += getRandomNumberBetween0and1()*c[0];
-					c[1] = (rnip_max+rnip_min)/2.;
-					c[1] += getRandomNumberBetween0and1()*c[1];
-					c[2] = (beta_max+beta_min)/2.;
-					c[2] += getRandomNumberBetween0and1()*c[2];
-					cnew[0] = c[0];
-					cnew[1] = c[1];
-					cnew[2] = c[2];
-					otrn=c[0];
-					otrnip=c[1];
-					otbeta=c[2];
-					semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,half);
-					otsemb = semb0;
-				}
-
+				
 				#pragma omp parallel for \
 				private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
 				shared(semb0,otsemb,otrn,otrnip,otbeta) \
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
+
+					if(varlim){
+						rn_max=parametersFilesVectors[0][l][k];
+						rn_min=parametersFilesVectors[1][l][k];
+						rnip_max=parametersFilesVectors[2][l][k];
+						rnip_min=parametersFilesVectors[3][l][k];
+						beta_max=parametersFilesVectors[4][l][k];
+						beta_min=parametersFilesVectors[5][l][k];
+					}
+					if(interval){
+						c[0] = otm[0][l][k];
+						c[1] = otm[1][l][k];
+						c[2] = otm[2][l][k];
+						cnew[0] = c[0];
+						cnew[1] = c[1];
+						cnew[2] = c[2];
+						otrn=c[0];
+						otrnip=c[1];
+						otbeta=c[2];
+						semb0=otm[3][l][k];
+						otsemb = semb0;
+					}else{
+						c[0] = (rn_max+rn_min)/2.;
+						c[0] += getRandomNumberBetween0and1()*c[0];
+						c[1] = (rnip_max+rnip_min)/2.;
+						c[1] += getRandomNumberBetween0and1()*c[1];
+						c[2] = (beta_max+beta_min)/2.;
+						c[2] += getRandomNumberBetween0and1()*c[2];
+						cnew[0] = c[0];
+						cnew[1] = c[1];
+						cnew[2] = c[2];
+						otrn=c[0];
+						otrnip=c[1];
+						otbeta=c[2];
+						semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,half);
+						otsemb = semb0;
+					}
 
 					for (q=0; q <itmax; q++){
 							
