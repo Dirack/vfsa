@@ -54,7 +54,8 @@ void signal_function_return_minus_1_for_negative_values(){
 void getRandomNumberBetween0and1_returns_float_between_0_and_1(){
 /*< Function getRandomNumberBetween0and1 should return value inside interval [0,1] >*/
 	int i;
-	srand((unsigned)time(NULL));
+	srand((unsigned)time(NULL)*atoi(getenv("RANDOM")));
+	sf_warning("%f",getRandomNumberBetween0and1());
 	for(i=0;i<100;i++){
 		TEST_ASSERT_TRUE(getRandomNumberBetween0and1()>=0.0);
 		TEST_ASSERT(getRandomNumberBetween0and1()<=1.0);

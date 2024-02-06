@@ -11,6 +11,7 @@ License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
 #include "vfsacrsnh_lib.h"
+#include <sys/time.h>
 
 int main(int argc, char* argv[])
 {
@@ -62,6 +63,8 @@ int main(int argc, char* argv[])
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph; // Option to generate a convergence graph
 	char strerr[50];
+	int seed;
+	struct timeval stop, start;
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -149,6 +152,8 @@ int main(int argc, char* argv[])
 
 	if(!sf_getbool("interval",&interval)) interval=false;
 
+	if(!sf_getint("seed",&seed)) time(NULL);
+
 	if(! sf_getbool("verb",&verb)) verb=false;
 	/* y: active mode; n: quiet mode */
 
@@ -219,7 +224,8 @@ int main(int argc, char* argv[])
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
 
-					srand((unsigned)time(NULL));
+					gettimeofday(&start,NULL);
+					srand((unsigned)start.tv_usec);
 
 					if(varlim){
 						rn_max=parametersFilesVectors[0][l][k];

@@ -19,6 +19,7 @@ from rsf.proj import *
 
 # Python math library
 import math
+import subprocess
 
 __author__="Rodolfo Dirack <rodolfo_profissional@hotmail.com>"
 __version__="1.0"
@@ -87,7 +88,7 @@ Obtain RN, RNIP and BETA parameters for nm0=%g om0=%g dm0=%g nt0=%g ot0=%g dt0=%
 using non-hyperbolic CRS aproximation and VFSA repeated %d times
 ''' % (nm0,om0,dm0,nt0,ot0,dt0,v0,repeat))
 
-ngraphs = 3
+ngraphs = 5
 graphs = []
 
 for i in range(ngraphs+1):
@@ -98,7 +99,8 @@ for i in range(ngraphs+1):
     # Very Fast Simulated Annealling Global Optimization (VFSA)
     Flow([parameter,graph],'dataCube',
             '''
-            vfsacrsnh getgraph=y convgraph=${TARGETS[1]} half=y temp0=10 c0=0.5 om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
+            vfsacrsnh itmax=1000
+            getgraph=y convgraph=${TARGETS[1]} half=y temp0=10 c0=0.5 om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
             ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
     graphs.append(graph)
 
