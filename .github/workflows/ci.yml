@@ -3,13 +3,16 @@ name:   CI tests
 on:
         push:
                 branches:
-                        - "develop/*"
-        pull_request:
-                branches:
-                        - "develop/*"
+                        - "feature/*"
+                        - "hotfix/*"
+                        - "documentation/*"
+                        - "test/*"
         workflow_dispatch:
                 branches:
-                        - "develop/*"
+                        - "feature/*"
+                        - "hotfix/*"
+                        - "documentation/*"
+                        - "test/*"
 
 jobs:
         build:
@@ -52,4 +55,4 @@ jobs:
                                docker load --input /tmp/testimage.tar
 
                         - name: Run unit tests for VFSA functions
-                          run: docker run -t testimage:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=libraries"
+                          run: docker run -t testimage:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test"
