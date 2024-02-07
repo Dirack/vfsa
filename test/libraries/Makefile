@@ -44,9 +44,9 @@ else
 endif
 
 # Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
-generate_data_cube:	test_data_cube/SConstruct
+generate_data_cube:	test_data_cube/SConstruct test_data_cube/generate_dummy_header.sh
 	@echo "\033[95mGenerate a data cube for semblance and nonHyperbolicCRSApp functions tests\033[m"
-	@cd test_data_cube && scons -s -Q
+	@cd test_data_cube && scons -s -Q && ./generate_dummy_header.sh
 	@echo ...done
 
 # Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
