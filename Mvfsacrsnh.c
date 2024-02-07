@@ -11,6 +11,7 @@ License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 */
 
 #include "vfsacrsnh_lib.h"
+#include <sys/time.h>
 
 int main(int argc, char* argv[])
 {
@@ -62,6 +63,8 @@ int main(int argc, char* argv[])
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph; // Option to generate a convergence graph
 	char strerr[50];
+	bool useprecseed;
+	struct timeval start;
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -149,6 +152,9 @@ int main(int argc, char* argv[])
 
 	if(!sf_getbool("interval",&interval)) interval=false;
 
+	if(!sf_getbool("useprecseed",&useprecseed)) useprecseed=false;
+	/* y: Use a more precise seed for vfsa; n: Use time(NULL)*/
+
 	if(! sf_getbool("verb",&verb)) verb=false;
 	/* y: active mode; n: quiet mode */
 
@@ -179,6 +185,7 @@ int main(int argc, char* argv[])
 		sf_warning("c0=%f temp0=%f v0=%f itmax=%d repeat=%d",c0,temp0,v0,itmax,repeat);
 		sf_warning("nt0=%d ot0=%f dt0=%f (%f s)",nt0,ot0,dt0,dt0*nt0);
 		sf_warning("nm0=%d om0=%f dm0=%f (%f km)",nm0,om0,dm0,dm0*nm0);
+		if(useprecseed) sf_warning("USING MORE PRECISE SEED GENERATOR!");
 		if(varlim){
 			sf_warning("Parameters search window: varlim=y");
 			sf_warning("READING LIMITS FROM FILES");
@@ -211,52 +218,53 @@ int main(int argc, char* argv[])
 
 				t0 = k*dt0+ot0;
 
-				srand(time(NULL)*t0*m0);
-
 				semb0=0;
-
-				if(varlim){
-					rn_max=parametersFilesVectors[0][l][k];
-					rn_min=parametersFilesVectors[1][l][k];
-					rnip_max=parametersFilesVectors[2][l][k];
-					rnip_min=parametersFilesVectors[3][l][k];
-					beta_max=parametersFilesVectors[4][l][k];
-					beta_min=parametersFilesVectors[5][l][k];
-				}
-				if(interval){
-					c[0] = otm[0][l][k];
-					c[1] = otm[1][l][k];
-					c[2] = otm[2][l][k];
-					cnew[0] = c[0];
-					cnew[1] = c[1];
-					cnew[2] = c[2];
-					otrn=c[0];
-					otrnip=c[1];
-					otbeta=c[2];
-					semb0=otm[3][l][k];
-					otsemb = semb0;
-				}else{
-					c[0] = (rn_max+rn_min)/2.;
-					c[0] += getRandomNumberBetween0and1()*c[0];
-					c[1] = (rnip_max+rnip_min)/2.;
-					c[1] += getRandomNumberBetween0and1()*c[1];
-					c[2] = (beta_max+beta_min)/2.;
-					c[2] += getRandomNumberBetween0and1()*c[2];
-					cnew[0] = c[0];
-					cnew[1] = c[1];
-					cnew[2] = c[2];
-					otrn=c[0];
-					otrnip=c[1];
-					otbeta=c[2];
-					semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,half);
-					otsemb = semb0;
-				}
-
+				
 				#pragma omp parallel for \
 				private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
 				shared(semb0,otsemb,otrn,otrnip,otbeta) \
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
+
+					if(useprecseed){
+						generatePreciseRandomSeed();
+					}else{
+						srand(time(NULL));
+					}
+
+					if(varlim){
+						rn_max=parametersFilesVectors[0][l][k];
+						rn_min=parametersFilesVectors[1][l][k];
+						rnip_max=parametersFilesVectors[2][l][k];
+						rnip_min=parametersFilesVectors[3][l][k];
+						beta_max=parametersFilesVectors[4][l][k];
+						beta_min=parametersFilesVectors[5][l][k];
+					}
+					if(interval){
+						c[0] = otm[0][l][k];
+						c[1] = otm[1][l][k];
+						c[2] = otm[2][l][k];
+						cnew[0] = c[0];
+						cnew[1] = c[1];
+						cnew[2] = c[2];
+						otrn=c[0];
+						otrnip=c[1];
+						otbeta=c[2];
+						semb0=otm[3][l][k];
+						otsemb = semb0;
+					}else{
+						c[0] = (rn_max+rn_min)/2.;
+						c[1] = (rnip_max+rnip_min)/2.;
+						c[2] = (beta_max+beta_min)/2.;
+						cnew[0] = c[0];
+						cnew[1] = c[1];
+						cnew[2] = c[2];
+						otrn=c[0];
+						otrnip=c[1];
+						otbeta=c[2];
+						semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,half);
+						otsemb = semb0;
+					}
 
 					for (q=0; q <itmax; q++){
 							

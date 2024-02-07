@@ -10,11 +10,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 #include <rsf.h>
 
 
 #define signal(s) ((s<0)?(-1.):(1.))
 /*< Signal function >*/
+
+
+void generatePreciseRandomSeed();
+/*< Generate a more precise random seed >*/
 
 
 float getRandomNumberBetween0and1();

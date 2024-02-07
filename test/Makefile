@@ -10,7 +10,7 @@
 # 
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
-TESTS=libraries
+TESTS=libraries bug optimization
 
 # Default is to run all tests
 all:	$(addsuffix .test, $(TESTS))
