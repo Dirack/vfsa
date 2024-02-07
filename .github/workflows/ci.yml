@@ -17,5 +17,3 @@ on:
 jobs:
         test:
                 uses: ./.github/workflows/tests.yml 
-        ci:
-                needs: test
