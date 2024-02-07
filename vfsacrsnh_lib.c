@@ -21,12 +21,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/time.h>
 #include <rsf.h>
 /*^*/
 
 #define signal(s) ((s<0)?(-1.):(1.))
 /*< Signal function >*/
 /*^*/
+
+void generatePreciseRandomSeed()
+/*< Generate a more precise random seed >*/
+{
+	struct timeval start;
+	gettimeofday(&start,NULL);
+	srand((unsigned)start.tv_usec);
+}
 
 float getRandomNumberBetween0and1(){
 /*< Function to get a random number between 0 and 1 >*/

@@ -19,5 +19,6 @@
 
 int main(int argc, char* argv[]){
 
+	generatePreciseRandomSeed();
 	printf("%f",getRandomNumberBetween0and1());
 }

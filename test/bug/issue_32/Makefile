@@ -14,11 +14,10 @@
 #CENTOS=1 
 
 DEP = ../../../vfsacrsnh_lib.c
-UNITY = ../../Unity/unity.c
-TEST = $(subst .c,.x,Test_bug_issue_32.c)
 
 # Default is to run the test
-all:	call_generateRandomNumber.x $(TEST)
+all:	call_generateRandomNumber.x call_generateRandomNumberPrecise.x
+	./Test_bug_issue_32.sh
 
 %.x:	%.c
 ifdef CENTOS
@@ -26,14 +25,6 @@ ifdef CENTOS
 else
 	@gcc -I$$RSFSRC/include -I.. -L$$RSFSRC/lib $< $(DEP) -o $@ -lm -lrsf
 endif
-
-Test_%.x:	Test_%.c
-ifdef CENTOS
-	@gcc -I$$RSFSRC/include -I.. -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
-else
-	@gcc -I$$RSFSRC/include -I.. -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf
-endif
-	@./$@; rm $@; rm call_generateRandomNumber.x; rm teste*.bin
 
 clean:
 	rm *.x

@@ -101,6 +101,7 @@ for i in range(ngraphs+1):
             '''
             vfsacrsnh itmax=1000
             getgraph=y convgraph=${TARGETS[1]} half=y temp0=10 c0=0.5 om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
+            useprecseed=y
             ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
     graphs.append(graph)
 

@@ -63,8 +63,8 @@ int main(int argc, char* argv[])
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph; // Option to generate a convergence graph
 	char strerr[50];
-	int seed;
-	struct timeval stop, start;
+	bool useprecseed;
+	struct timeval start;
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -152,7 +152,8 @@ int main(int argc, char* argv[])
 
 	if(!sf_getbool("interval",&interval)) interval=false;
 
-	if(!sf_getint("seed",&seed)) time(NULL);
+	if(!sf_getbool("useprecseed",&useprecseed)) useprecseed=false;
+	/* y: Use a more precise seed for vfsa; n: Use time(NULL)*/
 
 	if(! sf_getbool("verb",&verb)) verb=false;
 	/* y: active mode; n: quiet mode */
@@ -184,6 +185,7 @@ int main(int argc, char* argv[])
 		sf_warning("c0=%f temp0=%f v0=%f itmax=%d repeat=%d",c0,temp0,v0,itmax,repeat);
 		sf_warning("nt0=%d ot0=%f dt0=%f (%f s)",nt0,ot0,dt0,dt0*nt0);
 		sf_warning("nm0=%d om0=%f dm0=%f (%f km)",nm0,om0,dm0,dm0*nm0);
+		if(useprecseed) sf_warning("USING MORE PRECISE SEED GENERATOR!");
 		if(varlim){
 			sf_warning("Parameters search window: varlim=y");
 			sf_warning("READING LIMITS FROM FILES");
@@ -224,8 +226,11 @@ int main(int argc, char* argv[])
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
 
-					gettimeofday(&start,NULL);
-					srand((unsigned)start.tv_usec);
+					if(useprecseed){
+						generatePreciseRandomSeed();
+					}else{
+						srand(time(NULL));
+					}
 
 					if(varlim){
 						rn_max=parametersFilesVectors[0][l][k];
