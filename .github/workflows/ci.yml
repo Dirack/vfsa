@@ -15,5 +15,7 @@ on:
                         - "test/*"
 
 jobs:
-        tests:
+        test:
                 uses: ./.github/workflows/tests.yml 
+        ci:
+                needs: test
