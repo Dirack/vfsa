@@ -52,12 +52,12 @@ Flow('dataCube','gaussianReflector reflectorDip',
 
 
 oc0=0.
-dc0=0.033
-nc0=31
+dc0=0.01
+nc0=100
 
 otemp0=0.
-dtemp0=0.1
-ntemp0=31
+dtemp0=0.03
+ntemp0=100
 
 om0=5
 dm0=0.1
@@ -77,7 +77,8 @@ for temp0i in range(ntemp0):
         # Very Fast Simulated Aneelling Global Optimization (VFSA)
         Flow(parameters,'dataCube',
                 '''
-                vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=1
+                vfsacrsnh itmax=200
+                om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=1
                 half=y
                 c0=%g temp0=%g
                 ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,c0,temp0))
