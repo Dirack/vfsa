@@ -19,7 +19,7 @@
 from rsf.proj import *
 
 s="surface"
-Flow(s,s+'.asc','dd type=float form=native')
+Flow(s,s+'.asc','dd type=float form=native | smooth rect1=5 rect2=5 repeat=1')
 
 Result(s,'grey color=j scalebar=y')
 

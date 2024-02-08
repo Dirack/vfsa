@@ -4,7 +4,7 @@ generate_data: SConstruct
 	scons
 
 generate_plot: plot_test.py
-	python plot_test.py
+	python plot_test.py > surface.asc
 
 view: SConscript
 	scons -f $< view

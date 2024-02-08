@@ -52,12 +52,12 @@ Flow('dataCube','gaussianReflector reflectorDip',
 
 
 oc0=0.
-dc0=0.033
-nc0=31
+dc0=0.01
+nc0=100
 
 ont=0.
-dnt=3
-nnt=31
+dnt=1
+nnt=100
 
 om0=5
 dm0=0.1
