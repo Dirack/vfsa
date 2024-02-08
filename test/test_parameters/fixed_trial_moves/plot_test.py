@@ -1,7 +1,4 @@
 import subprocess
-import matplotlib.pyplot as plt
-from matplotlib import cm
-import numpy as np
 
 oc0=0.
 dc0=0.033
@@ -42,4 +39,4 @@ for temp0i in range(ntemp0):
         lsemb.append(float(lista[3]))
         print(float(lista[3]))
 
-print("n1=%d d1=%g o1=%g label1=c0 n2=%d d2=%g o2=%g label2=Iterations data_format=ascii_float in=surface.asc" % (nc0,dc0,oc0,ntemp0,dtemp0,otemp0))
+print("n1=%d d1=%g o1=%g label1=c0 n2=%d d2=%g o2=%g label2=temp0 data_format=ascii_float in=surface.asc" % (nc0,dc0,oc0,ntemp0,dtemp0,otemp0))
