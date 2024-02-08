@@ -40,26 +40,6 @@ for temp0i in range(ntemp0):
         lc0.append(float(lista[0]))
         ltemp0.append(float(lista[1]))
         lsemb.append(float(lista[3]))
-        #print(str(c0)+' '+str(temp0)+' '+result)
-        
-#fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-# Creating figure
-fig = plt.figure(figsize =(14, 9))
-ax = plt.axes(projection ='3d')
-# Plot the surface.
-print(lsemb)
-x=np.arange(oc0,1.023,dc0)
-y=np.arange(otemp0,ntemp0*dtemp0+otemp0,dtemp0)
-z=np.array(lsemb).reshape(nc0,ntemp0)
-surf = plt.contour(x,y,z, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-# Plot the surface.
-#surf = ax.plot_surface(x, y, z)
-# Creating plot
-#surf = ax.plot_surface(x, y, z,
-#                      edgecolor ='none')
+        print(float(lista[3]))
 
-fig.colorbar(surf, ax = ax,
-             shrink = 0.5, aspect = 5)
-
-ax.set_title('Surface plot')
-plt.show()
+print("n1=%d d1=%g o1=%g label1=c0 n2=%d d2=%g o2=%g label2=Iterations data_format=ascii_float in=surface.asc" % (nc0,dc0,oc0,ntemp0,dtemp0,otemp0))
