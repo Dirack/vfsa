@@ -103,4 +103,8 @@ bool checkAndLoadDataCubeDimensionsReturnStrError(sf_file in,
 void loadParametersFilesVectors(float** parametersFilesVectors[6],char* labels[6], int nt0, int nm0);
 /*< Load parameters file vector >*/
 
+
+void prepareMTConvergenceGraphFile(sf_file outgraph, bool get_mt_convergence_graph, int repeat, int itmax);
+/*< Check parameters (repeat should be equal to 1 when generating a convergence graph)  and Prepare the convergence graph file >*/
+
 #endif

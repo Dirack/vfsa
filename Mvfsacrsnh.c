@@ -1,6 +1,6 @@
 /* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Annealing (VFSA) Global Optimization. This program uses the Non-Hyperbolic CRS approximation (Fomel and Kazinnik, 2013) to fit seismic data cube and get the best parameters using semblance criteria.
 
-Package version: 2.0.2
+Package version: 2.1.1
 
 Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 
@@ -62,9 +62,10 @@ int main(int argc, char* argv[])
 	bool interval;
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph; // Option to generate a convergence graph
+	bool get_mt_convergence_graph; // Option to generate a multi thread convergence graph
+	float **mtgraph=NULL;
 	char strerr[50];
 	bool useprecseed;
-	struct timeval start;
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -73,6 +74,7 @@ int main(int argc, char* argv[])
 	sf_file parameters=NULL;
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 	sf_file outgraph=NULL; /* Convergence graph */
+	sf_file mtoutgraph=NULL; /* Multi thread convergence graph */
 
 	/* RSF files axis */
 	sf_axis ax,ay,az;
@@ -84,6 +86,9 @@ int main(int argc, char* argv[])
 
 	if(!sf_getbool("getgraph",&get_convergence_graph)) get_convergence_graph=false;
 	/* Generate convergence graph (y/n) */
+
+	if(!sf_getbool("getmtgraph",&get_mt_convergence_graph)) get_mt_convergence_graph=false;
+	/* Generate multi thread convergence graph (y/n) */
 
 	if(!sf_getbool("half",&half)) half=false;
 	/* Use half-offset coordinates (y/n) */
@@ -164,6 +169,11 @@ int main(int argc, char* argv[])
 		prepareConvergenceGraphFile(outgraph = sf_output("convgraph"),get_convergence_graph,repeat,itmax);
 	}
 
+	if(get_mt_convergence_graph){
+		prepareMTConvergenceGraphFile(mtoutgraph = sf_output("mtconvgraph"),get_mt_convergence_graph,repeat,itmax);
+		mtgraph = sf_floatalloc2(itmax,repeat);
+	}
+
 	if(varlim)
 		loadParametersFilesVectors(parametersFilesVectors,parametersFilesLabels,nt0,nm0);
 
@@ -222,7 +232,7 @@ int main(int argc, char* argv[])
 				
 				#pragma omp parallel for \
 				private(i,q,temp,c,RN,RNIP,BETA,cnew,semb) \
-				shared(semb0,otsemb,otrn,otrnip,otbeta) \
+				shared(semb0,otsemb,otrn,otrnip,otbeta,mtgraph) \
 				schedule(dynamic)
 				for(i=0;i<repeat;i++){
 
@@ -317,6 +327,12 @@ int main(int argc, char* argv[])
 							}	
 						
 							if(get_convergence_graph) sf_floatwrite(&otsemb,1,outgraph);
+							if(get_mt_convergence_graph){
+								#pragma omp critical(write_semblance_per_thread)
+								{
+								mtgraph[i][q] = otsemb;
+								}
+							}
 
 					} /* loop over iterations */
 
@@ -352,4 +368,6 @@ int main(int argc, char* argv[])
 	sf_putfloat(out,"C0",c0);
 	sf_putfloat(out,"temp0",temp0);
 	sf_floatwrite(otm[0][0],4*nt0*nm0,out);
+
+	if(get_mt_convergence_graph) sf_floatwrite(mtgraph[0],itmax*repeat,mtoutgraph);
 }

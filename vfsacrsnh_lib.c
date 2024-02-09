@@ -230,7 +230,7 @@ void prepareConvergenceGraphFile(sf_file outgraph, bool get_convergence_graph, i
 	sf_putfloat(outgraph,"d1",1);
 	sf_putfloat(outgraph,"o1",0);
 	sf_putstring(outgraph,"title","Convergence graph");
-	sf_putstring(outgraph,"label1","iteration");
+	sf_putstring(outgraph,"label1","Iteration");
 	sf_putstring(outgraph,"label2","Semblance");
 }
 
@@ -302,3 +302,17 @@ void loadParametersFilesVectors(float** parametersFilesVectors[6],char* labels[6
 		sf_fileclose(parametersFiles);
 	}
 }
+
+void prepareMTConvergenceGraphFile(sf_file outgraph, bool get_mt_convergence_graph, int repeat, int itmax)
+/*< Check parameters (repeat should be equal to 1 when generating a convergence graph)  and Prepare the convergence graph file >*/
+{
+	sf_putint(outgraph,"n1",itmax);
+	sf_putfloat(outgraph,"d1",1);
+	sf_putfloat(outgraph,"o1",0);
+	sf_putint(outgraph,"n2",repeat);
+	sf_putfloat(outgraph,"o2",0.);
+	sf_putfloat(outgraph,"d2",1.);
+	sf_putstring(outgraph,"label1","Iteration");
+	sf_putstring(outgraph,"label2","Semblance");
+}
+

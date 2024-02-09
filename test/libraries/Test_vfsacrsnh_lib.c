@@ -171,6 +171,7 @@ void convergence_graph_file_preparation(){
 	int n1;
 	float d1;
 	float o1;
+	char label[50];
 
 	prepareConvergenceGraphFile(outgraph = sf_output("convgraph"),get_convergence_graph,repeat,itmax);
 	TEST_ASSERT_TRUE(sf_histint(outgraph,"n1",&n1));
@@ -179,6 +180,11 @@ void convergence_graph_file_preparation(){
 	TEST_ASSERT_FLOAT_WITHIN(0.001,d1,1.0);
 	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"o1",&o1));
 	TEST_ASSERT_FLOAT_WITHIN(0.001,o1,0.0);
+
+	strcpy(label,sf_histstring(outgraph,"label1"));
+	TEST_ASSERT_EQUAL_STRING("Iteration",label);
+	strcpy(label,sf_histstring(outgraph,"label2"));
+	TEST_ASSERT_EQUAL_STRING("Semblance",label);
 }
 
 void check_parameters_file_dimensions(){
@@ -303,6 +309,38 @@ void check_load_parameters_file_data(){
 	}
 }
 
+void mt_convergence_graph_file_preparation(){
+/*< Test multi thread convergence graph file preparation. Test if the parameters set is correct >*/
+	sf_file outgraph=NULL;
+	int itmax = 500, repeat = 5;
+	bool get_mt_convergence_graph=true;
+	int n1, n2;
+	float d1, d2;
+	float o1, o2;
+	char label[50];
+
+	prepareMTConvergenceGraphFile(outgraph = sf_output("mtconvgraph"),get_mt_convergence_graph,repeat,itmax);
+	TEST_ASSERT_TRUE(sf_histint(outgraph,"n1",&n1));
+	TEST_ASSERT_EQUAL(n1,itmax);
+	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"d1",&d1));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,d1,1.0);
+	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"o1",&o1));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,o1,0.0);
+
+	TEST_ASSERT_TRUE(sf_histint(outgraph,"n2",&n2));
+	TEST_ASSERT_EQUAL(n2,repeat);
+	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"d2",&d2));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,d1,1.0);
+	TEST_ASSERT_TRUE(sf_histfloat(outgraph,"o2",&o2));
+	TEST_ASSERT_FLOAT_WITHIN(0.001,o1,0.0);
+
+	strcpy(label,sf_histstring(outgraph,"label1"));
+	TEST_ASSERT_EQUAL_STRING("Iteration",label);
+	strcpy(label,sf_histstring(outgraph,"label2"));
+	TEST_ASSERT_EQUAL_STRING("Semblance",label);
+}
+
+
 int main(int argc, char* argv[]){
 
 	/* Redirect the stdin to datacube file */
@@ -329,6 +367,7 @@ int main(int argc, char* argv[]){
 	RUN_TEST(check_parameters_file_dimensions);
 	RUN_TEST(check_load_data_cube_file_dimensions);
 	RUN_TEST(check_load_parameters_file_data);
+	RUN_TEST(mt_convergence_graph_file_preparation);
 
 	return UNITY_END();
 }
