@@ -2,7 +2,7 @@
 #
 # Check current version based on active develop branch name
 
-CURRENTVERSION="2.1.0"
+CURRENTVERSION="2.1.1"
 
 VERSIONDOC=$(cat docs/VERSION.md)
 
