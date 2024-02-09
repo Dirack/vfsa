@@ -170,16 +170,7 @@ int main(int argc, char* argv[])
 	}
 
 	if(get_mt_convergence_graph){
-		mtoutgraph = sf_output("mtconvgraph");
-		sf_putint(mtoutgraph,"n1",itmax);
-		sf_putfloat(mtoutgraph,"o1",0.);
-		sf_putfloat(mtoutgraph,"d1",1.);
-		sf_putint(mtoutgraph,"n2",repeat);
-		sf_putfloat(mtoutgraph,"o2",0.);
-		sf_putfloat(mtoutgraph,"d2",1.);
-		sf_putint(mtoutgraph,"nthreads",repeat);
-		sf_putstring(mtoutgraph,"label1","Iteration");
-		sf_putstring(mtoutgraph,"label2","Semblance");
+		prepareMTConvergenceGraphFile(mtoutgraph = sf_output("mtconvgraph"),get_mt_convergence_graph,repeat,itmax);
 		mtgraph = sf_floatalloc2(itmax,repeat);
 	}
 
