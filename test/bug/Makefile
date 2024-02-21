@@ -10,5 +10,9 @@
 # 
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
-all: issue_32
-	make -C issue_32
+TESTS=test_issue_32 test_issue_46
+
+all: $(TESTS)
+
+test_issue_%: issue_%
+	make -C $<

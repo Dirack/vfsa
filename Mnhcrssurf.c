@@ -8,6 +8,7 @@ License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
  */
 
+#include "nhcrssurf_lib.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +36,7 @@ int main(int argc, char* argv[])
 	float h; // half-offset
 	int nc; // number of parameters
 	int ih, im; // loop counters
+	char strerr[100]; // Buffer to show error message
 
 	/* RSF files I/O */  
 	sf_file in; // Traveltime surface with the output dimensions
@@ -66,10 +68,8 @@ int main(int argc, char* argv[])
 	if (!sf_histfloat(in,"d2",&dm)) sf_error("No d2= in input");
 	if (!sf_histfloat(in,"o2",&om)) sf_error("No o2= in input");
 
-	if(!sf_histint(par,"n1",&nc)) sf_error("No n1= in parameters input");
-
-	// Check if parameters file n1 dimension is correct, at least 3 parameters
-	if(nc < 3) sf_error("Parameters file should have at least 3 parameters but n1=%d",nc);
+	if(!checkParametersFileDimensionN1(par,&nc,strerr))
+		sf_error("%s",strerr);
 
 	if(! sf_getbool("verb",&verb)) verb=0;
 	/* 1: active mode; 0: quiet mode */
@@ -93,8 +93,8 @@ int main(int argc, char* argv[])
 	RNIP = c[1];
 	BETA  = c[2];
 
-	if(fabs(v0) < 0.001 || fabs(RN) < 0.001 || fabs(RNIP) < 0.001)
-		sf_error("One of the following parameters is too small v0=%f RN=%f RNIP=%f",v0,RN,RNIP);
+	if(!checkIfParametersAreTooSmall(v0,RN,RNIP,strerr))
+		sf_error("%s",strerr);
 
 	t = sf_floatalloc2(nh,nm);
 	
