@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
 		sf_warning("n1=%i",nc);
 	}
 
+	nc=3;
 	c = sf_floatalloc(nc);
 	sf_floatread(c,nc,par);
 
@@ -110,8 +111,6 @@ int main(int argc, char* argv[])
 			Fd2=(t0+a1*(m-h))*(t0+a1*(m-h))+a2*(m-h)*(m-h);
 			Fd1=(t0+a1*(m+h))*(t0+a1*(m+h))+a2*(m+h)*(m+h);					
 			t[im][ih]=sqrt((Fd+c1*h*h+sqrt(Fd2*Fd1))*0.5); 
-
-			sf_warning("%f",t[im][ih]);
 
 		} /* Loop over half-offset */
 	} /* Loop over CMP*/
