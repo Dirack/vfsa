@@ -4,7 +4,7 @@
 # 
 # Purpose: Test bug related on issue 32.
 # 
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
 # Programmer: Rodolfo A C Neves (Dirack) 05/02/2024
 # 

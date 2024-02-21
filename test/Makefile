@@ -1,6 +1,6 @@
 # Makefile
 #
-# Purpose: Run tests.
+# Purpose: Run unit tests listed in TESTS variable.
 # 
 # Site: https://www.geofisicando.com
 # 
@@ -10,6 +10,7 @@
 # 
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
+# List default tests here
 TESTS=libraries bug optimization
 
 # Default is to run all tests

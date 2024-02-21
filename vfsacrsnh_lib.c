@@ -3,9 +3,7 @@
 	 
 	 Purpose: 'Mvfsacrsnh.c' library.
 	 	 
-	 Package version 2.0.1
-	 
-	 Site: https://dirack.github.io
+	 Site: https://www.geofisicando.com
 	 
 	 Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 

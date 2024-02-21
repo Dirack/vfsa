@@ -17,7 +17,7 @@ Please delete options that are not relevant.
 - Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - This change requires a documentation update
 
-**Add images bellow and aditional context if needed**
+**Add images bellow and additional context if needed**
 
 Please describe more information and tests that you ran to verify your changes.
 Or add descriptive images.
@@ -25,8 +25,8 @@ Or add descriptive images.
 **For new a version deploy (pull request to main branch)**
 
 Please check out the list of manual tests and checks. Add new tests if needed before deploy of a new version.
-Merge is only allowed for completed checklist. You can detail those itens in pull request comentaries (this
-will suspend merge until all the comentaries are resolved).
+Merge is only allowed for completed checklist. You can detail those items in pull request commentaries (this
+will suspend merge until all the commentaries are resolved).
 
 - [ ] Verify README.md of this version
 - [ ] Verify README.md links

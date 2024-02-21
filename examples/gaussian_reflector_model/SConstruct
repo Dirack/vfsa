@@ -14,7 +14,6 @@
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 __author__="Rodolfo Dirack <rodolfo_profissional@hotmail.com>"
-__version__="1.0"
 __site__="https://www.geofisicando.com"
 
 Help('''
@@ -25,9 +24,8 @@ Help('''
     global optimization
 
     Author: %s
-    Version: %s
     Site: %s
-    ''' % (__author__,__version__,__site__))
+    ''' % (__author__,__site__))
 
 # Madagascar library
 from rsf.proj import *
@@ -104,7 +102,7 @@ using non-hyperbolic CRS aproximation and VFSA
 
 Flow('crsParameters','dataCube',
 	'''
-	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=10
+	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=10 | put n1=4 label1="parameters" unit1="RN, RNIP, BETA, Semblance" n4=1 n3=1
 	''' % (m0,v0,t0))
 
 Help('''

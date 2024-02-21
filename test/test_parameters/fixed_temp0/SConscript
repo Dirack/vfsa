@@ -3,12 +3,10 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Parameters test of VFSA process.
+# Purpose: Generate the graph plot
 #
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
-# Version 1.0
-#
 # Programer: Rodolfo A. C. Neves (Dirack) 10/11/2020
 #
 # Email: rodolfo_profissional@hotmail.com

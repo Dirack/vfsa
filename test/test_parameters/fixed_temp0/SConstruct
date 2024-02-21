@@ -3,12 +3,10 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Parameters test of VFSA process.
+# Purpose: Generate data for parameter test. Fixed temp0 value.
 #
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
-# Version 1.0
-#
 # Programer: Rodolfo A. C. Neves (Dirack) 10/11/2020
 #
 # Email: rodolfo_profissional@hotmail.com
@@ -74,7 +72,7 @@ for nti in range(nnt):
         nt = ont+dnt*nti
 
         parameters='crsParameters_c0_%d_nt_%d' % (c0i,nti)
-        # Very Fast Simulated Aneelling Global Optimization (VFSA)
+        # Very Fast Simulated Annealling Global Optimization (VFSA)
         Flow(parameters,'dataCube',
                 '''
                 vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=1

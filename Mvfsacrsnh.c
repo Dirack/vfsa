@@ -1,6 +1,4 @@
-/* Zero offset CRS parameter inversion of RN, RNIP, BETA with Very Fast Simulated Annealing (VFSA) Global Optimization. This program uses the Non-Hyperbolic CRS approximation (Fomel and Kazinnik, 2013) to fit seismic data cube and get the best parameters using semblance criteria.
-
-Package version: 2.1.1
+/* Zero offset CRS parameters optimization of RN, RNIP, BETA with Very Fast Simulated Annealing (VFSA) Global Optimization. This program uses the Non-Hyperbolic CRS approximation (Fomel and Kazinnik, 2013) to fit seismic data cube and get the best parameters using semblance criteria.
 
 Programmer: Rodolfo A. C. Neves (Dirack) 13/08/2021
 
