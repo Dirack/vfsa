@@ -3,8 +3,7 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Obtain zero offset CRS parameters using VFSA
-# for a set of (t0,m0) pairs.
+# Purpose: Generate a convergence graph
 #
 # Site: https://www.geofisicando.com
 #

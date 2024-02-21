@@ -5,10 +5,8 @@
 #
 # Purpose: Optimization test of VFSA process.
 #
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
-# Version 1.0
-#
 # Programer: Rodolfo A. C. Neves (Dirack) 10/11/2020
 #
 # Email: rodolfo_profissional@hotmail.com
@@ -59,7 +57,7 @@ dt0=0.1
 nt0=3
 v0=1.5
 
-# Very Fast Simulated Aneelling Global Optimization (VFSA)
+# Very Fast Simulated Annealing Global Optimization (VFSA)
 Flow('crsParameters','dataCube',
 	'''
 	vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=10

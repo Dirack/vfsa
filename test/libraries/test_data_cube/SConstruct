@@ -3,12 +3,10 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Test of the semblance function.
+# Purpose: Generate data for tests.
 #
 # Site: https://www.geofisicando.com
 # 
-# Version 1.0
-#
 # Programmer: Rodolfo A. C. Neves (Dirack) 09/01/2020
 #
 # Email: rodolfo_profissional@hotmail.com

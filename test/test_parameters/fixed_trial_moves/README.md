@@ -1,3 +1,3 @@
-# Optimization test
+# Generate a convergence surface -  Fixed Number of iterations
 
-Test to verify the execution time for VFSA. Run this test with 'make'.
+In this test of parameters fix the number of iterations and generate a semblance surface of C0 x temp0
