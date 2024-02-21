@@ -86,7 +86,7 @@ Flow('dataCube','gaussianReflector reflectorDip',
      ns=401 ds=0.025 s0=0
      freq=10 dt=0.004 nt=1001
      vel=1.5 gradz=0.5 gradx=0.0 verb=y |
-     put label3="CMP" unit3="Km" label2="Offset" unit2="Km" label1=Time unit1=s
+     put d2=0.0125 label3="CMP" unit3="Km" label2="Offset" unit2="Km" label1=Time unit1=s
      ''')
 
 m0=5
@@ -102,7 +102,7 @@ using non-hyperbolic CRS aproximation and VFSA
 
 Flow('crsParameters','dataCube',
 	'''
-	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=10
+	vfsacrsnh om0=%g v0=%g ot0=%g verb=y repeat=10 | put n1=4 label1="parameters" unit1="RN, RNIP, BETA, Semblance" n4=1 n3=1
 	''' % (m0,v0,t0))
 
 Help('''

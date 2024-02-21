@@ -68,6 +68,9 @@ int main(int argc, char* argv[])
 
 	if(!sf_histint(par,"n1",&nc)) sf_error("No n1= in parameters input");
 
+	// Check if parameters file n1 dimension is correct, at least 3 parameters
+	if(nc < 3) sf_error("Parameters file should have at least 3 parameters but n1=%d",nc);
+
 	if(! sf_getbool("verb",&verb)) verb=0;
 	/* 1: active mode; 0: quiet mode */
 
@@ -83,7 +86,6 @@ int main(int argc, char* argv[])
 		sf_warning("n1=%i",nc);
 	}
 
-	nc=3;
 	c = sf_floatalloc(nc);
 	sf_floatread(c,nc,par);
 
@@ -91,6 +93,8 @@ int main(int argc, char* argv[])
 	RNIP = c[1];
 	BETA  = c[2];
 
+	if(fabs(v0) < 0.001 || fabs(RN) < 0.001 || fabs(RNIP) < 0.001)
+		sf_error("One of the following parameters is too small v0=%f RN=%f RNIP=%f",v0,RN,RNIP);
 
 	t = sf_floatalloc2(nh,nm);
 	
