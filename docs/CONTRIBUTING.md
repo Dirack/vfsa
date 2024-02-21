@@ -1,4 +1,4 @@
-## How to contribute to this project?
+# How to contribute to this project?
 
 To contribute to this project, please follow the steps below.
 
@@ -34,7 +34,7 @@ The purpose of this nomination rule is to allow the developer to identify the is
 
 The default branch (main or master) and development branch names follow the rules below:
 
-- The development branch is opened by the repository's administrator, and its name is **develop/VERSION** ('VERSION' means the current tag version being developed, example develop/1.1.0 mean this branch is the development branch of the 1.1.0 version)
+- The development branch is opened by the repository's administrator, and its name is **develop/VERSION** ('VERSION' means the current tag version being developed, example develop/1.1.0 means this branch is the development branch of the 1.1.0 version)
 
 - The default branch is _main_ (or _master_) and only the repository's administrator can modify it
 
@@ -46,7 +46,7 @@ The branch merge follows _gitflow_ rules:
 
 - The branch _master_ receives modifications from _develop_ and bug corrections from _hotfix_
 
-- The branch _develop_ receives modifications from any other branch, include bug corrections from _master_
+- The branch _develop_ receives modifications from any other branch, including bug corrections from _master_
 
 ## 4. Do clear _commit_ messages (a title with 50 characters and two paragraphs of text)
 
@@ -75,7 +75,7 @@ If you add a new file, it is important to add descriptive headers in the top of 
 # 
 # Purpose: Test vfsa program in multiple interfaces model.
 # 
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
 # Programmer: Rodolfo A C Neves (Dirack) 26/03/2020
 # 

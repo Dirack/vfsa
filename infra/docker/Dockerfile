@@ -5,4 +5,4 @@ ENV PATH=/home/tryitondocker/madagascar/bin:/usr/local/sbin:/usr/local/bin:/usr/
 ENV RSFSRC=/home/tryitondocker/madagascar-3.0
 ENV DATAPATH=/home/tryitondocker/rsfdata/
 COPY . /home/tryitondocker/madagascar-3.0/user/vfsa
-RUN echo "Installing VFSA..." && cd /home/tryitondocker/madagascar-3.0/user/vfsa && cd /home/tryitondocker/madagascar-3.0 && scons install && echo "...done"
+RUN echo "Installing VFSA..." && cd /home/tryitondocker/madagascar-3.0/user/vfsa && scons && cd /home/tryitondocker/madagascar-3.0 && scons install && echo "...done"

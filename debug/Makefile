@@ -37,7 +37,7 @@ else
 endif
 	@echo "...done"
 
-# run optimization test with scons to measure execution time
+# Generate input data for debug session
 generate_data_cube:	test_data_cube/SConstruct
 	@echo "\033[95mGenerate a data cube for tests\033[m"
 	cd test_data_cube && scons -s -Q

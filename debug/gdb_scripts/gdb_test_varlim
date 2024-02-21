@@ -1,8 +1,9 @@
 # gdb_script (GDB Script)
 # 
-# Purpose: Run test in GDB shell.
+# Purpose: Load test parameters in GDB. Use the command
+# 'source gdb_script' inside gdb shell to load args.
 # 
-# Site: https://dirack.github.io
+# Site: https://www.geofisicando.com
 # 
 # Programmer: Rodolfo A C Neves (Dirack) 04/01/2021
 # 
