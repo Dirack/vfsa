@@ -3,11 +3,9 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Optimization test of VFSA process.
+# Purpose: Generate data for debug vfsa package
 #
-# Site: https://dirack.github.io
-# 
-# Version 1.0
+# Site: https://www.geofisicando.com
 #
 # Programer: Rodolfo A. C. Neves (Dirack) 10/11/2020
 #
