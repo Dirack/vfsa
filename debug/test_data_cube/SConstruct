@@ -73,10 +73,5 @@ Flow(param,param+'.asc',
         dd type=float form=native
         ''')
 
-#Flow('crsAppSurface',['dataReflectionSurface','crsParameters'],
-#        '''
-#        nhcrssurf param=${SOURCES[1]} m0=%g v0=%g t0=%g verb=y
-#        ''' % (m0,v0,t0))
-
 End()
 
