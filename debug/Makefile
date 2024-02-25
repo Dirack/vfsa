@@ -14,18 +14,13 @@
 #CENTOS=1 
 
 DEP = ../vfsacrsnh_lib.c
+DEP_SURF=../nhcrssurf_lib.c
 GDBDEP = ../Mvfsacrsnh.c $(DEP)
+GDBDEP_SURF=../Mnhcrssurf.c $(DEP_SURF)
 UNITY = Unity/unity.c
 
 # Default is to run the test
-all:	vfsa.x generate_data_cube
-
-%.x:	%.c
-ifdef CENTOS
-	@gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
-else
-	@gcc -I$$RSFSRC/include -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf
-endif
+all:	generate_data_cube vfsa.x nhcrssurf.x
 
 # Generate a version of the program for debugging with GDB
 vfsa.x:	generate_data_cube $(GDBDEP)
@@ -34,6 +29,16 @@ ifdef CENTOS
 	gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $(GDBDEP) -o $@ -lm -lrsf -lopenblas -g -fopenmp
 else
 	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP) -o $@ -lrsf -lm -fopenmp
+endif
+	@echo "...done"
+
+# Generate a version of the program for debugging with GDB
+nhcrssurf.x:	generate_data_cube $(GDBDEP_SURF)
+	@echo "\033[95mGenerate a version of the program for debugging with GDB...\033[m"
+ifdef CENTOS
+	gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $(GDBDEP_SURF) -o $@ -lm -lrsf -lopenblas -g -fopenmp
+else
+	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP_SURF) -o $@ -lrsf -lm -fopenmp
 endif
 	@echo "...done"
 
@@ -52,6 +57,7 @@ clean:
 
 help:
 	@echo "Run 'make' or 'make vfsa.x' to prepare a program version for GDB"
-	@echo "Run 'make gdbtest' run test in GDB shell"
+	@echo "Run 'make' or 'make nhcrssurf.x' to prepare a program version for GDB"
+	@echo "Run 'make gdbtest' run vfsa test in GDB shell"
 
 .PHONY:	clean help all
