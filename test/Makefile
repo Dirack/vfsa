@@ -11,7 +11,7 @@
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
 # List default tests here
-TESTS=libraries bug optimization
+TESTS=libraries bug optimization test_parameters
 
 # Default is to run all tests
 all:	$(addsuffix .test, $(TESTS))

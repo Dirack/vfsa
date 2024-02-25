@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# SConstruct  (Madagascar Script)
+#
+# Purpose: Obtain correct value for RNIP parameter for a plane interface model.
+# Obtain zero-offset CRS parameters using VFSA for a set of (t0,m0) pairs.
+#
+# Site: https://www.geofisicando.com
+#
+# Programmer: Rodolfo A. C. Neves (Dirack) 25/02/2024
+#
+# Email: rodolfo_profissional@hotmail.com
+#
+# License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
+
+# Madagascar library
+from rsf.proj import *
+from model import *
+
+# Python math library
+import math
+
+__author__="Rodolfo Dirack <rodolfo_profissional@hotmail.com>"
+__site__="https://www.geofisicando.com"
+
+Help('''
+    Obtain zero offset CRS parameters using VFSA for a set of (t0,m0) pairs
+    =======================================================================
+
+    Obtain RN, RNIP and BETA parameters using Very Fast Simulated Annealing (VFSA)
+    global optimization
+
+    Author: %s
+    Site: %s
+    ''' % (__author__,__site__))
+
+Help('''
+    ### Kirchhoff modeling ###
+
+    Use Kirchhoff modeling in a Gaussian reflector linear velocity model
+    velocity increases with depth with a 0.5 velocity gradient
+    ''')
+
+# Velocity model parameters
+xmax = 6.0
+zmax = 4.0
+layers = ((1.00,1.00,1.00,1.00),(1.85,1.85,1.85,1.85))
+velocities = (1.508,1.690,2.0)
+
+# Generate velocity model and seismic data cube
+nt=1001
+dt=0.004
+nm=241
+dm=0.025
+nh=161
+dh=0.025
+
+trueModel = 'velocity'
+dataCube = 'dataCube'
+
+modeling(trueModel,
+        dataCube,
+        xmax,
+        zmax,
+        layers,
+        velocities,
+        nt,
+        dt,
+        nm,
+        dm,
+        nh,
+        dh)
+
+Result(trueModel,velplot("Velocity Model"))
+
+om0=2
+dm0=0.5
+nm0=6
+ot0=1.1
+dt0=0.1
+nt0=1
+ot0=1.33
+v0=1.508
+repeat=8
+
+Help('''
+### Very Fast Simulated Annealing (VFSA) ###
+
+Obtain RN, RNIP and BETA parameters for nm0=%g om0=%g dm0=%g nt0=%g ot0=%g dt0=%g v0=%g
+using non-hyperbolic CRS aproximation and VFSA repeated %d times
+''' % (nm0,om0,dm0,nt0,ot0,dt0,v0,repeat))
+
+# Very Fast Simulated Annealling Global Optimization (VFSA) - First interface
+Flow('crsParameters1',dataCube,
+        '''
+        vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
+        ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
+
+ot0=2.33
+
+# Very Fast Simulated Annealling Global Optimization (VFSA) - Second interface
+Flow('crsParameters2',dataCube,
+        '''
+        vfsacrsnh om0=%g dm0=%g nm0=%d ot0=%g dt0=%g nt0=%d v0=%g verb=y repeat=%d
+        ''' % (om0,dm0,nm0,ot0,dt0,nt0,v0,repeat))
+
+End()
