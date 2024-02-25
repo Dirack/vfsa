@@ -1,0 +1,16 @@
+# gdb_script (GDB Script)
+# 
+# Purpose: Load test parameters in GDB. Use the command
+# 'source gdb_script' inside gdb shell to load args.
+# 
+# Site: https://www.geofisicando.com
+# 
+# Programmer: Rodolfo A C Neves (Dirack) 25/02/2024
+# 
+# Email: rodolfo_profissional@hotmail.com
+# 
+# License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
+
+cd test_data_cube/
+set args <dataCube.rsf param=crsParameters.rsf m0=5 v0=1.5 t0=1.1 verb=y > teste.rsf
+show args
