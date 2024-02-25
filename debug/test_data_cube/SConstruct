@@ -57,5 +57,21 @@ Flow('rnipmin',None,'spike n1=25 d1=1 o1=0 mag=1 | put n1=5 n2=5')
 Flow('betamax',None,'spike n1=25 d1=1 o1=0 mag=-1 | put n1=5 n2=5')
 Flow('betamin',None,'spike n1=25 d1=1 o1=0 mag=1 | put n1=5 n2=5')
 
+# Parameter file to debug sfnhcrssurf
+param = 'crsParameters'
+rn = 4.725
+rnip = 0.2558
+beta = -0.001232
+semb = 0.5248
+Flow(param+'.asc',None,
+        '''
+        echo %g %g %g %g n1=4 d1=1 o1=0 data_format=ascii_float in=${TARGETS}
+        '''%(rn,rnip,beta,semb))
+
+Flow(param,param+'.asc',
+        '''
+        dd type=float form=native
+        ''')
+
 End()
 
