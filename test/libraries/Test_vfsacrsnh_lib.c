@@ -16,10 +16,12 @@
 #include "../vfsacrsnh_lib.h"
 #include <rsf.h>
 #define ITMAX 100
+#define hMAX 50
+#define mMAX 50
 
 /* Seimic datacube parameters to be used in tests */
 float*** t; // it stores seismic datacube
-float returnedValues[2*mMAX+1][hMAX]; // nonHyperbolicCRSapp returned values
+float **returnedValues; // nonHyperbolicCRSapp returned values
 int nt=1001, nh=401, nm=161; // datacube dimensions
 sf_file in; // datacube RSF file
 
@@ -124,7 +126,7 @@ void nonHyperbolicCRSapp_function_for_pre_calculated_values(){
 	int h;
 	int half=1;
 
-	nonHyperbolicCRSapp(returnedValues,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA,half);
+	nonHyperbolicCRSapp(returnedValues,mMAX,hMAX,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA,half);
 
 	/* In the CMP m0 and h0, time is equal to t0 */
 	/* CMP 51 is m0, that is the midle of CMP window */
@@ -148,7 +150,7 @@ void semblance_return_value_between_0_1(){
 	int half=1;
 
 	for(i=0;i<100;i++){
-		semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,half);
+		semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,mMAX,hMAX,half);
 		TEST_ASSERT(semb>=0.0 && semb <= 1.0);
 	}
 }
@@ -340,7 +342,6 @@ void mt_convergence_graph_file_preparation(){
 	TEST_ASSERT_EQUAL_STRING("Semblance",label);
 }
 
-
 int main(int argc, char* argv[]){
 
 	/* Redirect the stdin to datacube file */
@@ -352,6 +353,8 @@ int main(int argc, char* argv[]){
 	/* Read seismic data cube */
 	t=sf_floatalloc3(nt,nh,nm);
 	sf_floatread(t[0][0],nm*nh*nt,in);
+
+	returnedValues = sf_floatalloc2(hMAX,2*mMAX+1);
 
 	UNITY_BEGIN();
 	RUN_TEST(signal_function_return_1_for_positive_values_and_zero);

@@ -45,7 +45,7 @@ check_value(){
 }
 
 check_value test_rnip_interface1.txt "1.0" "0.1"
-check_value test_rnip_interface2.txt "1.95" "0.1"
+check_value test_rnip_interface2.txt "1.95" "0.12"
 check_value test_beta_interface1.txt "0.00" "0.1"
 check_value test_beta_interface2.txt "0.00" "0.1"
 

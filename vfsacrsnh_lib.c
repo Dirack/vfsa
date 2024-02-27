@@ -13,8 +13,6 @@
 
 */
 
-#define hMAX 50 // Max of samples to stack in half-offset
-#define mMAX 50 // Max of samples to stack in CMP
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,7 +107,9 @@ VFSA algorithm disturb parameters step.
 
 }
 
-void nonHyperbolicCRSapp(	float t[2*mMAX+1][hMAX] /* non-hyperbolic CRS traveltime surface */,
+void nonHyperbolicCRSapp(	float **t /* non-hyperbolic CRS traveltime surface */,
+				int mMAX /* CMP aperture */,
+				int hMAX /* Offset aperture */,
 				float m0 /* Central CMP of the approximation */,
 				float dm, /* CMP sampling */
 				float om /* CMP axis origin */,
@@ -169,6 +169,8 @@ float semblance(float m0 /* Central CMP of the approximation */,
 		float RNIP /* RNIP, CRS parameter */,
 		float BETA /* BETA, CRS parameter */,
 		float*** t /* reflection data cube A(m,h,t) */,
+		int mMAX, /* CMP aperture */
+		int hMAX, /* Offset aperture */
 		bool half /* Half-offset coordinates */)
 /*< Calculate semblance between the Non Hyperbolic CRS approximation surface and reflection data >*/
 {
@@ -179,13 +181,15 @@ float semblance(float m0 /* Central CMP of the approximation */,
 	float amplitudeSquaredSampleSum=0.;
 	float semblance=0;
 	int tetai;
-	float teta[2*mMAX+1][hMAX];
+	float **teta;
 	int m0_index_init, m0_index_end;
+
+	teta = sf_floatalloc2(hMAX,2*mMAX+1);
 
 	m0_index_init = (int)(m0/dm)-mMAX;
 	m0_index_end = (int)(m0/dm)+mMAX;
 
-	nonHyperbolicCRSapp(teta,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA,half);
+	nonHyperbolicCRSapp(teta,mMAX,hMAX,m0,dm,om,dh,oh,t0,v0,RN,RNIP,BETA,half);
 
 	for (im=m0_index_init; im < m0_index_end; im++){
 			
@@ -212,6 +216,54 @@ float semblance(float m0 /* Central CMP of the approximation */,
 		return semblance=(amplitudeSampleSum*amplitudeSampleSum)/(numSamples*amplitudeSquaredSampleSum);
 
 }
+
+bool checkValueInsideBoundaries(float value, float min, float max)
+/*< check if the value is inside the boundaries min < value < max >*/
+{
+	return (min < value && value < max);
+}
+
+bool validBoundariesAndApertureForCMP(int nm0, float om0, float dm0, int mMAX, int nm, float om, float dm, char *strerr)
+/*< Check if CMP coordinates for m0s are inside data cube space to avoid segmentation fault errors >*/
+{
+	float m0min, m0max;
+
+	m0min = om0-(dm*mMAX);
+	m0max = om0+dm0*(nm0-1)+(dm*mMAX);
+
+	if(m0min < om || m0max > (om+dm*(nm-1))){
+		sprintf(strerr,"Invalid boundaries for CMP m0min=%f m0max=%f. Please check aperture!",m0min,m0max);
+		return false;
+	}
+
+	return true;
+}
+
+bool validBoundariesAndApertureForOffset(int nh, float oh, float dh, int hMAX, char *strerr)
+/*< Check if Offset coordinates are inside data cube space to avoid segmentation fault errors >*/
+{
+	if((oh+dh*hMAX) > (oh+dh*(nh-1))){
+		sprintf(strerr,"Invalid boundaries for Offset hmin=%f hmax=%f. Please check aperture!",oh,oh+dh*hMAX);
+		return false;
+	}
+
+	return true;
+}
+
+bool validBoundariesAndApertureForT0(int nt0, float ot0, float dt0, int nt, float ot, float dt, char *strerr)
+/*< Check if t0 coordinates are inside data cube space to avoid segmentation fault errors >*/
+{
+	float t0min = ot0;
+	float t0max = ot0+dt0*(nt0-1);
+
+	if(t0min < ot || t0max > ot+dt*(nt-1)){
+		sprintf(strerr,"Invalid boundaries for time t0 t0min=%f t0max=%f. Please check aperture!",t0min,t0max);
+		return false;
+	}
+
+	return true;
+}
+
 
 bool repeatOptionEqual1ForGetConvergenceGraphTrue(bool get_convergence_graph, int repeat)
 /*< Repeat option should be equal one when get_convergence_graph flag is on to avoid multiple thread >*/
