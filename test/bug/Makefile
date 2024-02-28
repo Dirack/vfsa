@@ -10,7 +10,7 @@
 # 
 # License: GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.txt>.
 
-TESTS=test_issue_32 test_issue_46
+TESTS=test_issue_32 test_issue_46 test_issue_52
 
 all: $(TESTS)
 
