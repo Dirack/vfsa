@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
 	float **mtgraph=NULL;
 	char strerr[50];
 	bool useprecseed;
+	int mMAX, hMAX; // Option to define aperture in CMP and Offset
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
@@ -158,6 +159,12 @@ int main(int argc, char* argv[])
 	if(!sf_getbool("useprecseed",&useprecseed)) useprecseed=false;
 	/* y: Use a more precise seed for vfsa; n: Use time(NULL)*/
 
+	if(!sf_getint("mmax",&mMAX)) mMAX=50;
+	/* CMP aperture */
+
+	if(!sf_getint("hmax",&hMAX)) hMAX=50;
+	/* Offset aperture */
+
 	if(! sf_getbool("verb",&verb)) verb=false;
 	/* y: active mode; n: quiet mode */
 
@@ -182,6 +189,15 @@ int main(int argc, char* argv[])
 	t=sf_floatalloc3(nt,nh,nm);
 	sf_floatread(t[0][0],nm*nh*nt,in);
 	sf_fileclose(in);
+
+	if(!validBoundariesAndApertureForCMP(nm0, om0, dm0, mMAX, nm, om, dm, strerr))
+		sf_error("%s",strerr);
+
+	if(!validBoundariesAndApertureForOffset(nh,oh,dh,hMAX,strerr))
+		sf_error("%s",strerr);
+
+	if(!validBoundariesAndApertureForT0(nt0, ot0, dt0, nt, ot, dt, strerr))
+		sf_error("%s",strerr);
 
 	if (verb) {
 		sf_warning("Active mode on!!!");
@@ -270,7 +286,7 @@ int main(int argc, char* argv[])
 						otrn=c[0];
 						otrnip=c[1];
 						otbeta=c[2];
-						semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,half);
+						semb0=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,c[0],c[1],c[2],t,mMAX,hMAX,half);
 						otsemb = semb0;
 					}
 
@@ -289,7 +305,7 @@ int main(int argc, char* argv[])
 
 						semb=0;
 					
-						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,half);
+						semb=semblance(m0,dm,om,oh,dh,dt,nt,t0,v0,RN,RNIP,BETA,t,mMAX,hMAX,half);
 
 							/* VFSA parameters convergence condition */		
 							if(fabs(semb) > fabs(semb0) ){
