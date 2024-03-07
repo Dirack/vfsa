@@ -40,13 +40,13 @@ The default branch (main or master) and development branch names follow the rule
 
 The branch merge follows _gitflow_ rules:
 
-- These branches are opened and merged in the current development branch: _feature_, _documentation_, and _test_.
+- These branches are opened and merged in the current development branch: _feature_, _documentation_, and _hotfix_.
 
 - These branches are opened and merged in _master_: _develop_, and _hotfix_.
 
 - The branch _master_ receives modifications from _develop_ and bug corrections from _hotfix_
 
-- The branch _develop_ receives modifications from any other branch, including bug corrections from _master_
+- The branch _develop_ receives modifications from any other branch, including bug corrections from _master_ and _hotfix_.
 
 ## 4. Do clear _commit_ messages (a title with 50 characters and two paragraphs of text)
 
@@ -89,7 +89,7 @@ If you add a new file, it is important to add descriptive headers in the top of 
 After you check your modifications and commit history are following the required steps above, you can push them to your forked version of this repository with the following command (substitute \<type\> for _feature_, _documentation_ or _hotfix_, as described in step 3):
 
 ```sh
-~$ git push origin <type>/issue/ID
+git push origin <type>/issue/ID
 ```
 
 Then do a _pull request_ from this '\<type\>/issue/ID' branch in your repository to the correct branch in this repository: your base branch and destine branch names should follow the rules described in step 3.
