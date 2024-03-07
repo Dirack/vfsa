@@ -1,6 +1,6 @@
 # Makefile
 #
-# Purpose: Run tests related with issue #46.
+# Purpose: Run tests related with issue 46.
 # 
 # Site: https://www.geofisicando.com
 # 
