@@ -5,7 +5,7 @@ VFSA programs. The programs versions are compiled for gdb and arguments are load
 using gdb scripts. In the directory 'test\_data\_cube', dummy data is build to be
 offered as input in debugging sessions.
 
-Above, the debugging options:
+Bellow, the debugging options:
 
 - GDB debug session: Run 'make' or 'make vfsa.x' or 'make nhcrssurf.x'
 to generate the executable vfsa.x or 'nhcrssurf.x'
@@ -17,13 +17,13 @@ file can be used to load all arguments needed to run the program in GDB. Use
 
 ## Usage examples
 
-To run 'vfsa.x' with a gdb script called 'gdb\_script' use:
+To run 'vfsa.x' with a gdb script called 'gdb\_script' in 'gdb\_scripts' directory use:
 
 ```
 gdb --command=gdb_scripts/gdb_script ./vfsa.x
 ```
 
-To run 'nhcrssurf.x' with a gdb script called 'gdb\_script\_nhcrssurf' use:
+To run 'nhcrssurf.x' with a gdb script called 'gdb\_script\_nhcrssurf' in 'gdb\_scripts' directory use:
 
 ```
 gdb --command=gdb_scripts/gdb_script_nhcrssurf ./nhcrssurf.x

@@ -1,7 +1,7 @@
 # gdb_script (GDB Script)
 # 
 # Purpose: Load test parameters in GDB. Use the command
-# 'source gdb_script' inside gdb shell to load args.
+# 'source gdb_script_nhcrssurf' inside gdb shell to load args.
 # 
 # Site: https://www.geofisicando.com
 # 
