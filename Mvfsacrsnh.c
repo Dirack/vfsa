@@ -55,22 +55,23 @@ int main(int argc, char* argv[])
 	float beta_max, beta_min; // BETA limits
 	bool varlim; // y, variable search window to parameters
 	int itmax; // Maximum VFSA iterations
+	/* TODO: Tests and examples for variable interval option */
 	float t0i, t0f;
 	int ki, kf;
 	bool interval;
 	bool half; // Use half-offset instead of offset
 	bool get_convergence_graph; // Option to generate a convergence graph
 	bool get_mt_convergence_graph; // Option to generate a multi thread convergence graph
-	float **mtgraph=NULL;
-	char strerr[50];
-	bool useprecseed;
+	float **mtgraph=NULL; // Multi thread convergence graph matrix
+	char strerr[50]; // Buffer for error messages
+	bool useprecseed; // Option for use a more precise random seed generator
 	int mMAX, hMAX; // Option to define aperture in CMP and Offset
 
 	/* RSF files I/O */  
 	sf_file in; /* Seismic data cube A(m,h,t) */
 	char* parametersFilesLabels[6] = {"rnmaxfile","rnminfile","rnipmaxfile","rnipminfile","betamaxfile","betaminfile"};
 	float** parametersFilesVectors[6] = {NULL,NULL,NULL,NULL,NULL,NULL}; 
-	sf_file parameters=NULL;
+	sf_file parameters=NULL; // TODO: Example for this parameters option (variable interval)
 	sf_file out; /* RN, RNIP, BETA, Semblance, C0, Temp0, t0, m0 */
 	sf_file outgraph=NULL; /* Convergence graph */
 	sf_file mtoutgraph=NULL; /* Multi thread convergence graph */
