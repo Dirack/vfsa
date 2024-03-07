@@ -1,7 +1,7 @@
 /*
 * Test_nhcrssurf.c (C)
 * 
-* Purpose: Test of the functions in the library of the program 'Mnhcrssurf.c'.
+* Purpose: Test for bug related on issue 46.
 * 
 * Site: https://www.geofisicando.com
 * 

@@ -1,6 +1,6 @@
 # Makefile
 #
-# Purpose: Run tests for libraries and functions.
+# Purpose: Run tests for bug related on issue 32.
 # 
 # Site: https://www.geofisicando.com
 # 

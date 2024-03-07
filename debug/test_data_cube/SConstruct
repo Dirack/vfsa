@@ -3,11 +3,11 @@
 #
 # SConstruct  (Madagascar Script)
 #
-# Purpose: Generate data for debug vfsa package
+# Purpose: Generate data for debugging vfsa package
 #
 # Site: https://www.geofisicando.com
 #
-# Programer: Rodolfo A. C. Neves (Dirack) 10/11/2020
+# Programmer: Rodolfo A. C. Neves (Dirack) 10/11/2020
 #
 # Email: rodolfo_profissional@hotmail.com
 #
