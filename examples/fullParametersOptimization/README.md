@@ -7,7 +7,7 @@ In this usage example we use the same gaussian reflector model as input and kirc
 * Run 'scons' in this directory (it may take some time):
 
 ```sh
-~$ scons
+scons
 ```
 
 ## Expected outcomes
@@ -21,7 +21,7 @@ offset window around Central CMP m0.
 The parameters cube in 'crsParameters.rsf' file is organized as follows:
 
 ```sh
-~$ sfin crsParameters.rsf
+sfin crsParameters.rsf
 crsParameters.rsf:
     in="/home/rodolfo/rsfdata/vfsa/examples/fullParametersOptimization/crsParameters.rsf@"
     esize=4 type=float form=native 

@@ -11,7 +11,7 @@ exatracted from the data cube. Finally, we plot these surfaces and approximation
 * Run 'scons view' in this directory (it may take some time):
 
 ```sh
-~$ scons view
+scons view
 ```
 
 ## Expected outcomes
@@ -24,7 +24,7 @@ exatracted from the data cube. Finally, we plot these surfaces and approximation
  You can obtain them running:
  
  ```sh
- ~$ sfdisfil <crsParameters.rsf
+sfdisfil <crsParameters.rsf
 0:         4.725       0.2558    -0.001232       0.5248
 ```
 
