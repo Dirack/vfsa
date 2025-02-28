@@ -8,5 +8,6 @@ fi
 mkdir dirack
 
 cp ../../*.c ../../*.h ../../SConstruct dirack
+cp -r ../../examples dirack
 
 tar -cvf deploy.tar dirack
