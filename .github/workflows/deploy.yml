@@ -25,7 +25,7 @@ jobs:
                                 outputs: type=docker,dest=/tmp/testimage.tar
 
                         - name: Upload artifact
-                          uses: actions/upload-artifact@v2
+                          uses: actions/upload-artifact@v3
                           with:
                                 name: testimage
                                 path: /tmp/testimage.tar
@@ -64,7 +64,7 @@ jobs:
                           run: cd infra/scripts; ./prepare_deploy.sh
 
                         - name: Upload artifact
-                          uses: actions/upload-artifact@v2
+                          uses: actions/upload-artifact@v3
                           with:
                                 name: deploy
                                 path: ./infra/scripts/deploy.tar
@@ -86,7 +86,7 @@ jobs:
                         - name: Generate a changelog
                           run: docker run -t testimage:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && ./infra/scripts/prepare_release_msg.sh" >> ./changelog.md
                         - name: Upload changelog artifact
-                          uses: actions/upload-artifact@v2
+                          uses: actions/upload-artifact@v3
                           with:
                                 name: changelog
                                 path: ./changelog.md
