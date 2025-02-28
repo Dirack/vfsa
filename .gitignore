@@ -22,3 +22,5 @@ mtconvgraph
 vfsacrsnh_lib.h
 nhcrssurf_lib.h
 dummyfile
+infra/scripts/build
+*.tar

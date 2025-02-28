@@ -1,0 +1,5 @@
+from rsf.proj import *
+
+SConscript(['fullParametersOptimization/SConstruct',
+            'gaussian_reflector_model/SConstruct',
+            'kirchhoff_modeling/SConstruct'])

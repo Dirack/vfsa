@@ -1,10 +1,12 @@
 #!/bin/bash
 
-if [ ! -d "build" ]
+if [ -d "dirack" ]
 then
-    mkdir build
+    rm -rf dirack
 fi
 
-echo deploy >> build/file.txt
+mkdir dirack
 
-tar -cvf deploy.tar build/*
+cp ../../*.c ../../*.h ../../SConstruct dirack
+
+tar -cvf deploy.tar dirack
