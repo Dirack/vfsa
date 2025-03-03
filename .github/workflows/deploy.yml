@@ -22,7 +22,7 @@ jobs:
                           with:
                                   registry: ghcr.io
                                   username: ${{ github.actor }}
-                                  password: ${{ secrets.GITHUB_TOKEN }}
+                                  password: ${{ secrets.mytoken }}
 
                         - name: Build and push madagascar 3.0
                           uses: docker/build-push-action@v2
