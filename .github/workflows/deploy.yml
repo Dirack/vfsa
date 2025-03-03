@@ -91,10 +91,10 @@ jobs:
                                docker load --input /tmp/madagascar-4.0.tar
 
                         - name: Run unit tests in Madagascar 4.0
-                          run: docker run -t madagascar-4.0:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=libraries"
+                          run: docker run -t madagascar-4.0:0.1.0 bash -c "cd /home/madagascar-4.0/user/vfsa && make -C test TESTS=libraries"
 
                         - name: Run optimization tests
-                          run: docker run -t madagascar-4.0:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=optimization"
+                          run: docker run -t madagascar-4.0:0.1.0 bash -c "cd /home/madagascar-4.0/user/vfsa && make -C test TESTS=optimization"
                           
 
         deploy:
