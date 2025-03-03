@@ -4,6 +4,7 @@ on:
         push:
                 tags:
                         - "v*"
+        workflow_dispatch:
 jobs:
         build:
                 runs-on: ubuntu-latest
@@ -91,6 +92,7 @@ jobs:
 
         deploy:
                 runs-on: ubuntu-latest
+                if: startsWith(github.ref, 'refs/tags')
                 needs:
                         - test-madagascar-3-0
                         - test-madagascar-4-0
