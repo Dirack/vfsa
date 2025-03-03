@@ -21,9 +21,9 @@ all:	call_generateRandomNumber.x call_generateRandomNumberPrecise.x
 
 %.x:	%.c
 ifdef CENTOS
-	@gcc -I$$RSFSRC/include -I.. -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) -o $@ -lm -lrsf -lopenblas -g
+	@gcc -I$$RSFROOT/include -I.. -I/usr/include/openblas -L$$RSFROOT/lib $< $(DEP) -o $@ -lm -lrsf -lopenblas -g
 else
-	@gcc -I$$RSFSRC/include -I.. -L$$RSFSRC/lib $< $(DEP) -o $@ -lm -lrsf
+	@gcc -I$$RSFROOT/include -I.. -L$$RSFROOT/lib $< $(DEP) -o $@ -lm -lrsf
 endif
 
 clean:

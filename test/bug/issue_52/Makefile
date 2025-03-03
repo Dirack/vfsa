@@ -24,9 +24,9 @@ all:	Test_bug_issue_52.x
 
 %.x:	%.c
 ifdef CENTOS
-	@gcc -I$$RSFSRC/include -I../.. -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
+	@gcc -I$$RSFROOT/include -I../.. -I/usr/include/openblas -L$$RSFROOT/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
 else
-	@gcc -I$$RSFSRC/include -I../.. -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf
+	@gcc -I$$RSFROOT/include -I../.. -L$$RSFROOT/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf
 endif
 
 clean:

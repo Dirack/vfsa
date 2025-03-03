@@ -30,17 +30,17 @@ all:	generate_data_cube generate_simple_cube Test_vfsacrsnh_lib.x
 
 %.x:	%.c
 ifdef CENTOS
-	@gcc -I$$RSFSRC/include -I.. -I/usr/include/openblas -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
+	@gcc -I$$RSFROOT/include -I.. -I/usr/include/openblas -L$$RSFROOT/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf -lopenblas -g
 else
-	@gcc -I$$RSFSRC/include -I.. -L$$RSFSRC/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf
+	@gcc -I$$RSFROOT/include -I.. -L$$RSFROOT/lib $< $(DEP) $(UNITY) -o $@ -lm -lrsf
 endif
 
 # Generate a version of the program for debugging with GDB
 vfsa.x:	generate_data_cube $(GDBDEP)
 ifdef CENTOS
-	gcc -I$$RSFSRC/include -I/usr/include/openblas -L$$RSFSRC/lib $(GDBDEP) -o $@ -lm -lrsf -lopenblas -g -fopenmp
+	gcc -I$$RSFROOT/include -I/usr/include/openblas -L$$RSFROOT/lib $(GDBDEP) -o $@ -lm -lrsf -lopenblas -g -fopenmp
 else
-	gcc -g -I$$RSFSRC/include -L$$RSFSRC/lib $(GDBDEP) -o $@ -lrsf -lm -fopenmp
+	gcc -g -I$$RSFROOT/include -L$$RSFROOT/lib $(GDBDEP) -o $@ -lrsf -lm -fopenmp
 endif
 
 # Generate a data cube for semblance and nonHyperbolicCRSApp functions tests
