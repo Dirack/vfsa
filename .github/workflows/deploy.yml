@@ -163,7 +163,7 @@ jobs:
                           run: docker run -t madagascar-4.2:0.1.0 bash -c "cd /home/madagascar-4.2/user/vfsa && make -C test TESTS=libraries"
 
                         - name: Run optimization tests
-                          run: docker run -t madagascar-4.2:0.1.0 bash -c "cd /home/madagascar-4.2/user/vfsa && make -C test TESTS=optimization"
+                          run: docker run -t madagascar-4.2:0.1.0 bash -c "export DATAPATH=/rsfdata/ && cd /home/madagascar-4.2/user/vfsa && cd test/libraries/test_data_cube && scons  && cd - && make -C test TESTS=libraries"
 
         deploy:
                 runs-on: ubuntu-latest
