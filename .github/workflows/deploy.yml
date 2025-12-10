@@ -5,8 +5,22 @@ on:
                 tags:
                         - "v*"
         workflow_dispatch:
+            inputs:
+              test_3_0:
+                description: 'Run Madagascar 3.0 tests'
+                required: false
+                default: 'true'
+              test_4_0:
+                description: 'Run Madagascar 4.0 tests'
+                required: false
+                default: 'true'
+              test_4_2:
+                description: 'Run Madagascar 4.2 tests'
+                required: false
+                default: 'true'
 jobs:
         build-madagascar-3-0:
+                if: ${{ github.event.inputs.test_3_0 == 'true' }}
                 runs-on: ubuntu-latest
                 steps:
                         - name: Repository checkout
@@ -38,7 +52,9 @@ jobs:
                                 name: madagascar-3.0
                                 path: /tmp/madagascar-3.0.tar
                                 retention-days: 0
+
         build-madagascar-4-0:
+                if: ${{ github.event.inputs.test_4_0 == 'true' }}
                 runs-on: ubuntu-latest
                 steps:
                         - name: Repository checkout
@@ -71,6 +87,7 @@ jobs:
                                 retention-days: 0
 
         build-madagascar-4-2:
+                if: ${{ github.event.inputs.test_4_2 == 'true' }}
                 runs-on: ubuntu-latest
                 steps:
                         - name: Repository checkout
@@ -103,6 +120,7 @@ jobs:
                                 retention-days: 0
 
         test-madagascar-3-0:
+                if: ${{ github.event.inputs.test_3_0 == 'true' }}
                 runs-on: ubuntu-latest
                 needs: build-madagascar-3-0
                 steps:
@@ -116,14 +134,43 @@ jobs:
                         - name: Load Docker image - Madagascar 3.0
                           run: |
                                docker load --input /tmp/madagascar-3.0.tar
-
+                               
+                        - name: Sanity check container environment
+                          run: |
+                            docker run --rm madagascar-3.0:0.1.0 bash -c "
+                              # Checa RSFROOT
+                              if [ -z \$RSFROOT ]; then
+                                echo '::error title=RSFROOT Missing::RSFROOT is not set in the container'
+                              else
+                                echo '::notice title=RSFROOT::\$RSFROOT'
+                              fi
+                        
+                              # Checa PYTHONPATH
+                              if [ -z \$PYTHONPATH ]; then
+                                echo '::warning title=PYTHONPATH Missing::PYTHONPATH is not set in the container'
+                              else
+                                echo '::notice title=PYTHONPATH::\$PYTHONPATH'
+                              fi
+                        
+                              # Checa PATH
+                              if ! echo \$PATH | grep -q \$RSFROOT/bin; then
+                                echo '::warning title=PATH::\$RSFROOT/bin not in PATH'
+                              else
+                                echo '::notice title=PATH OK::\$RSFROOT/bin is in PATH'
+                              fi
+                        
+                              # Testa Python e RSF
+                              python3 -c 'import rsf' && echo '::notice title=Python RSF::Import successful' || echo '::error title=Python RSF::Failed to import rsf'
+                            "
                         - name: Run unit tests in Madagascar 3.0
                           run: docker run -t madagascar-3.0:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=libraries"
 
                         - name: Run optimization tests in Madagascar 3.0
                           run: docker run -t madagascar-3.0:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=optimization"
+
                           
         test-madagascar-4-0:
+                if: ${{ github.event.inputs.test_4_0 == 'true' }}
                 runs-on: ubuntu-latest
                 needs: build-madagascar-4-0
                 steps:
@@ -145,6 +192,7 @@ jobs:
                           run: docker run -t madagascar-4.0:0.1.0 bash -c "cd /home/madagascar-4.0/user/vfsa && make -C test TESTS=optimization"
 
         test-madagascar-4-2:
+                if: ${{ github.event.inputs.test_4_2 == 'true' }}
                 runs-on: ubuntu-latest
                 needs: build-madagascar-4-2
                 steps:
