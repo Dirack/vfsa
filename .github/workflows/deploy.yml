@@ -13,11 +13,11 @@ on:
               test_4_0:
                 description: 'Run Madagascar 4.0 tests'
                 required: false
-                default: 'true'
+                default: 'false'
               test_4_2:
                 description: 'Run Madagascar 4.2 tests'
                 required: false
-                default: 'true'
+                default: 'false'
 jobs:
         build-madagascar-3-0:
                 if: ${{ github.event.inputs.test_3_0 == 'true' }}
@@ -140,28 +140,29 @@ jobs:
                             docker run --rm madagascar-3.0:0.1.0 bash -c "
                               # Checa RSFROOT
                               if [ -z \$RSFROOT ]; then
-                                echo '::error title=RSFROOT Missing::RSFROOT is not set in the container'
+                                echo '### RSFROOT Missing ❌'
                               else
-                                echo '::notice title=RSFROOT::\$RSFROOT'
+                                echo '### RSFROOT: \$RSFROOT ✅'
                               fi
                         
                               # Checa PYTHONPATH
                               if [ -z \$PYTHONPATH ]; then
-                                echo '::warning title=PYTHONPATH Missing::PYTHONPATH is not set in the container'
+                                echo '### PYTHONPATH Missing ❌'
                               else
-                                echo '::notice title=PYTHONPATH::\$PYTHONPATH'
+                                echo '### PYTHONPATH: \$PYTHONPATH ✅'
                               fi
                         
                               # Checa PATH
                               if ! echo \$PATH | grep -q \$RSFROOT/bin; then
-                                echo '::warning title=PATH::\$RSFROOT/bin not in PATH'
+                                echo '### PATH problem: \$RSFROOT/bin not in PATH ❌'
                               else
-                                echo '::notice title=PATH OK::\$RSFROOT/bin is in PATH'
+                                echo '### PATH OK: \$RSFROOT/bin is in PATH ✅'
                               fi
                         
                               # Testa Python e RSF
-                              python3 -c 'import rsf' && echo '::notice title=Python RSF::Import successful' || echo '::error title=Python RSF::Failed to import rsf'
+                              python3 -c 'import rsf' && echo '### Python RSF: Import successful ✅' || echo '### Python RSF: Import FAILED ❌'
                             " >> $GITHUB_STEP_SUMMARY
+
                         - name: Run unit tests in Madagascar 3.0
                           run: docker run -t madagascar-3.0:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=libraries"
 
