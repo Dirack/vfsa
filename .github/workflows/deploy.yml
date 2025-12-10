@@ -161,7 +161,7 @@ jobs:
                         
                               # Testa Python e RSF
                               python3 -c 'import rsf' && echo '::notice title=Python RSF::Import successful' || echo '::error title=Python RSF::Failed to import rsf'
-                            "
+                            " >> $GITHUB_STEP_SUMMARY
                         - name: Run unit tests in Madagascar 3.0
                           run: docker run -t madagascar-3.0:0.1.0 bash -c "cd /home/tryitondocker/madagascar-3.0/user/vfsa && make -C test TESTS=libraries"
 
